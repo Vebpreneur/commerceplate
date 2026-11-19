@@ -25,7 +25,7 @@ const FeaturedProducts = ({ products }: { products: Product[] }) => {
           return (
             <div
               key={id}
-              className="text-center col-6 lg:col-4 mb-8 md:mb-14 group relative"
+              className="text-center col-6 lg:col-4 mb-8 md:mb-10 group relative"
             >
               <div className="relative overflow-hidden">
                 <ImageFallback
@@ -33,7 +33,7 @@ const FeaturedProducts = ({ products }: { products: Product[] }) => {
                   width={312}
                   height={269}
                   alt={featuredImage?.altText || "fallback image"}
-                  className="w-full aspect-square object-contain bg-white border border-border rounded-md"
+                  className="w-full aspect-square object-contain bg-white rounded-lg"
                 />
 
                 <AddToCart
@@ -47,7 +47,7 @@ const FeaturedProducts = ({ products }: { products: Product[] }) => {
                 />
               </div>
               <div className="py-2 md:py-4 text-center z-20">
-                <h2 className="font-medium text-base md:text-xl">
+                <h2 className="font-medium text-base md:text-lg">
                   <Link
                     className="after:absolute after:inset-0"
                     href={`/products/${handle}`}
@@ -60,8 +60,7 @@ const FeaturedProducts = ({ products }: { products: Product[] }) => {
                     {new Intl.NumberFormat("sv-SE", { style: "currency", currency: priceRange.minVariantPrice.currencyCode }).format(Number(priceRange.minVariantPrice.amount))}
                   </span>
 
-                  {parseFloat(compareAtPriceRange?.maxVariantPrice.amount) >
-                    0 ? (
+                  {Number(compareAtPriceRange?.maxVariantPrice?.amount) > Number(priceRange.minVariantPrice.amount) ? (
                     <s className="text-text-light dark:text-darkmode-text-light text-xs md:text-base font-medium">
                       {new Intl.NumberFormat("sv-SE", { style: "currency", currency: compareAtPriceRange.maxVariantPrice.currencyCode }).format(Number(compareAtPriceRange.maxVariantPrice.amount))}
                     </s>
