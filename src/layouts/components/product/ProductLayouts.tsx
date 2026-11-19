@@ -1,167 +1,26 @@
 "use client";
-
-import { SortFilterItem, sorting } from "@/lib/constants";
-import { createUrl } from "@/lib/utils";
+import {sorting,type SortFilterItem} from "@/lib/constants";
+import {createUrl} from "@/lib/utils";
 import ProductFilters from "@/partials/ProductFilters";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
-import { BsGridFill } from "react-icons/bs";
-import { FaList } from "react-icons/fa6";
-import { TbFilter, TbFilterX } from "react-icons/tb";
-import DropdownMenu from "../filter/DropdownMenu";
+import {useRouter,useSearchParams} from "next/navigation";
+import {useEffect,useRef,useState,Suspense} from "react";
+import {FiGrid,FiList,FiSliders,FiX,FiChevronDown} from "react-icons/fi";
+export type PathFilterItem={title:string;path:string};
+export type ListItem=SortFilterItem|PathFilterItem;
 
-export type ListItem = SortFilterItem | PathFilterItem;
-export type PathFilterItem = { title: string; path: string };
-
-const ProductLayouts = ({
-  categories,
-  vendors,
-  tags,
-  maxPriceData,
-  vendorsWithCounts,
-  categoriesWithCounts,
-}: any) => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const [isInputEditing, setInputEditing] = useState(false);
-  const [isExpanded, setExpanded] = useState(false);
-  const isListView = searchParams.get("layout") === "list";
-
-  useEffect(() => {
-    const inputField = document.getElementById(
-      "searchInput",
-    ) as HTMLInputElement;
-    if (isInputEditing || searchParams.get("q")) {
-      inputField?.focus();
-    }
-  }, [searchParams, isInputEditing]);
-
-  useEffect(() => {
-    const handleOutsideClick = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      if (
-        !target.closest(".collapse-container-class") &&
-        !target.closest(".filter-button-container") &&
-        isExpanded
-      ) {
-        setExpanded(false);
-      }
-
-      // set input editing state to false when clicking outside the input
-      if (
-        !target.closest("#searchInput") &&
-        isInputEditing &&
-        document.getElementById("searchInput")
-      ) {
-        setInputEditing(false);
-      }
-    };
-
-    document.addEventListener("click", handleOutsideClick);
-
-    return () => {
-      document.removeEventListener("click", handleOutsideClick);
-    };
-  }, [isExpanded, setExpanded, isInputEditing]);
-
-  function layoutChange(isCard: string) {
-    const newParams = new URLSearchParams(searchParams.toString());
-
-    if (isCard == "list") {
-      newParams.set("layout", isCard);
-    } else {
-      newParams.delete("layout");
-    }
-    router.push(createUrl("/products", newParams), { scroll: false });
-  }
-
-  return (
-    <section className="pt-4">
-      <div className="container">
-        <div className="row">
-          <div className="col-3 max-lg:hidden" />
-
-          <div className="col-12 lg:col-9">
-            <div className="flex justify-between items-center mb-4">
-              <div className="flex gap-x-4 items-center font-medium text-xs md:text-base">
-                <p className="max-md:hidden text-text-dark dark:text-darkmode-text-dark">
-                  Visning
-                </p>
-                <div className="flex gap-2">
-                  <button
-                    type="button" aria-label="Rutnätsvy" aria-pressed={!isListView} onClick={() => layoutChange("card")}
-                    className={`btn border dark:border-darkmode-border ${isListView ? "btn-outline-primary" : "btn-primary"
-                      } p-2 hover:scale-105 duration-300`}
-                  >
-                    <BsGridFill />
-                  </button>
-                  <button
-                    type="button" aria-label="Listvy" aria-pressed={isListView} onClick={() => layoutChange("list")}
-                    className={`btn border dark:border-darkmode-border ${isListView ? "btn-primary" : "btn-outline-primary"
-                      } p-2 hover:scale-105 duration-300`}
-                  >
-                    <FaList />
-                  </button>
-                </div>
-              </div>
-
-              <div className="flex gap-x-8">
-                {/* Filter Button Trigger */}
-                <div className="filter-button-container block lg:hidden mt-1">
-                  <button type="button" aria-expanded={isExpanded} onClick={() => setExpanded(!isExpanded)}>
-                    {isExpanded ? (
-                      <span className="font-medium text-base flex gap-x-1 items-center justify-center">
-                        <TbFilterX /> Filtrera
-                      </span>
-                    ) : (
-                      <span className="font-medium text-base flex gap-x-1 items-center justify-center">
-                        <TbFilter /> Filtrera
-                      </span>
-                    )}
-                  </button>
-                </div>
-                {/* Filter Button Trigger End */}
-
-                <div className="flex gap-x-4 items-center font-medium text-sm md:text-base relative z-20">
-                  <p className="max-md:hidden text-text-dark dark:text-darkmode-text-dark">
-                    Sortera efter
-                  </p>
-                  <Suspense>
-                    <DropdownMenu list={sorting} />
-                  </Suspense>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="col-12 lg:col-3">
-            <div className="lg:block relative">
-              <div className="block lg:hidden w-full">
-                <section
-                  className="collapse-container-class z-20 bg-body dark:bg-darkmode-body w-full px-4 rounded-md"
-                  style={{ display: isExpanded ? "block" : "none" }}
-                >
-                  <div className="pb-8">
-                    <Suspense>
-                      {" "}
-                      <ProductFilters
-                        categories={categories}
-                        vendors={vendors}
-                        tags={tags}
-                        maxPriceData={maxPriceData}
-                        vendorsWithCounts={vendorsWithCounts}
-                        categoriesWithCounts={categoriesWithCounts}
-                      />
-                    </Suspense>
-                  </div>
-                </section>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-export default ProductLayouts;
+export default function ProductLayouts(props:Parameters<typeof ProductFilters>[0]){
+ const params=useSearchParams(),router=useRouter(),dialog=useRef<HTMLDialogElement>(null);
+ const [open,setOpen]=useState(false);
+ const list=params.get("layout")==="list";
+ const keys=["c","b","t","minPrice","maxPrice"];
+ const chips=keys.flatMap(k=>params.getAll(k).map(v=>({k,v,label:k==="c"?props.categories.find(c=>c.handle===v)?.title||v:k==="minPrice"?"Från "+v+" kr":k==="maxPrice"?"Till "+v+" kr":v})));
+ const update=(fn:(p:URLSearchParams)=>void)=>{const next=new URLSearchParams(params.toString());fn(next);router.push(createUrl("/products",next),{scroll:false})};
+ useEffect(()=>{const el=dialog.current;if(!el)return;if(open&&!el.open)el.showModal();if(!open&&el.open)el.close();if(!open)return;const prev=document.body.style.overflow;document.body.style.overflow="hidden";return()=>{document.body.style.overflow=prev}},[open]);
+ return <section className="container pawlira-catalog-toolbar-wrap"><div className="pawlira-catalog-toolbar">
+ <div className="flex items-center gap-2"><button className="pawlira-mobile-filter" type="button" onClick={()=>setOpen(true)}><FiSliders size={18}/> Filtrera{chips.length>0&&<span>{chips.length}</span>}</button><div className="pawlira-view-switch"><button type="button" aria-label="Rutnätsvy" aria-pressed={!list} onClick={()=>update(p=>p.delete("layout"))}><FiGrid size={18}/></button><button type="button" aria-label="Listvy" aria-pressed={list} onClick={()=>update(p=>p.set("layout","list"))}><FiList size={20}/></button></div></div>
+ <label className="pawlira-sort-control"><span className="hidden sm:inline">Sortera:</span><select aria-label="Sortera produkter" value={params.get("sort")||""} onChange={e=>update(p=>{if(e.target.value)p.set("sort",e.target.value);else p.delete("sort")})}>{sorting.map(item=><option key={item.slug||"default"} value={item.slug||""}>{item.title}</option>)}</select><FiChevronDown size={17}/></label>
+ </div>
+ {chips.length>0&&<div className="pawlira-active-filters">{chips.map(({k,v,label})=><button key={k+v} type="button" onClick={()=>update(p=>p.delete(k,v))}>{label}<FiX size={14}/></button>)}<button className="pawlira-clear-filters" type="button" onClick={()=>update(p=>keys.forEach(k=>p.delete(k)))}>Rensa alla</button></div>}
+ <dialog ref={dialog} aria-label="Produktfilter" className="pawlira-filter-dialog" onClose={()=>setOpen(false)} onClick={e=>{if(e.target===e.currentTarget)setOpen(false)}}><div className="pawlira-filter-dialog-inner"><div className="pawlira-filter-dialog-head"><h2>Filtrera produkter</h2><button type="button" aria-label="Stäng filter" onClick={()=>setOpen(false)}><FiX size={23}/></button></div><div className="pawlira-filter-dialog-body"><Suspense><ProductFilters {...props}/></Suspense></div><div className="pawlira-filter-dialog-bottom"><button type="button" onClick={()=>setOpen(false)} className="btn btn-primary rounded-full w-full">Visa produkter</button></div></div></dialog>
+ </section>;
+}

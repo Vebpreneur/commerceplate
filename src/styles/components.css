@@ -397,3 +397,74 @@
 .pawlira-faq-policy .content{margin-top:13px;max-height:350px;overflow:auto;padding-right:8px}
 @media(max-width:767px){.pawlira-faq-layout{grid-template-columns:1fr;gap:22px}.pawlira-faq-topics{display:grid;grid-template-columns:1fr}.pawlira-faq-contact{display:none}.pawlira-faq-results-head{padding:17px 18px}.pawlira-faq-item.accordion{margin:0 18px}}
 @media(prefers-reduced-motion:reduce){.pawlira-faq-topics button{transition:none}}
+
+/* Unified product merchandising and category shopping */
+.pawlira-merch-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.pawlira-featured-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.pawlira-merch-card{background:#fff;display:flex;flex-direction:column;min-width:0;overflow:hidden;border:1px solid #dedede;border-radius:14px;transition:border-color .22s,box-shadow .24s}
+.pawlira-merch-media{position:relative;min-width:0}
+.pawlira-merch-photos{display:block;position:relative;aspect-ratio:1.08;overflow:hidden;background:#fff;margin:12px 12px 0;border-radius:9px}
+.pawlira-merch-main,.pawlira-merch-alt{padding:8px;transition:opacity .32s ease,transform .55s cubic-bezier(.2,.75,.25,1)}
+.pawlira-merch-alt{opacity:0}
+.pawlira-merch-placeholder{height:100%;display:grid;place-content:center;justify-items:center;gap:9px;color:#555;font-size:.8rem}
+.pawlira-merch-status{position:absolute;top:18px;left:18px;background:#fff;border:1px solid #ddd;border-radius:999px;padding:5px 11px;color:#111;font-size:.7rem;z-index:1}
+.pawlira-merch-slide-controls{position:absolute;top:50%;left:17px;right:17px;display:flex;justify-content:space-between;pointer-events:none;transform:translateY(-50%)}
+.pawlira-merch-slide-controls button{pointer-events:auto;display:grid;place-items:center;background:#fff;border:1px solid #ddd;border-radius:50%;width:34px;height:34px;cursor:pointer;transition:background .2s,color .2s}
+.pawlira-merch-slide-controls button:hover{background:#000;color:#fff}
+.pawlira-merch-dots{display:flex;align-items:center;justify-content:center;gap:6px;height:22px}
+.pawlira-merch-dots button{width:7px;height:7px;border-radius:10px;background:#fff;border:1px solid #aaa;cursor:pointer;transition:width .2s,background .2s}
+.pawlira-merch-dots button[aria-pressed=true]{width:20px;background:#111;border-color:#111}
+.pawlira-merch-info{padding:15px 20px 20px;display:flex;flex:1;flex-direction:column;gap:12px}
+.pawlira-merch-info h3{font-size:clamp(.95rem,1.45vw,1.2rem);line-height:1.38;letter-spacing:-.02em;font-weight:600}
+.pawlira-merch-options{font-size:.78rem;color:#555}
+.pawlira-merch-info>div{margin-top:auto}
+.pawlira-merch-cta{display:flex;justify-content:space-between;align-items:center;gap:8px;border:1px solid #111;border-radius:999px;padding:12px 15px;font-size:.83rem;font-weight:600;color:#111;transition:background .22s,color .22s}
+.pawlira-merch-cta svg{flex-shrink:0;transition:transform .2s}
+.pawlira-merch-cta:hover{background:#000;color:white}
+.pawlira-merch-compact .pawlira-merch-info{padding:13px 16px 18px}
+.pawlira-merch-compact .pawlira-merch-info h3{font-size:1rem}
+.pawlira-catalog-breadcrumb{display:flex;align-items:center;flex-wrap:wrap;gap:8px;font-size:.78rem;color:#555;margin-bottom:20px}
+.pawlira-catalog-hero{border:1px solid #ddd;border-radius:16px;overflow:hidden;background:#fff;display:grid;min-height:220px}
+.pawlira-catalog-hero.has-image{grid-template-columns:1.12fr 1fr}
+.pawlira-catalog-hero-copy{padding:clamp(24px,4.7vw,65px);display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:15px;min-width:0}
+.pawlira-catalog-hero-copy h1{font-size:clamp(2.2rem,4.7vw,4.6rem);line-height:1.04;letter-spacing:-.05em}
+.pawlira-catalog-hero-copy>p:not(.pawlira-eyebrow){font-size:1rem;max-width:650px;line-height:1.65}
+.pawlira-catalog-hero-image{position:relative;min-height:300px;overflow:hidden}
+.pawlira-catalog-hero-image img{padding:20px;transition:transform .55s}
+.pawlira-category-tabs{display:flex;gap:10px;overflow:auto;padding:3px 1px 12px;scrollbar-width:thin}
+.pawlira-category-tabs a{display:inline-flex;align-items:center;gap:12px;flex-shrink:0;padding:13px 18px;border:1px solid #ddd;border-radius:999px;font-size:.87rem;line-height:1.25;font-weight:500;color:#111;transition:background .2s,color .2s,border-color .2s}
+.pawlira-category-tabs a[aria-current=page]{background:#000;color:#fff;border-color:#000}
+.pawlira-category-tabs a:hover{border-color:#111}
+.pawlira-catalog-layout{display:grid;grid-template-columns:248px minmax(0,1fr);gap:25px;align-items:start}
+.pawlira-catalog-sidebar{border:1px solid #ddd;border-radius:13px;background:white;padding:20px;position:sticky;top:135px;max-height:calc(100dvh - 155px);overflow:auto}
+.pawlira-catalog-toolbar-wrap{margin-bottom:20px}
+.pawlira-catalog-toolbar{display:flex;justify-content:space-between;align-items:center;border-block:1px solid #ddd;padding:15px 0;gap:10px}
+.pawlira-view-switch{display:flex;border:1px solid #ddd;border-radius:8px;padding:3px;gap:3px}
+.pawlira-view-switch button{width:38px;height:38px;display:grid;place-items:center;border-radius:5px;background:white;color:#111;cursor:pointer}
+.pawlira-view-switch button[aria-pressed=true]{background:#000;color:#fff}
+.pawlira-mobile-filter{display:none;align-items:center;gap:8px;border:1px solid #ddd;border-radius:8px;padding:12px 15px;font-size:.9rem;cursor:pointer}
+.pawlira-mobile-filter span{font-size:.7rem;border:1px solid #aaa;border-radius:99px;padding:2px 6px}
+.pawlira-sort-control{display:flex;align-items:center;gap:10px;position:relative;font-size:.88rem}
+.pawlira-sort-control select{appearance:none;background:white;background-image:none!important;border:1px solid #ddd;border-radius:8px;padding:12px 35px 12px 12px;color:#111;font-size:.85rem}
+.pawlira-sort-control>svg{position:absolute;right:11px;pointer-events:none}
+.pawlira-active-filters{display:flex;flex-wrap:wrap;gap:8px;padding-top:15px}
+.pawlira-active-filters button{display:flex;align-items:center;gap:8px;background:white;border:1px solid #ccc;border-radius:999px;padding:7px 13px;font-size:.77rem;cursor:pointer}
+.pawlira-active-filters button:hover{border-color:#111}
+.pawlira-active-filters .pawlira-clear-filters{border-color:transparent;text-decoration:underline}
+.pawlira-catalog-count{font-size:.85rem;color:#555;margin-bottom:12px}
+.pawlira-empty-catalog{border:1px solid #ddd;border-radius:14px;padding:50px 20px;display:flex;flex-direction:column;align-items:center;gap:17px;text-align:center}
+.pawlira-empty-catalog h2{font-size:1.65rem}
+.pawlira-filter-dialog{position:fixed;inset:0 auto 0 0;width:min(100%,440px);max-width:100%;height:100dvh;max-height:100dvh;overflow:hidden;background:#fff;color:#111;border:0;padding:0;margin:0}
+.pawlira-filter-dialog::backdrop{background:#0008}
+.pawlira-filter-dialog[open]{animation:pawlira-menu-enter .26s ease-out}
+.pawlira-filter-dialog-inner{height:100%;display:flex;flex-direction:column}
+.pawlira-filter-dialog-head{display:flex;justify-content:space-between;align-items:center;padding:20px;border-bottom:1px solid #ddd}
+.pawlira-filter-dialog-head h2{font-size:1.25rem}
+.pawlira-filter-dialog-head button{padding:8px;border:1px solid #ddd;border-radius:50%}
+.pawlira-filter-dialog-body{padding:20px;flex:1;min-height:0;overflow:auto}
+.pawlira-filter-dialog-bottom{padding:20px;border-top:1px solid #ddd}
+@media(hover:hover) and (pointer:fine){.pawlira-merch-card:hover{border-color:#999;box-shadow:0 10px 26px #00000009}.pawlira-merch-card:hover .pawlira-merch-main{transform:scale(1.035)}.pawlira-merch-photos:hover .pawlira-merch-alt{opacity:1;transform:scale(1.025)}.pawlira-merch-cta:hover svg{transform:translate(2px,-2px)}.pawlira-catalog-hero-image:hover img{transform:scale(1.03)}}
+@media(min-width:1280px){.pawlira-catalog-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:1023px){.pawlira-catalog-layout{grid-template-columns:minmax(0,1fr)}.pawlira-catalog-sidebar{display:none}.pawlira-mobile-filter{display:flex}}
+@media(max-width:767px){.pawlira-featured-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.pawlira-merch-grid{gap:10px}.pawlira-merch-info{padding:12px;gap:9px}.pawlira-merch-photos{margin:7px 7px 0;aspect-ratio:1}.pawlira-merch-cta{padding:10px;font-size:.75rem}.pawlira-merch-slide-controls{left:9px;right:9px}.pawlira-merch-slide-controls button{width:28px;height:28px}.pawlira-catalog-hero.has-image{grid-template-columns:1fr}.pawlira-catalog-hero-image{min-height:0;aspect-ratio:1.7}.pawlira-sort-control select{max-width:155px}}
+@media(prefers-reduced-motion:reduce){.pawlira-merch-card,.pawlira-merch-main,.pawlira-merch-alt,.pawlira-merch-dots button,.pawlira-merch-cta,.pawlira-merch-cta svg,.pawlira-catalog-hero-image img{transition:none;transform:none!important}.pawlira-filter-dialog[open]{animation:none}}

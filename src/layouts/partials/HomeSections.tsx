@@ -5,6 +5,7 @@ import {getCollections,getCollectionProducts,getProducts} from "@/lib/shopify";
 import type {Collection,Product} from "@/lib/shopify/types";
 import FeaturedProducts from "@/partials/FeaturedProducts";
 import CatalogPrice from "@/components/product/CatalogPrice";
+import MerchandiseCard from "@/components/product/MerchandiseCard";
 import FaqSection from "@/partials/FaqSection";
 import {Suspense} from "react";
 import config from "@/config/config.json";
@@ -39,8 +40,7 @@ function ProductSpotlight({product}:{product:Product}){
 }
 function ProductRail({group}:{group:Group}){
  return <section className="container pawlira-home-section"><Heading eyebrow="Utforska sortimentet" title={group.category.title} description={group.category.description?short(group.category.description,160):undefined} href={collectionPath(group.category)} label="Se hela kategorin"/>
-  <div className="pawlira-product-rail" aria-label={group.category.title}>{group.products.slice(0,4).map(product=><Link key={product.id} href={path(product)} className="pawlira-rail-card">
-    <div className="pawlira-rail-photo"><Photo image={picture(product)} alt={product.title}/></div><div className="pawlira-rail-body"><h3>{product.title}</h3><CatalogPrice product={product}/><span className="pawlira-text-link">Visa produkt<FiArrowUpRight size={18}/></span></div></Link>)}</div>
+  <div className="pawlira-product-rail" aria-label={group.category.title}>{group.products.slice(0,4).map(product=><MerchandiseCard key={product.id} product={product} compact/>)}</div>
  </section>;
 }
 function ProductComparison({group}:{group:Group}){
