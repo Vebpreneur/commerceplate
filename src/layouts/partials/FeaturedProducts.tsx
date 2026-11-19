@@ -25,7 +25,7 @@ const FeaturedProducts = ({ products }: { products: Product[] }) => {
           return (
             <div
               key={id}
-              className="text-center col-6 md:col-4 lg:col-3 mb-8 md:mb-14 group relative"
+              className="text-center col-6 lg:col-4 mb-8 md:mb-14 group relative"
             >
               <div className="relative overflow-hidden">
                 <ImageFallback
@@ -33,7 +33,7 @@ const FeaturedProducts = ({ products }: { products: Product[] }) => {
                   width={312}
                   height={269}
                   alt={featuredImage?.altText || "fallback image"}
-                  className="w-[312px] h-[150px] md:h-[269px] object-contain bg-light border border-border rounded-md"
+                  className="w-full aspect-square object-contain bg-white border border-border rounded-md"
                 />
 
                 <AddToCart
