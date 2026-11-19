@@ -188,7 +188,7 @@ const CustomZoomImage = ({
       {/* Touch zoom instructions - only shown briefly on first touch */}
       {isTouchDevice && isZoomed && (
         <div className="absolute bottom-2 left-0 right-0 text-center bg-black opacity-50 text-white py-1 text-sm z-20">
-          Pan to move, tap to exit zoom
+          Dra för att flytta, tryck för att avsluta
         </div>
       )}
     </div>
@@ -219,6 +219,7 @@ const ProductGalleryInner = ({
   images,
   activeIndex,
   uniqueAltTexts,
+  colorParam,
 }: ProductGalleryInnerProps): JSX.Element => {
   const [thumbsSwiper, setThumbsSwiper] = useState<TSwiper | null>(null);
   const [mainSwiper, setMainSwiper] = useState<TSwiper | null>(null);
@@ -229,9 +230,8 @@ const ProductGalleryInner = ({
       : false,
   );
 
-  const filteredImages: ImageItem[] = images.filter(
-    (item: ImageItem) => item.altText === uniqueAltTexts[activeIndex],
-  );
+  const matchingImages = images.filter((item) => item.altText === uniqueAltTexts[activeIndex]);
+  const filteredImages: ImageItem[] = colorParam && uniqueAltTexts.includes(colorParam) ? matchingImages : images;
 
   const [picUrl, setPicUrl] = useState<string>(filteredImages[0]?.url || "");
 
@@ -283,7 +283,7 @@ const ProductGalleryInner = ({
         >
           {filteredImages.map((item: ImageItem) => (
             <SwiperSlide key={item.url}>
-              <div className="mb-6 border border-border dark:border-border/40 rounded-md max-h-[623px] overflow-hidden">
+              <div className="mb-4 bg-[#f5f5f5] rounded-xl aspect-square overflow-hidden">
                 <CustomZoomImage
                   src={item.url}
                   alt={item.altText}
@@ -338,7 +338,7 @@ const ProductGalleryInner = ({
                 alt={item.altText}
                 width={168}
                 height={146}
-                className="max-h-[146px]"
+                className="aspect-square w-full object-contain"
                 draggable={false}
               />
             </div>
