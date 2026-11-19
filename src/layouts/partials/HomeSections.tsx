@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import {FiArrowUpRight,FiArrowRight,FiPackage,FiRefreshCcw,FiMessageCircle,FiSliders,FiGrid,FiCheckCircle,FiHeart} from "react-icons/fi";
 import {getCollections,getCollectionProducts,getProducts} from "@/lib/shopify";
-import type {Collection,Product,Image as ShopImage} from "@/lib/shopify/types";
+import type {Collection,Product} from "@/lib/shopify/types";
 import FeaturedProducts from "@/partials/FeaturedProducts";
 import CatalogPrice from "@/components/product/CatalogPrice";
 import Accordion from "@/shortcodes/Accordion";
@@ -44,7 +44,7 @@ function ProductRail({group}:{group:Group}){
 }
 function ProductComparison({group}:{group:Group}){
  const products=group.products.slice(0,3);
- const options=(p:Product)=>p.options.filter(o=>o.values.length>1).map(o=>o.values.join(", ")).join(" · ")||"En variant";
+ const options=(p:Product)=>p.options.filter(o=>o.values.length>1).map(o=>o.name+": "+o.values.join(", ")).join(" · ")||"Inga valbara alternativ";
  return <section className="container pawlira-home-section"><Heading eyebrow="Hitta din favorit" title="Vilken modell passar dig?" description={"Jämför modeller i "+group.category.title.toLowerCase()+" och läs mer om respektive produkt."} href={collectionPath(group.category)} label="Visa kategorin"/>
  <div className="pawlira-compare-scroll"><div className="pawlira-compare-grid" style={{gridTemplateColumns:"repeat("+products.length+", minmax(0, 1fr))"}}>{products.map(p=><article key={p.id} className="pawlira-compare-card"><Link href={path(p)} className="pawlira-compare-photo"><Photo image={picture(p)} alt={p.title}/></Link><div className="pawlira-compare-body"><h3>{p.title}</h3><CatalogPrice product={p}/><dl><dt>Alternativ</dt><dd>{options(p)}</dd><dt>Produktinformation</dt><dd>{p.description?short(p.description,105):"Läs mer på produktsidan."}</dd></dl><Link href={path(p)} className="btn btn-outline-primary rounded-full w-full">Se modellen</Link></div></article>)}</div></div>
  </section>;
@@ -53,9 +53,10 @@ function DailyLife({groups}:{groups:Group[]}){
  const picks=groups.filter(g=>g.products.length||g.category.image?.url).slice(0,3);
  if(!picks.length)return null;
  return <section className="container pawlira-home-section"><Heading eyebrow="Vardagen med katt" title="Små rutiner. Stor betydelse." description="Utgå från din katts behov och hitta produkter för de dagliga rutinerna."/>
- <div className="pawlira-editorial-grid">{picks.map((g,i)=>{
- const photo=g.category.image?.url?g.category.image:g.products.map(picture).find(Boolean);
- return <Link key={g.category.handle} href={collectionPath(g.category)} className="pawlira-editorial-tile"><div className="pawlira-editorial-tile-photo"><Photo image={photo} alt={g.category.title} cover={!!g.category.image?.url}/></div><div className="pawlira-editorial-tile-caption"><p className="pawlira-eyebrow">Vardagsrutin 0{i+1}</p><h3>{g.category.title}</h3><p>{g.category.description?short(g.category.description,135):"Hitta produkter för din katts vardag."}</p><span className="pawlira-text-link">Utforska<FiArrowUpRight size={20}/></span></div></Link>;
+ <div className="pawlira-editorial-grid">{picks.map(g=>{
+ const detailPhoto=g.products.flatMap(p=>p.images.filter(i=>i.url&&i.url!==p.featuredImage?.url))[0];
+ const photo=detailPhoto||g.category.image||g.products.map(picture).find(Boolean);
+ return <Link key={g.category.handle} href={collectionPath(g.category)} className="pawlira-editorial-tile"><div className="pawlira-editorial-tile-photo"><Photo image={photo} alt={g.category.title} cover={!detailPhoto&&!!g.category.image?.url}/></div><div className="pawlira-editorial-tile-caption"><p className="pawlira-eyebrow">Vardagen med katt</p><h3>{g.category.title}</h3><p>{g.category.description?short(g.category.description,135):"Hitta produkter för din katts vardag."}</p><span className="pawlira-text-link">Utforska<FiArrowUpRight size={20}/></span></div></Link>;
  })}</div></section>;
 }
 

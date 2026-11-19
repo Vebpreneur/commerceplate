@@ -1,0 +1,28 @@
+import Image from "next/image";
+import Link from "next/link";
+import type {Product} from "@/lib/shopify/types";
+import Accordion from "@/shortcodes/Accordion";
+import {FiArrowUpRight,FiPackage,FiRefreshCcw,FiMessageCircle} from "react-icons/fi";
+type Field={title:string;value:string};
+export default function ProductStory({product,fields}:{product:Product;fields:Field[]}){
+ const images=Array.from(new Map(product.images.filter(i=>i.url).map(i=>[i.url,i])).values());
+ const [description,...more]=product.descriptionHtml.split("--- split content ---");
+ const main=images[1]||images[0]||product.featuredImage;
+ const gallery=images.filter(i=>i.url!==main?.url&&i.url!==images[0]?.url).slice(0,6);
+ const specifications=fields.filter(f=>f.title!=="Vanliga frågor"&&f.value.trim());
+ const faqs=fields.filter(f=>f.title==="Vanliga frågor"&&f.value.trim());
+ return <>
+ <section id="produktinformation" className="container pawlira-home-section scroll-mt-32">
+  <div className="pawlira-section-heading"><div><p className="pawlira-eyebrow">Produktöversikt</p><h2>Lär känna produkten.</h2><p className="pawlira-section-description">{product.title}</p></div><a href="#kop" className="pawlira-text-link">Till produktvalet<FiArrowUpRight size={20}/></a></div>
+  <div className={main?.url?"pawlira-story-split":"max-w-3xl mx-auto"}>
+   {main?.url&&<div className="pawlira-story-image"><Image src={main.url} alt={main.altText||product.title} fill sizes="(max-width: 767px) 90vw, 50vw" className="object-contain"/></div>}
+   <div className="pawlira-story-text"><h3 className="text-2xl lg:text-4xl tracking-tight mb-6">Mer om {product.title}</h3>{description?.trim()?<div className="content max-w-none" dangerouslySetInnerHTML={{__html:description}}/>:<p>{product.description||"Välj bland tillgängliga alternativ ovan."}</p>}</div>
+  </div>
+ </section>
+ {gallery.length>0&&<section className="container pawlira-home-section"><div className="pawlira-section-heading"><div><p className="pawlira-eyebrow">Närmare detaljer</p><h2>Se produkten från fler håll.</h2></div></div><div className="pawlira-story-gallery">{gallery.map((img,i)=><div className={"pawlira-story-gallery-image "+(i===0&&gallery.length%2===1?"pawlira-story-gallery-wide":"")} key={img.url}><Image src={img.url} alt={img.altText||product.title} fill sizes="(max-width: 767px) 90vw, 50vw" className="object-contain"/></div>)}</div></section>}
+ {more.some(p=>p.trim())&&<section className="container pawlira-home-section"><p className="pawlira-eyebrow">Mer information</p><h2 className="pawlira-large-heading mb-8">Produktens detaljer.</h2><div className="max-w-4xl content">{more.filter(p=>p.trim()).map((p,i)=><div key={i} dangerouslySetInnerHTML={{__html:p}}/>)}</div></section>}
+ {specifications.length>0&&<section id="specifikationer" className="border-y border-border py-14 lg:py-24 scroll-mt-32"><div className="container grid lg:grid-cols-[1fr_1.5fr] gap-8 lg:gap-20"><div><p className="pawlira-eyebrow">Tekniska detaljer</p><h2 className="pawlira-large-heading">Allt i detalj.</h2><p className="mt-5 max-w-sm">Tillgänglig produktinformation, specifikationer och innehåll.</p></div><div className="pawlira-spec-list">{specifications.map((f,i)=><article className="pawlira-spec-row" key={f.title+i}><h3>{f.title}</h3><div className="whitespace-pre-wrap leading-relaxed">{f.value}</div></article>)}</div></div></section>}
+ <section className="pawlira-home-black"><div className="container"><p className="pawlira-eyebrow">Inför ditt köp</p><h2 className="pawlira-large-heading mb-8">Handla med trygghet.</h2><div className="grid sm:grid-cols-3 gap-4">{[{Icon:FiPackage,title:"Leverans",text:"Läs leveransvillkoren.",url:"/shipping-policy"},{Icon:FiRefreshCcw,title:"Retur och ångerrätt",text:"Läs om dina rättigheter.",url:"/refund-policy"},{Icon:FiMessageCircle,title:"Kundservice",text:"Hitta information om ditt köp.",url:"/contact"}].map(({Icon,title,text,url})=><Link key={title} href={url} className="pawlira-dark-link border border-neutral-700 rounded-xl p-7 flex flex-col gap-4"><Icon size={30}/><h3 className="text-xl">{title}</h3><p>{text}</p><span className="pawlira-white-link mt-auto">Läs mer<FiArrowUpRight/></span></Link>)}</div></div></section>
+ <section id="kundinformation" className="container pawlira-home-section scroll-mt-32"><div className="grid lg:grid-cols-2 gap-10 lg:gap-20"><div><p className="pawlira-eyebrow">Frågor & svar</p><h2 className="pawlira-large-heading">Bra att veta.</h2><p className="mt-5 max-w-sm">Har du frågor inför ditt köp? Här hittar du information för att komma vidare.</p></div><div className="border-t border-border">{faqs.map((f,i)=><Accordion key={i} title="Produktrelaterade frågor"><p className="whitespace-pre-wrap">{f.value}</p></Accordion>)}<Accordion title="Var hittar jag produktens specifikationer?"><p>Produktinformationen ovan innehåller de specifikationer som finns tillgängliga för modellen.</p></Accordion><Accordion title="Hur fungerar leveransen?"><Link href="/shipping-policy" className="underline">Läs våra leveransvillkor.</Link></Accordion><Accordion title="Hur fungerar returer?"><Link href="/refund-policy" className="underline">Läs om retur och ångerrätt.</Link></Accordion><Accordion title="Behöver du hjälp att välja?"><Link href="/contact" className="underline">Besök kundservice.</Link></Accordion></div></div></section>
+ </>;
+}
