@@ -127,11 +127,11 @@
 
 /* accordion */
 .accordion {
-  @apply overflow-hidden border-b-2 border-border bg-light dark:border-darkmode-border dark:bg-darkmode-light;
+  @apply overflow-hidden border-b border-border bg-white dark:border-darkmode-border dark:bg-darkmode-light;
 }
 
 .accordion-header {
-  @apply flex w-full cursor-pointer items-center justify-between px-0 py-3 text-lg text-text-light dark:bg-darkmode-light dark:text-darkmode-text-light text-start;
+  @apply flex w-full cursor-pointer items-center justify-between px-0 py-5 text-lg text-text-dark dark:bg-darkmode-light dark:text-darkmode-text-light text-start;
 }
 
 .accordion-icon {
@@ -151,7 +151,7 @@
 }
 
 .accordion.active .accordion-content {
-  @apply max-h-screen pb-3;
+  @apply max-h-none pb-5;
 }
 
 .accordion:last-child {
