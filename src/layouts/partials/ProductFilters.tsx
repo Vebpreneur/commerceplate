@@ -58,7 +58,7 @@ const ProductFilters = ({
   return (
     <div>
       <div>
-        <h5 className="mb-2 lg:text-xl">Select Price Range</h5>
+        <h5 className="mb-2 lg:text-xl">Prisintervall</h5>
         <hr className="border-border dark:border-darkmode-border" />
         <div className="pt-4">
           <Suspense>
@@ -68,10 +68,10 @@ const ProductFilters = ({
       </div>
 
       <div>
-        <h5 className="mb-2 mt-4 lg:mt-6 lg:text-xl">Product Categories</h5>
+        <h5 className="mb-2 mt-4 lg:mt-6 lg:text-xl">Kategorier</h5>
         <hr className="border-border dark:border-darkmode-border" />
         <ul className="mt-4 space-y-4">
-          {categories.map((category) => (
+          {categories.filter(category=>!["frontpage","home-page","homepage"].includes(category.handle) && category.title.toLowerCase()!=="home page" && !category.handle.startsWith("hidden-")).map((category) => (
             <li
               key={category.handle}
               className={`flex items-center justify-between cursor-pointer ${selectedCategory === category.handle
@@ -100,7 +100,7 @@ const ProductFilters = ({
 
       {vendors && (
         <div>
-          <h5 className="mb-2 mt-8 lg:mt-10 lg:text-xl">Brands</h5>
+          <h5 className="mb-2 mt-8 lg:mt-10 lg:text-xl">Varumärken</h5>
           <hr className="border-border dark:border-darkmode-border" />
           <ul className="mt-4 space-y-4">
             {vendors.map((vendor) => (
@@ -145,7 +145,7 @@ const ProductFilters = ({
 
       {tags.length > 0 && (
         <div>
-          <h5 className="mb-2 mt-8 lg:mt-10 lg:text-xl">Tags</h5>
+          <h5 className="mb-2 mt-8 lg:mt-10 lg:text-xl">Egenskaper</h5>
           <hr className="border-border dark:border-darkmode-border" />
           <div className="mt-4">
             <Suspense>

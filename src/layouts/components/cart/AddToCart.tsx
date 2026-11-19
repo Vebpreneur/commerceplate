@@ -92,7 +92,7 @@ export function AddToCart({
   // Find the variant based on selected options
   const optionNames = new Set(variants.flatMap(v => v.selectedOptions.map(o => o.name.toLowerCase())));
   const selectedOptions = Array.from(searchParams.entries()).filter(([key]) => optionNames.has(key));
-  const variant = variants.find((variant: ProductVariant) =>
+  const matches = variants.filter((variant: ProductVariant) =>
     selectedOptions.every(([key, value]) =>
       variant.selectedOptions.some(
         (option) => option.name.toLowerCase() === key && option.value === value,
@@ -100,10 +100,11 @@ export function AddToCart({
     ),
   );
 
+  const variant = matches.find(v => v.availableForSale) || matches[0];
   // Use the default variant ID if no variant is found
   const selectedVariantId = variant?.id || (selectedOptions.length === 0 ? defaultVariantId : undefined);
 
-  const actionWithVariant = () => formAction(selectedVariantId);
+  const actionWithVariant = formAction.bind(null, selectedVariantId);
 
   return (
     <form action={actionWithVariant} className={handle === null ? "w-full" : undefined}>

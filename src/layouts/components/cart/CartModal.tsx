@@ -44,21 +44,21 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
 
   return (
     <>
-      <div className="cursor-pointer" aria-label="Open cart" onClick={openCart}>
+      <button type="button" className="cursor-pointer" aria-label="Öppna varukorg" onClick={openCart}>
         <OpenCart quantity={cart?.totalQuantity} />
-      </div>
+      </button>
 
       {isOpen && (
         <div className="fixed inset-0 z-50 bg-black opacity-50" onClick={closeCart}></div>
       )}
 
       <div
-        className={`fixed inset-y-0 right-0 z-50 w-full md:w-[390px] transform transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "translate-x-full"}`}
+        className={`fixed inset-y-0 right-0 z-50 w-full md:w-[460px] transform transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "translate-x-full"}`}
       >
-        <div className="h-fit flex flex-col border-l border-b drop-shadow-lg rounded-bl-md border-neutral-200 bg-body p-6 text-black dark:border-neutral-700 dark:bg-darkmode-body dark:text-white">
+        <div className="h-full flex flex-col border-l drop-shadow-lg border-neutral-200 bg-body p-6 text-black dark:border-neutral-700 dark:bg-darkmode-body dark:text-white">
           <div className="flex items-center justify-between">
-            <p className="text-lg font-semibold">Your Cart</p>
-            <button aria-label="Close cart" onClick={closeCart}>
+            <p className="text-lg font-semibold">Din varukorg</p>
+            <button aria-label="Stäng varukorg" onClick={closeCart}>
               <CloseCart />
             </button>
           </div>
@@ -70,13 +70,13 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
               <div className="md:mt-16">
                 <FaShoppingCart size={76} />
               </div>
-              <p>Oops. Your Bag Is Empty.</p>
+              <p>Din varukorg är tom.</p>
               <Link
                 onClick={closeCart}
                 href={"/products"}
                 className="btn btn-primary w-full"
               >
-                Don&apos;t Miss Out: Add Product
+                Utforska sortimentet
               </Link>
             </div>
           ) : (
@@ -113,10 +113,10 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                           onClick={closeCart}
                           className="z-30 flex flex-row space-x-4"
                         >
-                          <div className="relative h-16 w-16 overflow-hidden rounded-md border border-neutral-300 bg-neutral-300">
-                            <Image className="h-full w-full object-cover"
+                          <div className="relative h-16 w-16 overflow-hidden rounded-md border border-neutral-300 bg-white">
+                            <Image className="h-full w-full object-contain"
                               // @ts-ignore
-                              src={item.merchandise.product.images.edges.find((edge: any) => edge.node.altText === item.merchandise.selectedOptions.find((option: any) => option.name === "Color")?.value)?.node.url || item.merchandise.product.featuredImage?.url || "/images/product_image404.jpg"} alt={item.merchandise.title} width={64} height={64} />
+                              src={item.merchandise.product.images?.edges?.find((edge: any) => edge.node.altText === item.merchandise.selectedOptions.find((option: any) => option.name === "Color")?.value)?.node.url || item.merchandise.product.featuredImage?.url || "/images/product_image404.jpg"} alt={item.merchandise.title} width={64} height={64} />
                           </div>
 
                           <div className="flex flex-1 flex-col text-base">
@@ -160,20 +160,20 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                 })}
               </ul>
               <div className="py-4 text-sm text-neutral-500 dark:text-neutral-400">
-                <div className="mb-3 flex items-center justify-between border-b border-neutral-200 pb-1 dark:border-neutral-700">
-                  <p>Taxes</p>
+                {cart.cost.totalTaxAmount && <div className="mb-3 flex items-center justify-between border-b border-neutral-200 pb-1 dark:border-neutral-700">
+                  <p>Moms</p>
                   <Price
                     className="text-right text-base text-black dark:text-white"
                     amount={cart.cost.totalTaxAmount.amount}
                     currencyCode={cart.cost.totalTaxAmount.currencyCode}
                   />
+                </div>}
+                <div className="mb-3 flex items-center justify-between border-b border-neutral-200 pb-1 pt-1 dark:border-neutral-700">
+                  <p>Frakt</p>
+                  <p className="text-right">Beräknas i kassan</p>
                 </div>
                 <div className="mb-3 flex items-center justify-between border-b border-neutral-200 pb-1 pt-1 dark:border-neutral-700">
-                  <p>Shipping</p>
-                  <p className="text-right">Calculated at checkout</p>
-                </div>
-                <div className="mb-3 flex items-center justify-between border-b border-neutral-200 pb-1 pt-1 dark:border-neutral-700">
-                  <p>Total</p>
+                  <p>Totalt</p>
                   <Price
                     className="text-right text-base text-black dark:text-white"
                     amount={cart.cost.totalAmount.amount}
@@ -183,9 +183,9 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
               </div>
               <a
                 href={cart.checkoutUrl}
-                className="block w-full rounded-md bg-dark dark:bg-light p-3 text-center text-sm font-medium text-white dark:text-text-dark opacity-100 hover:opacity-90"
+                className="block w-full rounded-full bg-dark dark:bg-light p-4 text-center text-sm font-medium text-white dark:text-text-dark opacity-100 hover:opacity-90"
               >
-                Proceed to Checkout
+                Till kassan
               </a>
             </div>
           )}

@@ -20,10 +20,10 @@ const Footer = () => {
   return (
     <footer className="bg-black text-white [&_.navbar-brand]:!text-white [&_.footer-link]:!text-neutral-300 [&_.footer-link:hover]:!text-white">
       <div className="container">
-        <div className="flex flex-col md:flex-row justify-between items-center py-10 md:pt-20 md:pb-14">
-          <Logo />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 py-14 lg:py-20 items-start">
+          <div><Logo /><p className="mt-5 text-neutral-300 max-w-xs text-sm leading-relaxed">Smart teknik. Genomtänkt design. Ett enklare liv tillsammans.</p></div>
 
-          <ul className="flex gap-x-4 lg:gap-x-10 my-3">
+          <div><h3 className="!text-white text-base mb-5">Pawlira</h3><ul className="space-y-3">
             {menu.footer.map((menu) => (
               <li className="footer-link" key={menu.name}>
                 <Link href={menu.url}>{menu.name}</Link>
@@ -31,6 +31,8 @@ const Footer = () => {
             ))}
           </ul>
 
+          </div><div><h3 className="!text-white text-base mb-5">Kundinformation</h3><ul className="space-y-3">{menu.footerCopyright.map(item=><li key={item.url} className="footer-link"><Link href={item.url}>{item.name}</Link></li>)}</ul></div>
+          <div><h3 className="!text-white text-base mb-5">Upptäck</h3><Link href="/products" className="text-neutral-300 text-sm underline">Utforska sortimentet</Link>
           {/* social share */}
           <ul className="social-icons social-icons-footer">
             {social?.main.map((social: ISocial) => (
@@ -46,7 +48,7 @@ const Footer = () => {
                 </a>
               </li>
             ))}
-          </ul>
+          </ul></div>
         </div>
 
         <div className="border-t border-neutral-800 py-5">
