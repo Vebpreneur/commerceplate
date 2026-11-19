@@ -7,6 +7,7 @@ import { getProduct, getProductRecommendations } from "@/lib/shopify";
 import LatestProducts from "@/partials/FeaturedProducts";
 import Link from "next/link";
 import ProductStory from "@/components/product/ProductStory";
+import {FiPackage,FiRefreshCcw,FiHelpCircle,FiArrowUpRight} from "react-icons/fi";
 import { notFound } from "next/navigation";
 import { Suspense, cache } from "react";
 import config from "@/config/config.json";
@@ -86,7 +87,7 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
             </div>
 
             {/* left side contents  */}
-            <div className="col-12 lg:col-5 py-6 lg:py-0 lg:pl-10">
+            <div className="col-12 lg:col-5 py-6 lg:py-0 lg:pl-10"><div className="pawlira-purchase-panel">
               <p className="pawlira-eyebrow">Pawlira · Produktöversikt</p><h1 className="text-3xl lg:text-5xl tracking-tight leading-tight mb-5">{title}</h1>
 
               <div className="my-6"><Suspense><VariantSelector options={options} variants={variants} images={images} /></Suspense></div>
@@ -104,13 +105,13 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
               </div>
 
               {description && <p className="text-sm leading-relaxed text-text-light mb-6">{description.slice(0, 240)}{description.length > 240 ? "…" : ""}</p>}
-              <div className="pawlira-purchase-links"><Link href="/shipping-policy">Leverans</Link><Link href="/refund-policy">Retur och ångerrätt</Link><Link href="/contact">Kundservice</Link></div><Tabs descriptionHtml={descriptionHtml} fields={fields} />
+              <div className="pawlira-purchase-facts">{[{Icon:FiPackage,title:"Leverans",href:"/shipping-policy"},{Icon:FiRefreshCcw,title:"Retur",href:"/refund-policy"},{Icon:FiHelpCircle,title:"Kundservice",href:"/contact"}].map(({Icon,title,href})=><Link href={href} key={href}><Icon size={20}/><span>{title}</span><FiArrowUpRight size={14}/></Link>)}</div><Tabs descriptionHtml={descriptionHtml} fields={fields} /></div>
             </div>
           </div>
         </div>
       </section>
 
-      <nav aria-label="Produktnavigation" className="pawlira-detail-nav bg-black text-white py-3"><div className="container flex overflow-x-auto gap-6 md:justify-center md:gap-10 text-sm"><a href="#kop" className="!text-white">Köp</a><a href="#produktinformation" className="!text-white">Produktöversikt</a>{fields.some(f=>f.title!=="Vanliga frågor"&&f.value.trim()) && <a href="#specifikationer" className="!text-white">Produktdetaljer</a>}<a href="#kundinformation" className="!text-white">Kundinformation</a></div></nav>
+      <nav aria-label="Produktnavigation" className="pawlira-detail-nav pawlira-product-section-nav bg-black text-white py-3"><div className="container flex overflow-x-auto gap-6 md:justify-center md:gap-10 text-sm"><a href="#kop" className="!text-white">Köp</a><a href="#produktinformation" className="!text-white">Produktöversikt</a>{fields.some(f=>f.title!=="Vanliga frågor"&&f.value.trim()) && <a href="#specifikationer" className="!text-white">Produktdetaljer</a>}<a href="#kundinformation" className="!text-white">Kundinformation</a></div></nav>
       <ProductStory product={product} fields={fields}/>
       {/* Recommended Products section  */}
       {relatedProducts?.length > 0 && <section className="container pawlira-home-section">

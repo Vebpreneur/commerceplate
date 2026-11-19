@@ -7,6 +7,7 @@ import { useSearchParams } from "next/navigation";
 import React, { useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { BiLoaderAlt } from "react-icons/bi";
+import {FiMinus,FiPlus,FiShoppingBag} from "react-icons/fi";
 
 function SubmitButton({
   availableForSale,
@@ -57,7 +58,7 @@ function SubmitButton({
           size={26}
         />
       ) : (
-        "Lägg i varukorg"
+        <span className="inline-flex items-center justify-center gap-3"><FiShoppingBag size={21}/> Lägg i varukorg</span>
       )}
     </button>
   );
@@ -99,7 +100,7 @@ export function AddToCart({
   return (
     <form action={formAction} className={handle === null ? "w-full" : undefined}>
       <input type="hidden" name="variantId" value={selectedVariantId || ""} />
-      {handle===null&&<div className="flex items-center justify-between gap-3 mb-4"><label htmlFor="product-quantity" className="font-medium text-sm">Antal</label><select id="product-quantity" name="quantity" value={quantity} onChange={e=>setQuantity(Number(e.target.value))} className="rounded-lg border border-border bg-white text-black py-2 pl-3 pr-10">{Array.from({length:10},(_,i)=><option key={i+1} value={i+1}>{i+1}</option>)}</select></div>}
+      {handle===null&&<div className="pawlira-quantity-row"><span className="font-medium text-sm">Antal</span><div className="pawlira-quantity-stepper"><button type="button" aria-label="Minska antal" disabled={quantity<=1} onClick={()=>setQuantity(q=>Math.max(1,q-1))}><FiMinus size={18}/></button><output aria-live="polite" aria-label="Antal">{quantity}</output><button type="button" aria-label="Öka antal" disabled={quantity>=10} onClick={()=>setQuantity(q=>Math.min(10,q+1))}><FiPlus size={18}/></button></div><input type="hidden" name="quantity" value={quantity}/></div>}
       <SubmitButton
         availableForSale={availableForSale && (variant?.availableForSale ?? true)}
         selectedVariantId={selectedVariantId}

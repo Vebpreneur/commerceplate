@@ -1,90 +1,14 @@
 "use client";
-import CatalogPrice from "@/components/product/CatalogPrice";
-import ImageFallback from "@/helpers/ImageFallback";
-import type {Product} from "@/lib/shopify/types";
+import Image from "next/image";
 import Link from "next/link";
-import {useCatalogProducts, type CatalogData} from "@/hooks/useCatalogProducts";
-const ProductListView=({searchParams,initialData}:{searchParams:Record<string,string|string[]|undefined>;initialData:CatalogData})=>{
+import CatalogPrice from "@/components/product/CatalogPrice";
+import {FiArrowUpRight,FiImage,FiSearch} from "react-icons/fi";
+import {useCatalogProducts,type CatalogData} from "@/hooks/useCatalogProducts";
+export default function ProductListView({searchParams,initialData}:{searchParams:Record<string,string|string[]|undefined>;initialData:CatalogData}){
  const {products,endCursor,hasNextPage,isLoadingMore,error,fetchDataWithNewCursor}=useCatalogProducts(searchParams,initialData);
- const searchValue=Array.isArray(searchParams.q)?searchParams.q[0]:searchParams.q;
-  const resultsText = "resultat";
-
-  return (
-    <section>
-      <div className="row">
-        {searchValue ? (
-          <p className="mb-4">
-            {products.length === 0 && !hasNextPage
-              ? "Inga produkter matchar "
-              : `Visar ${products.length} ${resultsText} för `}
-            <span className="font-bold">&quot;{searchValue}&quot;</span>
-          </p>
-        ) : null}
-
-        {products.length === 0 && !hasNextPage && (
-          <div className="mx-auto pt-5 text-center">
-            <ImageFallback
-              className="mx-auto mb-6"
-              src="/images/no-search-found.png"
-              alt="no-search-found"
-              width={211}
-              height={184}
-            />
-            <h2 className="h3 mb-4">Inga produkter hittades</h2>
-            <p>
-              Prova en annan sökning eller ändra filtren.
-            </p>
-          </div>
-        )}
-
-        <div className="row space-y-10">
-          {products?.map((product: Product) => {
-            const {
-              id,
-              title,
-              handle,
-              featuredImage,
-              description,
-            } = product;
-
-
-            return (
-              <div className="col-12" key={id}>
-                <div className="row border-b border-border pb-6">
-                  <div className="col-4">
-                    <ImageFallback
-                      src={featuredImage?.url || "/images/product_image404.jpg"}
-                      // fallback={'/images/category-1.png'}
-                      width={312}
-                      height={269}
-                      alt={featuredImage?.altText || title}
-                      className="w-full aspect-square object-contain bg-white rounded-lg"
-                    />
-                  </div>
-
-                  <div className="col-8 py-3 max-md:pt-4">
-                    <h2 className="font-bold md:font-normal h4">
-                      <Link href={`/products/${handle}`}>{title}</Link>
-                    </h2>
-
-                    <CatalogPrice product={product} />
-
-                    <p className="max-md:text-xs text-text-light dark:text-darkmode-text-light my-4 md:mb-8 line-clamp-1 md:line-clamp-3">
-                      {description}
-                    </p>
-                    <Link href={`/products/${handle}`} className="btn btn-outline-primary rounded-full">Visa produkt</Link>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {error&&<p role="alert" className="text-sm text-center mt-4">Det gick inte att läsa in fler produkter. Försök igen.</p>}
-      {hasNextPage && <div className="flex justify-center py-8"><button type="button" className="btn btn-outline-primary rounded-full" disabled={isLoadingMore} onClick={()=>fetchDataWithNewCursor(endCursor)}>{isLoadingMore?"Laddar…":"Visa fler produkter"}</button></div>}
-      </div>
-    </section>
-  );
-};
-
-export default ProductListView;
+ const query=Array.isArray(searchParams.q)?searchParams.q[0]:searchParams.q;
+ return <div><p className="pawlira-catalog-count">Visar {products.length} {products.length===1?"produkt":"produkter"}{query?" · "+query:""}</p>
+ {!products.length&&!hasNextPage?<div className="pawlira-empty-catalog"><FiSearch size={38}/><h2>Inga produkter hittades</h2><p>Prova en annan sökning eller ändra dina filter.</p><Link href="/products" className="btn btn-outline-primary rounded-full">Visa alla produkter</Link></div>:<div className="pawlira-list-grid">{products.map(product=>{const href="/products/"+encodeURIComponent(product.handle);const image=product.featuredImage||product.images[0];return <article className="pawlira-list-card" key={product.id}><Link href={href} aria-label={product.title} className="pawlira-list-photo">{image?.url?<Image src={image.url} alt={image.altText||product.title} fill sizes="(max-width: 640px) 40vw, 250px" className="object-contain"/>:<FiImage size={32}/>}</Link><div className="pawlira-list-copy"><h3><Link href={href}>{product.title}</Link></h3>{product.description&&<p className="line-clamp-3">{product.description}</p>}<CatalogPrice product={product}/><Link href={href} className="pawlira-merch-cta">Visa produkt<FiArrowUpRight size={19}/></Link></div></article>})}</div>}
+ {error&&<p role="alert" className="text-sm text-center mt-4">Det gick inte att läsa in fler produkter. Försök igen.</p>}
+ {hasNextPage&&<div className="flex justify-center py-9"><button type="button" className="btn btn-outline-primary rounded-full" disabled={isLoadingMore} onClick={()=>fetchDataWithNewCursor(endCursor)}>{isLoadingMore?"Laddar…":"Visa fler produkter"}</button></div>}</div>;
+}

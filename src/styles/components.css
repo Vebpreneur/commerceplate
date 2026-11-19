@@ -468,3 +468,27 @@
 @media(max-width:1023px){.pawlira-catalog-layout{grid-template-columns:minmax(0,1fr)}.pawlira-catalog-sidebar{display:none}.pawlira-mobile-filter{display:flex}}
 @media(max-width:767px){.pawlira-featured-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.pawlira-merch-grid{gap:10px}.pawlira-merch-info{padding:12px;gap:9px}.pawlira-merch-photos{margin:7px 7px 0;aspect-ratio:1}.pawlira-merch-cta{padding:10px;font-size:.75rem}.pawlira-merch-slide-controls{left:9px;right:9px}.pawlira-merch-slide-controls button{width:28px;height:28px}.pawlira-catalog-hero.has-image{grid-template-columns:1fr}.pawlira-catalog-hero-image{min-height:0;aspect-ratio:1.7}.pawlira-sort-control select{max-width:155px}}
 @media(prefers-reduced-motion:reduce){.pawlira-merch-card,.pawlira-merch-main,.pawlira-merch-alt,.pawlira-merch-dots button,.pawlira-merch-cta,.pawlira-merch-cta svg,.pawlira-catalog-hero-image img{transition:none;transform:none!important}.pawlira-filter-dialog[open]{animation:none}}
+
+.pawlira-list-grid{display:grid;gap:14px}
+.pawlira-list-card{display:grid;grid-template-columns:minmax(160px,32%) minmax(0,1fr);align-items:center;border:1px solid #ddd;border-radius:14px;background:#fff;overflow:hidden;transition:border-color .22s}
+.pawlira-list-photo{position:relative;aspect-ratio:1;display:grid;place-items:center;margin:12px;overflow:hidden}
+.pawlira-list-photo img{padding:8px;transition:transform .5s}
+.pawlira-list-copy{display:flex;flex-direction:column;align-items:flex-start;gap:14px;padding:24px}
+.pawlira-list-copy h3{font-size:clamp(1.05rem,1.6vw,1.45rem);line-height:1.35}
+.pawlira-list-copy>p{font-size:.9rem;line-height:1.6;color:#555}
+.pawlira-list-copy .pawlira-merch-cta{min-width:150px}
+.pawlira-purchase-panel{min-width:0}
+.pawlira-purchase-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:22px 0}
+.pawlira-purchase-facts a{display:flex;align-items:center;gap:7px;border:1px solid #ddd;border-radius:8px;padding:12px 9px;font-size:.78rem;line-height:1.4;transition:border-color .2s}
+.pawlira-purchase-facts a>svg{flex-shrink:0}
+.pawlira-purchase-facts a>svg:last-child{margin-left:auto}
+.pawlira-purchase-facts a:hover{border-color:#111}
+.pawlira-quantity-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:10px}
+.pawlira-quantity-stepper{display:flex;align-items:center;gap:4px;padding:3px;border:1px solid #ddd;border-radius:9px}
+.pawlira-quantity-stepper button{display:grid;place-items:center;width:38px;height:38px;border-radius:6px;cursor:pointer;transition:background .2s,color .2s}
+.pawlira-quantity-stepper button:not(:disabled):hover{background:#000;color:#fff}
+.pawlira-quantity-stepper button:disabled{opacity:.35;cursor:not-allowed}
+.pawlira-quantity-stepper output{min-width:30px;text-align:center;font-size:1rem;font-weight:600}
+@media(hover:hover) and (pointer:fine){.pawlira-merch-photos:has(.pawlira-merch-alt):hover .pawlira-merch-main{opacity:0}.pawlira-list-card:hover{border-color:#999}.pawlira-list-photo:hover img{transform:scale(1.045)}}
+@media(max-width:767px){.pawlira-list-card{grid-template-columns:38% minmax(0,1fr);gap:0}.pawlira-list-photo{margin:7px}.pawlira-list-copy{padding:12px;gap:9px}.pawlira-list-copy>p{font-size:.78rem}.pawlira-list-copy .pawlira-merch-cta{min-width:0;width:100%}.pawlira-purchase-facts a{flex-wrap:wrap;justify-content:center;text-align:center;gap:5px}.pawlira-purchase-facts a>svg:last-child{display:none}.pawlira-purchase-facts a>span{width:100%}}
+@media(prefers-reduced-motion:reduce){.pawlira-list-card,.pawlira-list-photo img,.pawlira-quantity-stepper button{transition:none;transform:none!important}}
