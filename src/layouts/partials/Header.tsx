@@ -124,7 +124,7 @@ const Header: React.FC<{ children: any }> = ({ children }) => {
               htmlFor="nav-toggle"
               className="order-3 cursor-pointer flex items-center text-text-dark dark:text-white lg:order-1"
             >
-              <p className="mr-2 font-medium">Pages</p>
+              <p className="mr-2 font-medium">Meny</p>
               <button
                 id="nav-toggle"
                 className="focus:outline-none"
@@ -213,7 +213,7 @@ const Header: React.FC<{ children: any }> = ({ children }) => {
         </div>
 
         <div className="order-2 lg:order-3 ml-auto flex items-center lg:ml-0">
-          <ThemeSwitcher className="mr-4 md:mr-6" />
+          {settings.theme_switcher && <ThemeSwitcher className="mr-4 md:mr-6" />}
           <Suspense fallback={children[0]}>{children[1]}</Suspense>
 
           {settings.account && (
