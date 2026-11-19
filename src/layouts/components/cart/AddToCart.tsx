@@ -55,7 +55,7 @@ function SubmitButton({
       type="submit"
       disabled={pending}
       aria-label="Lägg i varukorg"
-      aria-disabled={pending ? "true" : "false"}
+      aria-disabled={pending ? "true" : "false"} aria-busy={pending}
       className={`${buttonClasses}`}
     >
       {pending ? (
@@ -110,7 +110,7 @@ export function AddToCart({
         stylesClass={stylesClass}
         handle={handle}
       />
-      {productInfo&&<StickyBuyBar title={productInfo.title} image={productInfo.image} variant={variant} pending={pending} available={availableForSale} buttonId="pawlira-primary-buy"/>}
+      {productInfo&&<StickyBuyBar title={productInfo.title} image={productInfo.image} variant={variant} pending={pending} message={message} available={availableForSale} buttonId="pawlira-primary-buy"/>}
       <p aria-live="polite" className={message ? "mt-3 text-sm text-black" : "sr-only"} role="status">
         {message}
       </p>

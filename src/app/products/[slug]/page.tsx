@@ -58,9 +58,10 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
 
   const description=customerText(product.description);
   const descriptionHtml=customerHtml(product.descriptionHtml);
-  const relatedProducts = await getProductRecommendations(id).catch(()=>[]);
+  const [recommended,accessories]=await Promise.all([getProductRecommendations(id).catch(()=>[]),compatibleAccessories([product.handle],product.priceRange.minVariantPrice.currencyCode)]);
+  const relatedProducts=Array.from(new Map(recommended.filter(p=>p.id!==id&&p.availableForSale).map(p=>[p.id,p])).values()).slice(0,4);
   const fields=productFields(product);
-  const accessories=await compatibleAccessories([product.handle],product.priceRange.minVariantPrice.currencyCode);
+  const galleryImages=Array.from(new Map([...(product.featuredImage?.url?[product.featuredImage]:[]),...images].filter(i=>i.url).map(i=>[i.url.split("?")[0],i])).values());
 
   const defaultVariantId = variants.length > 0 ? variants[0].id : undefined;
   const url=new URL("/products/"+encodeURIComponent(product.handle),config.site.base_url).toString();
@@ -80,7 +81,7 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
             {/* right side contents  */}
             <div className="min-w-0 lg:col-span-7"><div className="pawlira-gallery-frame">
               <Suspense>
-                <ProductGallery images={images} variants={variants} title={title} />
+                <ProductGallery images={galleryImages} variants={variants} title={title} />
               </Suspense></div>
             </div>
 
@@ -90,7 +91,7 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
 
               <div className="my-6"><Suspense><VariantSelector options={options} variants={variants} images={images} /></Suspense></div>
 
-              <div className="flex gap-4 mt-6 mb-6">
+              <div className="flex gap-4 mt-6 mb-6 min-w-0">
                 <Suspense>
                   <AddToCart
                     variants={product?.variants}
@@ -112,7 +113,7 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
         </div>
       </section>
 
-      <ProductSectionNav hasDetails={fields.some(f=>f.title!=="Vanliga frågor"&&f.value.trim())} hasGallery={images.length>2} hasRelated={relatedProducts.length>0}/>
+      <ProductSectionNav hasDetails={fields.some(f=>f.title!=="Vanliga frågor"&&f.value.trim())} hasGallery={new Set(images.filter(i=>i.url).map(i=>i.url)).size>2} hasRelated={relatedProducts.length>0}/>
       <DimensionsGuide fields={fields}/>
       <ProductStory product={{...product,description,descriptionHtml}} fields={fields}/>
       {/* Recommended Products section  */}
@@ -120,7 +121,7 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
           {relatedProducts?.length > 0 && (
             <>
               <div className="pawlira-section-heading"><div><p className="pawlira-eyebrow">Fler möjligheter</p><h2>Fler produkter för din katt</h2></div><Link href="/products" className="pawlira-text-link">Hela sortimentet<FiArrowUpRight size={20} strokeWidth={1.5}/></Link></div>
-              <LatestProducts products={relatedProducts.slice(0, 4)} />
+              <LatestProducts products={relatedProducts} showAllLink={false} />
             </>
           )}
       </section>}

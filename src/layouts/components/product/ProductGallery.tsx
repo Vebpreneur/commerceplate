@@ -11,7 +11,7 @@ type Props={images:ImageItem[];variants?:ProductVariant[];title?:string};
 const imageKey=(url:string)=>url.split("?")[0];
 function GalleryView({images,title}:{images:ImageItem[];title:string}){
  const [index,setIndex]=useState(0),[failed,setFailed]=useState<string[]>([]),[expanded,setExpanded]=useState(false),[zoom,setZoom]=useState(false);
- const dialog=useRef<HTMLDialogElement>(null),thumbs=useRef<HTMLDivElement>(null),trigger=useRef<HTMLButtonElement>(null);
+ const dialog=useRef<HTMLDialogElement>(null),thumbs=useRef<HTMLDivElement>(null),trigger=useRef<HTMLButtonElement>(null),lastTrigger=useRef<HTMLButtonElement|null>(null);
  const touch=useRef<{x:number;y:number}|null>(null);
  const list=images.filter(p=>!failed.includes(p.url)),i=Math.min(index,Math.max(0,list.length-1)),current=list[i];
  useEffect(()=>{if(!current&&expanded){setExpanded(false);setZoom(false)}},[current,expanded]);
@@ -24,15 +24,15 @@ function GalleryView({images,title}:{images:ImageItem[];title:string}){
  if(!current)return <div className="pawlira-gallery-missing"><FiImage size={38} strokeWidth={1.5}/><p>Produktbild saknas</p></div>;
  return <div className="pawlira-product-gallery" onKeyDown={keys}>
  <div className="pawlira-gallery-stage" onTouchStart={e=>{const t=e.changedTouches[0];touch.current={x:t.clientX,y:t.clientY}}} onTouchEnd={e=>{const start=touch.current,t=e.changedTouches[0];touch.current=null;if(start&&Math.abs(t.clientX-start.x)>55&&Math.abs(t.clientY-start.y)<45){if(e.cancelable)e.preventDefault();move(t.clientX<start.x?1:-1)}}}>
- <button ref={trigger} type="button" className="pawlira-gallery-photo" aria-label="Öppna produktbild i stort format" onClick={()=>setExpanded(true)}>
+ <button ref={trigger} type="button" className="pawlira-gallery-photo" aria-label="Öppna produktbild i stort format" onClick={e=>{lastTrigger.current=e.currentTarget;setExpanded(true)}}>
  <Image key={current.url} src={current.url} alt={current.altText||title} fill sizes="(max-width: 1023px) 95vw, 720px" className="object-contain" onError={()=>error(current.url)} priority={i===0}/>
  </button>
  <span className="pawlira-gallery-counter" aria-live="polite">{i+1} / {list.length}</span>
- <button type="button" className="pawlira-gallery-expand" aria-label="Förstora bild" onClick={()=>setExpanded(true)}><FiMaximize2 size={20} strokeWidth={1.5}/></button>
+ <button type="button" className="pawlira-gallery-expand" aria-label="Förstora bild" onClick={e=>{lastTrigger.current=e.currentTarget;setExpanded(true)}}><FiMaximize2 size={20} strokeWidth={1.5}/></button>
  {list.length>1&&<><button type="button" className="pawlira-gallery-arrow prev" aria-label="Föregående bild" onClick={()=>move(-1)}><FiChevronLeft size={25} strokeWidth={1.5}/></button><button type="button" className="pawlira-gallery-arrow next" aria-label="Nästa bild" onClick={()=>move(1)}><FiChevronRight size={25} strokeWidth={1.5}/></button></>}
  </div>
  {list.length>1&&<div ref={thumbs} className="pawlira-gallery-thumbs" aria-label="Produktbilder">{list.map((p,n)=><button type="button" key={p.url} aria-label={`Visa produktbild ${n+1}`} aria-pressed={i===n} onClick={()=>{setIndex(n);setZoom(false)}}><Image src={p.url} alt="" fill sizes="100px" className="object-contain" onError={()=>error(p.url)}/></button>)}</div>}
- <dialog ref={dialog} className="pawlira-gallery-dialog" aria-label="Förstorad produktbild" onClose={()=>{close();trigger.current?.focus()}} onClick={e=>{if(e.target===e.currentTarget)close()}}>
+ <dialog ref={dialog} className="pawlira-gallery-dialog" aria-label="Förstorad produktbild" onClose={()=>{close();(lastTrigger.current||trigger.current)?.focus()}} onClick={e=>{if(e.target===e.currentTarget)close()}}>
  <div className="pawlira-lightbox">
  <div className="pawlira-lightbox-head"><div><p>{title}</p><span>Bild {i+1} av {list.length}</span></div><div className="flex items-center gap-2"><button type="button" aria-label={zoom?"Återställ zoom":"Zooma in"} aria-pressed={zoom} onClick={()=>setZoom(!zoom)}>{zoom?<FiMinimize2 size={22} strokeWidth={1.5}/>:<FiMaximize2 size={22} strokeWidth={1.5}/>}</button><button type="button" autoFocus aria-label="Stäng bildvisning" onClick={close}><FiX size={23} strokeWidth={1.5}/></button></div></div>
  {expanded&&<div className={"pawlira-lightbox-body "+(zoom?"is-zoomed":"")}><div className="pawlira-lightbox-image"><Image src={current.url} alt={current.altText||title} fill sizes="(max-width: 767px) 100vw, 1200px" className="object-contain" onError={()=>error(current.url)}/></div></div>}

@@ -254,3 +254,25 @@ body:has(dialog[open]) .pawlira-sticky-buy,body:has(.pawlira-mega-menu) .pawlira
  .pawlira-sticky-buy-inner{padding-inline:12px}
  .pawlira-dimension-grid{grid-template-columns:1fr}
 }
+
+/* Purchase QA: keep existing layout and protect narrow screens and long product names. */
+.pawlira-pdp-grid .pawlira-purchase-panel{overflow-wrap:anywhere}
+.pawlira-pdp-grid .pawlira-option{min-width:0;max-width:100%;text-align:left;white-space:normal}
+.pawlira-pdp-grid .pawlira-option img{flex-shrink:0}
+.pawlira-product-gallery,.pawlira-gallery-thumbs,.pawlira-gallery-stage{min-width:0;max-width:100%}
+.pawlira-gallery-thumbs button:focus-visible,.pawlira-gallery-arrow:focus-visible,.pawlira-gallery-expand:focus-visible{outline:2px solid #0a0a0a;outline-offset:2px}
+.pawlira-sticky-buy-error{padding-block:0 12px;font-size:13px;line-height:1.45;color:#0a0a0a;overflow-wrap:anywhere}
+.pawlira-merch-heading,.pawlira-merch-heading h3,.pawlira-merch-description,.pawlira-merch-bottom{min-width:0;overflow-wrap:anywhere}
+.pawlira-merch-bottom .pawlira-merch-cta svg,.pawlira-card-compare-link svg{flex-shrink:0}
+.pawlira-merch-slide-controls button:focus-visible,.pawlira-merch-dots button:focus-visible{outline:2px solid #0a0a0a;outline-offset:2px}
+.pawlira-story-text .content,.pawlira-purchase-panel .content{min-width:0;max-width:100%;overflow-wrap:anywhere}
+.pawlira-purchase-panel .content img,.pawlira-story-text .content img{max-width:100%;height:auto}
+.pawlira-purchase-panel .content table{display:block;max-width:100%;overflow-x:auto}
+@media(max-width:767px){
+ .pawlira-pdp-grid .pawlira-gallery-frame{padding:8px}
+ .pawlira-pdp-grid .pawlira-purchase-panel{padding-inline:0}
+ .pawlira-pdp-grid .pawlira-option{padding:9px 12px}
+ .pawlira-sticky-buy-copy{overflow:hidden}
+ .pawlira-sticky-buy-error{padding-inline:12px}
+ .pawlira-merch-bottom .pawlira-card-compare-link{line-height:1.3;text-align:center}
+}

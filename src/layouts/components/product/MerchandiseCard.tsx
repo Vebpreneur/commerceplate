@@ -23,10 +23,10 @@ export default function MerchandiseCard({product,compact=false}:{product:Product
  return <article className={`pawlira-merch-card ${compact?"pawlira-merch-compact":""}`}>
  <div className="pawlira-merch-media">
   <Link href={href} className="pawlira-merch-photos" aria-label={product.title}>
-   {current?<Image key={current.url} src={current.url} alt={current.altText||product.title} fill sizes="(max-width: 640px) 48vw, (max-width: 1024px) 50vw, 420px" className="pawlira-merch-main object-contain p-4" onError={()=>setFailed(f=>[...f,current.url])}/>:<div className="pawlira-merch-placeholder"><FiImage size={36} strokeWidth={1.5}/><span>Produktbild saknas</span></div>}
+   {current?<Image key={current.url} src={current.url} alt={current.altText||product.title} fill sizes="(max-width: 640px) 48vw, (max-width: 1024px) 50vw, 420px" className="pawlira-merch-main object-contain p-4" onError={()=>setFailed(f=>f.includes(current.url)?f:[...f,current.url])}/>:<div className="pawlira-merch-placeholder"><FiImage size={36} strokeWidth={1.5}/><span>Produktbild saknas</span></div>}
   </Link>
   {usable.length>1&&<div className="pawlira-merch-slide-controls"><button type="button" onClick={()=>move(-1)} aria-label="Föregående produktbild"><FiChevronLeft size={18} strokeWidth={1.5}/></button><button type="button" onClick={()=>move(1)} aria-label="Nästa produktbild"><FiChevronRight size={18} strokeWidth={1.5}/></button></div>}
-  {usable.length>1?<div className="pawlira-merch-dots" aria-label="Produktbilder">{usable.map((p,i)=><button type="button" key={p.url} onClick={()=>setIndex(i)} aria-label={`Visa produktbild ${i+1}`} aria-pressed={i===index%usable.length}/>)}</div>:<div className="pawlira-merch-dots" aria-hidden="true"/>}
+  {usable.length>1?<div className="pawlira-merch-dots" role="group" aria-label="Produktbilder">{usable.map((p,i)=><button type="button" key={p.url} onClick={()=>setIndex(i)} aria-label={`Visa produktbild ${i+1}`} aria-pressed={i===index%usable.length}/>)}</div>:<div className="pawlira-merch-dots" aria-hidden="true"/>}
  </div>
  <div className="pawlira-merch-info">
   <div className="pawlira-merch-heading"><p className="pawlira-eyebrow pawlira-card-brand">Pawlira</p>
