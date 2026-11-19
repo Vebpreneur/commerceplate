@@ -8,7 +8,7 @@ const Tabs = ({ descriptionHtml }: { descriptionHtml: string }) => {
 
   return (
     <>
-      <div className="border-b-2 relative border-border dark:border-border/40 flex">
+      <div className="border-b relative border-border dark:border-border/40 flex">
         <button
           onClick={() => setSelectedTab(0)}
           className={`${selectedTab === 0
@@ -16,7 +16,7 @@ const Tabs = ({ descriptionHtml }: { descriptionHtml: string }) => {
             : "border-transparent"
             } cursor-pointer focus:outline-none px-6 rounded-tl-md rounded-tr-md h-12 py-2 border-t-2 border-l-2 border-r-2 border-b-0`}
         >
-          Description
+          Produktinformation
         </button>
         {contentArray[1] && (
           <button
@@ -26,14 +26,14 @@ const Tabs = ({ descriptionHtml }: { descriptionHtml: string }) => {
               : "border-transparent"
               } cursor-pointer focus:outline-none px-6 rounded-tl-md rounded-tr-md h-12 py-2 border-t-2 border-l-2 border-r-2 border-b-0 ml-8`}
           >
-            More Info
+            Mer information
           </button>
         )}
       </div>
       <div className="border-l-2 border-r-2 border-b-2 border-border dark:border-border/40 rounded-bl-md rounded-br-md p-6">
         {selectedTab === 0 && (
           <div
-            className="space-y-4"
+            className="prose max-w-none space-y-4"
             dangerouslySetInnerHTML={{ __html: contentArray[0] }}
           />
         )}
