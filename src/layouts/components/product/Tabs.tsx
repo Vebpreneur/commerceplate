@@ -1,51 +1,6 @@
-"use client";
+import Accordion from "@/shortcodes/Accordion";
 
-import { useState } from "react";
-
-const Tabs = ({ descriptionHtml }: { descriptionHtml: string }) => {
-  const [selectedTab, setSelectedTab] = useState(0);
-  const contentArray = descriptionHtml.split(`--- split content ---`);
-
-  return (
-    <>
-      <div className="border-b relative border-border dark:border-border/40 flex">
-        <button
-          onClick={() => setSelectedTab(0)}
-          className={`${selectedTab === 0
-            ? "border-t-2 border-l-2 border-r-2 border-b-0 bg-body dark:bg-darkmode-body border-border dark:border-border/40 translate-y-[2px]"
-            : "border-transparent"
-            } cursor-pointer focus:outline-none px-6 rounded-tl-md rounded-tr-md h-12 py-2 border-t-2 border-l-2 border-r-2 border-b-0`}
-        >
-          Produktinformation
-        </button>
-        {contentArray[1] && (
-          <button
-            onClick={() => setSelectedTab(1)}
-            className={`${selectedTab === 1
-              ? "border-t-2 border-l-2 border-r-2 border-b-0 border-border dark:border-border/40 bg-body dark:bg-darkmode-body translate-y-[2px]"
-              : "border-transparent"
-              } cursor-pointer focus:outline-none px-6 rounded-tl-md rounded-tr-md h-12 py-2 border-t-2 border-l-2 border-r-2 border-b-0 ml-8`}
-          >
-            Mer information
-          </button>
-        )}
-      </div>
-      <div className="border-l-2 border-r-2 border-b-2 border-border dark:border-border/40 rounded-bl-md rounded-br-md p-6">
-        {selectedTab === 0 && (
-          <div
-            className="prose max-w-none space-y-4"
-            dangerouslySetInnerHTML={{ __html: contentArray[0] }}
-          />
-        )}
-        {selectedTab === 1 && contentArray[1] && (
-          <div
-            className="space-y-4"
-            dangerouslySetInnerHTML={{ __html: contentArray[1] }}
-          />
-        )}
-      </div>
-    </>
-  );
-};
-
-export default Tabs;
+export default function Tabs({descriptionHtml, fields = []}: {descriptionHtml: string; fields?: {title:string; value:string}[]}) {
+ const parts = descriptionHtml.split("--- split content ---");
+ return <div className="border-t border-border bg-white">{parts[0]?.trim() && <Accordion title="Produktbeskrivning"><div className="content" dangerouslySetInnerHTML={{__html:parts[0]}} /></Accordion>}{parts[1]?.trim() && <Accordion title="Mer information"><div className="content" dangerouslySetInnerHTML={{__html:parts[1]}} /></Accordion>}{fields.map(field=><Accordion key={field.title} title={field.title}><div className="whitespace-pre-wrap leading-relaxed">{field.value}</div></Accordion>)}</div>;
+}
