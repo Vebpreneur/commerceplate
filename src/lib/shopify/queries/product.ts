@@ -4,6 +4,17 @@ export const getProductQuery = /* GraphQL */ `
   query getProduct($handle: String!) {
     product(handle: $handle) {
       ...product
+      metafields(identifiers: [
+        {namespace:"custom",key:"specifications"},
+        {namespace:"custom",key:"spec"},
+        {namespace:"custom",key:"technical_specifications"},
+        {namespace:"custom",key:"details"},
+        {namespace:"custom",key:"detaljer"},
+        {namespace:"custom",key:"included"},
+        {namespace:"custom",key:"ingar"},
+        {namespace:"custom",key:"features"},
+        {namespace:"custom",key:"faq"}
+      ]) { namespace key type value }
     }
   }
   ${productFragment}
