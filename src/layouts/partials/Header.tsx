@@ -118,13 +118,14 @@ const Header: React.FC<{ children: any }> = ({ children }) => {
       <nav className="navbar flex-wrap container">
         <div className="order-1 flex items-center justify-between space-x-7 lg:space-x-14">
           <Logo />
+          <div className="hidden lg:flex items-center gap-5 text-white">{main.filter(item=>item.url!=="/").map(item=><Link key={item.url} href={item.url} className="!text-white text-sm font-medium whitespace-nowrap">{item.name}</Link>)}</div>
 
-          <div className="relative z-40 hidden md:block">
+          <div className="relative z-40 hidden xl:block">
             <label
               htmlFor="nav-toggle"
-              className="order-3 cursor-pointer flex items-center text-text-dark dark:text-white lg:order-1"
+              className="order-3 cursor-pointer flex items-center text-white lg:order-1"
             >
-              <p className="mr-2 font-medium">Meny</p>
+              <p className="mr-2 font-medium !text-white">Meny</p>
               <button
                 id="nav-toggle"
                 className="focus:outline-none"
@@ -204,7 +205,7 @@ const Header: React.FC<{ children: any }> = ({ children }) => {
           </div>
         </div>
 
-        <div className="max-lg:mt-4 w-full lg:w-[45%] xl:w-[60%] lg:order-2 order-3">
+        <div className="max-lg:mt-4 w-full lg:w-[36%] xl:w-[30%] lg:order-2 order-3">
           {settings.search && (
             <Suspense>
               <SearchBar />
@@ -222,10 +223,10 @@ const Header: React.FC<{ children: any }> = ({ children }) => {
             </div>
           )}
 
-          <div className="relative z-40 block md:hidden ml-6">
+          <div className="relative z-40 block xl:hidden ml-6">
             <label
               htmlFor="nav-toggle"
-              className="cursor-pointer flex items-center text-text-dark dark:text-white border dark:border-border/40 p-1 rounded-md"
+              className="cursor-pointer flex items-center text-white border dark:border-border/40 p-1 rounded-md"
             >
               <button
                 id="nav-toggle"
