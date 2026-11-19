@@ -16,7 +16,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   const sf = theme.fonts.font_family.secondary;
 
   return (
-    <html suppressHydrationWarning={true} lang="en">
+    <html suppressHydrationWarning={true} lang="sv">
       {/* google tag manager */}
       {config.google_tag_manager.enable && (
         <GoogleTagManager gtmId={config.google_tag_manager.gtm_id} />
@@ -30,9 +30,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         />
 
         {/* favicon */}
-        <link rel="shortcut icon" href={config.site.favicon} />
+        {config.site.favicon && <link rel="shortcut icon" href={config.site.favicon} />}
         {/* theme meta */}
-        <meta name="theme-name" content="commerceplate" />
+        <meta name="theme-name" content="pawlira" />
         <meta name="msapplication-TileColor" content="#000000" />
         <meta
           name="theme-color"
