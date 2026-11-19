@@ -217,9 +217,9 @@ const ProductCardView = ({ searchParams }: { searchParams: any }) => {
             height={184}
             priority={true}
           />
-          <h1 className="h2 mb-4">No Product Found!</h1>
+          <h1 className="h2 mb-4">Inga produkter hittades</h1>
           <p>
-            We couldn&apos;t find what you filtered for. Try filtering again.
+            Prova en annan sökning eller ändra filtren.
           </p>
         </div>
       )}
@@ -231,7 +231,7 @@ const ProductCardView = ({ searchParams }: { searchParams: any }) => {
           return (
             <div
               key={index}
-              className="text-center col-12 sm:col-6 md:col-4 group relative"
+              className="text-center col-12 sm:col-6 group relative"
             >
               <div className="md:relative overflow-hidden">
                 <ImageFallback
@@ -241,7 +241,7 @@ const ProductCardView = ({ searchParams }: { searchParams: any }) => {
                   width={312}
                   height={269}
                   alt={product.featuredImage?.altText || "fallback image"}
-                  className="w-full h-[200px] sm:w-[312px] md:h-[269px] object-cover rounded-md border mx-auto"
+                  className="w-full aspect-square object-contain bg-white rounded-md border mx-auto"
                 />
 
                 <Suspense>
