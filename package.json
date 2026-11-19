@@ -8,7 +8,6 @@
   "scripts": {
     "dev": "concurrently \"node scripts/themeGenerator.mjs --watch\" \"next dev\"",
     "build": "node scripts/themeGenerator.mjs && next build",
-    "postbuild": "next-sitemap",
     "start": "next start",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
     "format": "prettier -w ./src",

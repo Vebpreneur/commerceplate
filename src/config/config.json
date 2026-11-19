@@ -4,7 +4,7 @@
     "base_url": "https://pawlira.vercel.app/",
     "base_path": "/",
     "trailing_slash": false,
-    "favicon": "",
+    "favicon": "/pawlira-icon.svg",
     "logo": "",
     "logo_darkmode": "",
     "logo_width": "150",
@@ -42,7 +42,7 @@
   },
   "metadata": {
     "meta_author": "Pawlira",
-    "meta_image": "",
+    "meta_image": "/images/hero.png",
     "meta_description": "Smarta produkter för ett enklare liv med katt."
   },
   "shopify": {

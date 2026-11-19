@@ -8,17 +8,22 @@ import LatestProducts from "@/partials/FeaturedProducts";
 import Link from "next/link";
 import Accordion from "@/shortcodes/Accordion";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
+import { Suspense, cache } from "react";
+import config from "@/config/config.json";
+
+const loadProduct=cache(getProduct);
 
 export const generateMetadata = async (props: {
   params: Promise<{ slug: string }>;
 }) => {
   const params = await props.params;
-  const product = await getProduct(params.slug);
+  const product = await loadProduct(params.slug);
   if (!product) return notFound();
   return {
     title: product.seo.title || product.title,
     description: product.seo.description || product.description,
+    alternates:{canonical:new URL("/products/"+encodeURIComponent(product.handle),config.site.base_url).toString()},
+    openGraph:{title:product.seo.title||product.title,description:product.seo.description||product.description,url:new URL("/products/"+encodeURIComponent(product.handle),config.site.base_url).toString(),images:product.featuredImage?.url?[{url:product.featuredImage.url,alt:product.title}]:[]},
   };
 };
 
@@ -34,7 +39,7 @@ const ProductSingle = async (props: { params: Promise<{ slug: string }> }) => {
 export default ProductSingle;
 
 const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
-  const product = await getProduct(params.slug);
+  const product = await loadProduct(params.slug);
 
   if (!product) return notFound();
   const {
@@ -47,7 +52,7 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
     variants,
   } = product;
 
-  const relatedProducts = await getProductRecommendations(id);
+  const relatedProducts = await getProductRecommendations(id).catch(()=>[]);
   const labels: Record<string,string> = {specifications:"Tekniska specifikationer", spec:"Specifikationer", technical_specifications:"Tekniska specifikationer", details:"Produktdetaljer", detaljer:"Produktdetaljer", included:"Vad ingår?", ingar:"Vad ingår?", features:"Funktioner och egenskaper", faq:"Vanliga frågor"};
   const fields = (product.metafields || []).flatMap(field => {
     if (!field?.value || field.type.includes("reference")) return [];
@@ -59,9 +64,16 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
   });
 
   const defaultVariantId = variants.length > 0 ? variants[0].id : undefined;
+  const url=new URL("/products/"+encodeURIComponent(product.handle),config.site.base_url).toString();
+  const offers=variants.filter(v=>Number.isFinite(Number(v.price.amount))&&Number(v.price.amount)>=0).map(v=>{
+    const target=new URL(url);v.selectedOptions.forEach(o=>{if(o.value!=="Default Title")target.searchParams.set(o.name.toLowerCase(),o.value);});
+    return {"@type":"Offer",url:target.toString(),price:v.price.amount,priceCurrency:v.price.currencyCode,availability:v.availableForSale?"https://schema.org/InStock":"https://schema.org/OutOfStock"};
+  });
+  const structuredData={"@context":"https://schema.org","@type":"Product",name:title,description,image:images.map(i=>i.url),url,...(product.vendor?{brand:{"@type":"Brand",name:product.vendor}}:{}),...(offers.length?{offers}:{})};
 
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(structuredData).replace(/</g,"\\u003c")}} />
       <section id="kop" className="py-8 lg:py-16 bg-white scroll-mt-32">
         <div className="container">
           <nav aria-label="Brödsmulor" className="flex flex-wrap gap-2 text-xs text-neutral-600 mb-6"><Link href="/">Hem</Link><span aria-hidden="true">/</span><Link href="/products">Produkter</Link><span aria-hidden="true">/</span><span aria-current="page">{title}</span></nav>

@@ -638,3 +638,17 @@ export async function getShopPolicy(kind: "privacyPolicy" | "termsOfService" | "
     return res.body.data?.shop?.[kind] || null;
   } catch (error) { console.error("Unable to retrieve shop policy",kind); return null; }
 }
+
+export async function getSitemapProducts():Promise<{handle:string;updatedAt:string}[]>{
+ const products:{handle:string;updatedAt:string}[]=[];
+ let cursor:string|undefined;
+ type Result={data:{products:{pageInfo:{hasNextPage:boolean;endCursor:string};nodes:{handle:string;updatedAt:string;tags:string[]}[]}};variables:{cursor?:string}};
+ for(let i=0;i<50;i++){
+  const res=await shopifyFetch<Result>({query:`query PawliraSitemap($cursor:String) { products(first:250,after:$cursor){pageInfo{hasNextPage endCursor} nodes{handle updatedAt tags}} }`,variables:{cursor},cache:"no-store"});
+  const page=res.body.data.products;
+  products.push(...page.nodes.filter(p=>!p.tags.includes(HIDDEN_PRODUCT_TAG)).map(({handle,updatedAt})=>({handle,updatedAt})));
+  if(!page.pageInfo.hasNextPage||!page.pageInfo.endCursor||page.pageInfo.endCursor===cursor)break;
+  cursor=page.pageInfo.endCursor;
+ }
+ return products;
+}
