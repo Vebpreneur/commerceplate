@@ -11,17 +11,16 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import LoadingCategory from "./loadings/skeleton/SkeletonCategory";
 import ImageFallback from "@/helpers/ImageFallback";
 
 const CollectionsSlider = ({ collections }: { collections: any }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [prevEl, setPrevEl] = useState<HTMLDivElement | null>(null);
   const [nextEl, setNextEl] = useState<HTMLDivElement | null>(null);
-  const collectionsData = collections ?? [];
+  const collectionsData = (collections ?? []).filter((item:any) => item.image?.url && !["frontpage","home-page","homepage"].includes(item.handle) && item.title.toLowerCase() !== "home page");
 
   if (!collectionsData.length) {
-    return <LoadingCategory />;
+    return null;
   }
 
   return (
@@ -41,7 +40,7 @@ const CollectionsSlider = ({ collections }: { collections: any }) => {
             spaceBetween: 20,
           },
           768: {
-            slidesPerView: 3,
+            slidesPerView: Math.min(3, collectionsData.length),
             spaceBetween: 24,
           },
           1024: {
@@ -76,7 +75,7 @@ const CollectionsSlider = ({ collections }: { collections: any }) => {
                     </Link>
                   </h3>
                   <p className="text-text-light dark:text-darkmode-text-light text-xs md:text-xl">
-                    {item.products?.edges.length} items
+                    {item.products?.edges.length} produkter
                   </p>
                 </div>
               </div>
