@@ -4,7 +4,7 @@ import {FiArrowUpRight,FiArrowRight,FiPackage,FiRefreshCcw,FiMessageCircle,FiSli
 import {getCollections,getCollectionProducts,getProducts} from "@/lib/shopify";
 import type {Collection,Product} from "@/lib/shopify/types";
 import FeaturedProducts from "@/partials/FeaturedProducts";
-import CatalogPrice from "@/components/product/CatalogPrice";
+import Spotlight from "@/components/product/Spotlight";
 import MerchandiseRail from "@/components/product/ProductRail";
 import FaqSection from "@/partials/FaqSection";
 import CompareModels from "@/components/product/CompareModels";
@@ -34,12 +34,6 @@ function CategoryCard({group}:{group:Group}){
   <div className="pawlira-home-category-caption"><div><h3>{category.title}</h3><p>Upptäck sortimentet</p></div><span className="pawlira-category-arrow"><FiArrowUpRight size={23}/></span></div>
  </Link>;
 }
-function ProductSpotlight({product}:{product:Product}){
- const photo=product.images?.filter(i=>i.url&&i.url!==product.featuredImage?.url)[0]||picture(product);
- return <section className="container pawlira-home-section"><Heading eyebrow="I fokus" title="Upptäck en produkt närmare"/>
- <div className="pawlira-spotlight"><div className="pawlira-spotlight-photo"><Photo image={photo} alt={product.title}/></div>
- <div className="pawlira-spotlight-content"><p className="pawlira-eyebrow">Utvalt hos Pawlira</p><h3>{product.title}</h3>{product.description&&<p className="leading-relaxed">{short(product.description,320)}</p>}<CatalogPrice product={product}/><Link href={path(product)} className="btn btn-primary rounded-full inline-flex gap-3 items-center justify-center">Upptäck produkten<FiArrowRight/></Link></div></div></section>;
-}
 function ProductRail({group}:{group:Group}){
  return <section className="container pawlira-home-section"><Heading eyebrow="Utforska sortimentet" title={group.category.title} description={group.category.description?short(group.category.description,160):undefined} href={collectionPath(group.category)} label="Se hela kategorin"/>
   <MerchandiseRail products={group.products.slice(0,6)} label={group.category.title}/>
@@ -64,13 +58,13 @@ export default async function HomeSections(){
  const catalog=unique([...featured.products,...all.products,...groups.flatMap(g=>g.products)]);
  const featuredProducts=unique([...featured.products,...catalog]).slice(0,6);
  const used=new Set(featuredProducts.map(p=>p.id));
- const spotlight=catalog.find(p=>!used.has(p.id)&&p.availableForSale&&picture(p))||catalog.find(p=>p.availableForSale&&picture(p));
+ const spotlightProducts=unique([...available.flatMap(g=>g.products.filter(p=>p.availableForSale&&picture(p)).slice(0,1)),...catalog.filter(p=>!used.has(p.id)&&p.availableForSale&&picture(p)),...catalog.filter(p=>p.availableForSale&&picture(p))]).slice(0,4);
  const shelves=available.filter(g=>g.products.length>=2).slice(0,3);
  const compareGroups=available.filter(g=>g.products.length>=2).map(g=>({title:g.category.title,handle:g.category.handle,products:g.products}));
  return <>
  {available.length>0&&<section id="kategorier" className="container pawlira-home-section scroll-mt-36"><Heading eyebrow="Handla efter kategori" title="Allt börjar med en vardagsrutin." description="Hitta rätt produkter för ditt hem och din katt." href="/products" label="Hela sortimentet"/><div className="pawlira-home-categories">{available.map(group=><CategoryCard key={group.category.handle} group={group}/>)}</div></section>}
  {featuredProducts.length>0&&<section className="container pawlira-home-section"><Heading eyebrow="Utvalt för dig" title="Upptäck Pawlira" description="Smarta lösningar för livet med katt." href="/products"/><FeaturedProducts products={featuredProducts} showAllLink={false}/></section>}
- {spotlight&&<ProductSpotlight product={spotlight}/>}
+ {spotlightProducts.length>0&&<Spotlight products={spotlightProducts}/>}
  <section className="pawlira-home-black"><div className="container"><div className="pawlira-brand-statement"><p className="pawlira-eyebrow">Pawlira · Livet med katt</p><h2>Mer tid för det<br className="hidden md:block"/> som betyder något.</h2><p>De små stunderna tillsammans. Vardagens rutiner. Ett hem som passar både dig och din katt.</p><Link href="/about" className="pawlira-white-link">Lär känna Pawlira<FiArrowUpRight size={20}/></Link></div><div className="pawlira-brand-points">{[{Icon:FiHeart,title:"Katten i centrum",text:"Utgå från din katts vardag och behov."},{Icon:FiSliders,title:"Teknik i vardagen",text:"Hitta produkter med funktioner som passar dina rutiner."},{Icon:FiGrid,title:"Ett genomtänkt hem",text:"Utforska olika modeller och utföranden."}].map(({Icon,title,text})=><div key={title}><Icon size={29}/><h3>{title}</h3><p>{text}</p></div>)}</div></div></section>
  {shelves[0]&&<ProductRail group={shelves[0]}/>}
  <DailyLife groups={available}/>

@@ -616,3 +616,16 @@
 .pawlira-product-compare-link{display:flex;gap:8px;justify-content:center;align-items:center;font-size:.85rem;font-weight:600;text-underline-offset:4px;border:1px solid #ddd;border-radius:99px;padding:12px;transition:border-color .2s}
 .pawlira-card-compare-link:hover,.pawlira-product-compare-link:hover{text-decoration:underline;border-color:#111}
 @media(max-width:767px){.pawlira-compare-help{align-items:flex-start;flex-direction:column;padding:20px}.pawlira-full-comparison{min-width:680px}.pawlira-compare-page-intro{padding:28px}}
+
+.pawlira-spotlight-interactive .pawlira-spotlight-photo img,.pawlira-spotlight-interactive .pawlira-spotlight-content{animation:pawlira-guide-in .3s ease-out}
+.pawlira-spotlight-counter{position:absolute;left:18px;top:18px;border:1px solid #ddd;border-radius:999px;background:#fff;padding:7px 13px;font-size:.78rem;color:#111}
+.pawlira-spotlight-controls{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-top:16px}
+.pawlira-spotlight-tabs{display:flex;min-width:0;gap:8px;overflow-x:auto;padding:2px 2px 5px;flex:1}
+.pawlira-spotlight-tabs button{display:flex;align-items:center;gap:9px;min-width:135px;max-width:245px;flex:1 0 auto;text-align:left;border:1px solid #ddd;border-radius:10px;padding:9px;background:#fff;font-size:.8rem;font-weight:500;line-height:1.35;cursor:pointer;transition:border-color .2s,box-shadow .2s}
+.pawlira-spotlight-tabs button[aria-pressed=true]{border-color:#111;box-shadow:inset 0 0 0 1px #111}
+.pawlira-spotlight-tabs button:hover{border-color:#111}
+.pawlira-spotlight-thumb{position:relative;width:48px;height:48px;flex-shrink:0}
+.pawlira-spotlight-controls .pawlira-rail-navigation{margin-top:0;flex-shrink:0}
+.pawlira-compare-unmatched{padding:16px 20px;border:1px solid #ddd;border-radius:10px;font-size:.9rem;line-height:1.6}
+@media(max-width:767px){.pawlira-spotlight-controls{gap:9px;align-items:flex-end;flex-direction:column}.pawlira-spotlight-tabs{width:100%}.pawlira-spotlight-tabs button{min-width:160px}.pawlira-spotlight-thumb{width:40px;height:40px}}
+@media(prefers-reduced-motion:reduce){.pawlira-spotlight-interactive .pawlira-spotlight-photo img,.pawlira-spotlight-interactive .pawlira-spotlight-content{animation:none}.pawlira-spotlight-tabs button{transition:none}}
