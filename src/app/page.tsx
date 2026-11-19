@@ -21,6 +21,12 @@ export default function Home(){
       </section>
 
 
+  <section className="pawlira-marquee" aria-label="Smart teknik. Genomtänkt design. Ett enklare liv tillsammans.">
+        <div className="pawlira-marquee-track" aria-hidden="true">
+          {[0,1].map((copy) => <div key={copy} className="pawlira-marquee-group">{["Smart teknik","Genomtänkt design","Ett enklare liv tillsammans","Pawlira"].map(text => <span key={text}>{text}<span className="pawlira-marquee-dot">·</span></span>)}</div>)}
+        </div>
+      </section>
+
   <Suspense fallback={<section className="container py-16"><SkeletonFeaturedProducts/></section>}><HomeSections/></Suspense>
  </>;
 }
