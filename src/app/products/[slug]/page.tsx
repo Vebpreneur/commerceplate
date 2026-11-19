@@ -53,7 +53,7 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
 
   return (
     <>
-      <section className="py-8 lg:py-16 bg-[#fafafa]">
+      <section className="py-8 lg:py-16 bg-white">
         <div className="container">
           <div className="row justify-center">
             {/* right side contents  */}
