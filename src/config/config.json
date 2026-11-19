@@ -1,60 +1,53 @@
 {
   "site": {
-    "title": "Commerceplate",
-    "base_url": "https://tf-commerceplate.netlify.app/",
+    "title": "Pawlira",
+    "base_url": "https://pawlira.vercel.app/",
     "base_path": "/",
     "trailing_slash": false,
-    "favicon": "/images/favicon.png",
-    "logo": "/images/logo.png",
-    "logo_darkmode": "/images/logo-darkmode.png",
+    "favicon": "",
+    "logo": "",
+    "logo_darkmode": "",
     "logo_width": "150",
     "logo_height": "27",
-    "logo_text": "Commerceplate"
+    "logo_text": "Pawlira"
   },
-
   "announcement": {
-    "enable": true,
+    "enable": false,
     "content": "<span class='text-center block'>♥️ Loving Commerceplate? <a class='underline' href='https://github.com/zeon-studio/commerceplate' target='_blank' rel='noopener'>Please ⭐️ on Github</a></span>",
     "expire_days": 7
   },
-
   "settings": {
     "search": true,
     "account": true,
     "sticky_header": true,
-    "theme_switcher": true,
-    "default_theme": "system",
+    "theme_switcher": false,
+    "default_theme": "light",
     "pagination_card": 9,
     "pagination_list": 4,
     "summary_length": 200,
     "blog_folder": "blog"
   },
-
   "params": {
     "contact_form_action": "#",
-    "copyright": "Designed And Developed by [Zeon Studio](https://zeon.studio)"
+    "copyright": "© Pawlira"
   },
-
   "navigation_button": {
     "enable": false,
     "label": "Get Started",
     "link": "https://github.com/zeon-studio/commerceplate"
   },
-
   "google_tag_manager": {
     "enable": false,
     "gtm_id": "GTM-XXXXXX"
   },
-
   "metadata": {
-    "meta_author": "Zeon Studio",
-    "meta_image": "/images/og-image.png",
-    "meta_description": "Shopify Storefront Boilerplate"
+    "meta_author": "Pawlira",
+    "meta_image": "",
+    "meta_description": "Smarta produkter för ett enklare liv med katt."
   },
-
   "shopify": {
-    "currencySymbol": "৳",
-    "currencyCode": "BDT",
+    "currencySymbol": "kr",
+    "currencyCode": "SEK",
     "collections": {
       "hero_slider": "hidden-homepage-carousel",
       "featured_products": "featured-products"
