@@ -1,206 +1,18 @@
 "use client";
-
-import { AddToCart } from "@/components/cart/AddToCart";
-import SkeletonCards from "@/components/loadings/skeleton/SkeletonCards";
 import ImageFallback from "@/helpers/ImageFallback";
-import useLoadMore from "@/hooks/useLoadMore";
-import { defaultSort, sorting } from "@/lib/constants";
-import { getCollectionProducts, getProducts } from "@/lib/shopify";
-import { PageInfo, Product } from "@/lib/shopify/types";
-import { titleify } from "@/lib/utils/textConverter";
+import type {Product} from "@/lib/shopify/types";
 import Link from "next/link";
-import { Suspense, useEffect, useRef, useState } from "react";
-import { BiLoaderAlt } from "react-icons/bi";
-
-const ProductListView = ({ searchParams }: { searchParams: any }) => {
-  const [isLoading, setIsLoading] = useState(true);
-  const targetElementRef = useRef<HTMLDivElement>(null);
-  const loadingMore = useRef(false);
-  const [isLoadingMore,setLoadingMore] = useState(false);
-  const queryRef=useRef("");
-  const [data, setData] = useState<{
-    products: Product[];
-    pageInfo: PageInfo;
-  }>({
-    products: [],
-    pageInfo: { endCursor: "", hasNextPage: false, hasPreviousPage: false },
-  });
-
-  const {
-    sort,
-    q: searchValue,
-    minPrice,
-    maxPrice,
-    b: brand,
-    c: category,
-    t: tag,
-    cursor,
-  } = searchParams as {
-    [key: string]: string;
-  };
-
-  const { sortKey, reverse } =
-    sorting.find((item) => item.slug === sort) || defaultSort;
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-
-      try {
-        let productsData;
-
-        if (
-          searchValue ||
-          brand ||
-          minPrice ||
-          maxPrice ||
-          category ||
-          tag ||
-          cursor
-        ) {
-          let queryString = "";
-          const filterCategoryProduct = [];
-
-          if (minPrice && maxPrice) {
-            filterCategoryProduct.push({
-              price: {
-                min:
-                  minPrice !== undefined && minPrice !== ""
-                    ? parseFloat(minPrice)
-                    : 0,
-                max:
-                  maxPrice !== undefined && maxPrice !== ""
-                    ? parseFloat(maxPrice)
-                    : Number.POSITIVE_INFINITY,
-              },
-            });
-          }
-
-          if (maxPrice) queryString += ` variants.price:<=${maxPrice}`;
-          if (minPrice) queryString += ` variants.price:>=${minPrice}`;
-
-          if (searchValue) {
-            queryString += ` ${searchValue}`;
-          }
-
-          if (brand) {
-            Array.isArray(brand)
-              ? (queryString += `${brand
-                  .map((b) => `(vendor:${b})`)
-                  .join(" OR ")}`)
-              : (queryString += `vendor:"${brand}"`);
-
-            if (Array.isArray(brand) && brand.length > 0) {
-              brand.forEach((b) => {
-                filterCategoryProduct.push({
-                  productVendor: titleify(b),
-                });
-              });
-            } else {
-              filterCategoryProduct.push({
-                productVendor: titleify(brand),
-              });
-            }
-          }
-
-          if (tag) {
-            queryString += ` ${tag}`;
-
-            filterCategoryProduct.push({
-              tag: tag.charAt(0).toUpperCase() + tag.slice(1),
-            });
-          }
-
-          queryRef.current = queryString;
-          const query = {
-            sortKey,
-            reverse,
-            query: queryString,
-          };
-
-          productsData =
-            category && category !== "all"
-              ? await getCollectionProducts({
-                  collection: category,
-                  sortKey,
-                  reverse,
-                  filterCategoryProduct:
-                    filterCategoryProduct.length > 0
-                      ? filterCategoryProduct
-                      : undefined,
-                })
-              : await getProducts({ ...query, cursor });
-        } else {
-          queryRef.current = "";
-          // Fetch all products
-          productsData = await getProducts({ sortKey, reverse, cursor });
-        }
-
-        setData({
-          products: productsData.products,
-          pageInfo: productsData.pageInfo!,
-        });
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [
-    cursor,
-    sortKey,
-    searchValue,
-    brand,
-    minPrice,
-    maxPrice,
-    category,
-    tag,
-    reverse,
-  ]);
-
-  const { products, pageInfo } = data;
-  const endCursor = pageInfo?.endCursor || "";
-  const hasNextPage = (!category || category === "all") && !!pageInfo?.hasNextPage;
-
-  useLoadMore(targetElementRef as React.RefObject<HTMLElement>, () => {
-    if (hasNextPage && !isLoading) {
-      fetchDataWithNewCursor(endCursor);
-    }
-  });
-
-  const fetchDataWithNewCursor = async (newCursor: string) => {
-    if (loadingMore.current || !newCursor) return;
-    loadingMore.current=true;
-    setLoadingMore(true);
-
-    try {
-      const res = await getProducts({
-        sortKey,
-        reverse,
-        query: queryRef.current,
-        cursor: newCursor,
-      });
-
-      setData(prev=>({products:[...prev.products,...res.products.filter(item=>!prev.products.some(existing=>existing.id===item.id))],pageInfo:res.pageInfo}));
-    } catch (error) {
-      console.error("Error fetching more products:", error);
-    } finally {
-      loadingMore.current=false;
-      setLoadingMore(false);
-    }
-  };
-
-  if (isLoading) {
-    return <SkeletonCards />;
-  }
-
+import {useCatalogProducts, type CatalogData} from "@/hooks/useCatalogProducts";
+import { AddToCart } from "@/components/cart/AddToCart";
+import { Suspense } from "react";
+const ProductListView=({searchParams,initialData}:{searchParams:Record<string,string|string[]|undefined>;initialData:CatalogData})=>{
+ const {products,endCursor,hasNextPage,isLoadingMore,error,fetchDataWithNewCursor}=useCatalogProducts(searchParams,initialData);
+ const searchValue=Array.isArray(searchParams.q)?searchParams.q[0]:searchParams.q;
   const resultsText = "resultat";
 
   return (
     <section>
-      <div ref={targetElementRef} className="row">
+      <div className="row">
         {searchValue ? (
           <p className="mb-4">
             {products.length === 0
@@ -210,7 +22,7 @@ const ProductListView = ({ searchParams }: { searchParams: any }) => {
           </p>
         ) : null}
 
-        {products?.length === 0 && (
+        {products.length === 0 && !hasNextPage && (
           <div className="mx-auto pt-5 text-center">
             <ImageFallback
               className="mx-auto mb-6"
@@ -219,7 +31,7 @@ const ProductListView = ({ searchParams }: { searchParams: any }) => {
               width={211}
               height={184}
             />
-            <h1 className="h2 mb-4">Inga produkter hittades</h1>
+            <h2 className="h3 mb-4">Inga produkter hittades</h2>
             <p>
               Prova en annan sökning eller ändra filtren.
             </p>
@@ -295,7 +107,8 @@ const ProductListView = ({ searchParams }: { searchParams: any }) => {
           })}
         </div>
 
-        {hasNextPage && <div className="flex justify-center py-8"><button type="button" className="btn btn-outline-primary rounded-full" disabled={isLoadingMore} onClick={()=>fetchDataWithNewCursor(endCursor)}>{isLoadingMore?"Laddar…":"Visa fler produkter"}</button></div>}
+        {error&&<p role="alert" className="text-sm text-center mt-4">Det gick inte att läsa in fler produkter. Försök igen.</p>}
+      {hasNextPage && <div className="flex justify-center py-8"><button type="button" className="btn btn-outline-primary rounded-full" disabled={isLoadingMore} onClick={()=>fetchDataWithNewCursor(endCursor)}>{isLoadingMore?"Laddar…":"Visa fler produkter"}</button></div>}
       </div>
     </section>
   );

@@ -311,10 +311,14 @@ export async function getCollectionProducts({
   reverse,
   sortKey,
   filterCategoryProduct,
+  cursor,
+  first = 100,
 }: {
   collection: string;
   reverse?: boolean;
   sortKey?: string;
+  cursor?: string;
+  first?: number;
   filterCategoryProduct?: any[]; // Update the type based on your GraphQL schema
 }): Promise<{ pageInfo: PageInfo | null; products: Product[] }> {
   const res = await shopifyFetch<ShopifyCollectionProductsOperation>({
@@ -324,12 +328,16 @@ export async function getCollectionProducts({
       handle: collection,
       reverse,
       sortKey: sortKey === "CREATED_AT" ? "CREATED" : sortKey,
+      cursor,
+      first,
       filterCategoryProduct, // Pass the filters variable to the query
     } as {
       handle: string;
       reverse?: boolean;
       sortKey?: string;
       filterCategoryProduct?: any[];
+      cursor?: string;
+      first?: number;
     },
   });
 

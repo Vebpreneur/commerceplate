@@ -266,3 +266,10 @@
 .pawlira-dark-link {transition:border-color .25s,transform .25s;}
 @media(hover:hover) and (pointer:fine){.pawlira-editorial:hover .pawlira-editorial-image{transform:scale(1.045)}.pawlira-category-card:hover .pawlira-category-arrow{background:#111;color:white;border-color:#111}.pawlira-dark-link:hover{border-color:#fff;transform:translateY(-3px)}}
 @media(prefers-reduced-motion:reduce){.pawlira-editorial-image,.pawlira-category-arrow,.pawlira-dark-link{transition:none;transform:none!important}}
+
+.pawlira-filter-choice{display:flex;align-items:center;justify-content:space-between;text-align:left;width:100%;gap:8px;padding:9px 6px;border-radius:6px;transition:box-shadow .2s;color:#333;white-space:normal;}
+.pawlira-filter-choice[aria-pressed=true]{font-weight:600;color:#000;box-shadow:inset 0 0 0 1px #111;}
+.pawlira-filter-check{display:grid;place-items:center;border:1px solid #bdbdbd;height:18px;width:18px;border-radius:4px;flex-shrink:0;}
+.pawlira-filter-choice[aria-pressed=true] .pawlira-filter-check{background:#111;color:#fff;border-color:#111;}
+@media(hover:hover){.pawlira-filter-choice:hover{box-shadow:inset 0 0 0 1px #999;}}
+.pawlira-filter-choice:focus-visible{outline:2px solid #111;outline-offset:2px;}
