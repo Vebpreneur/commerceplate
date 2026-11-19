@@ -1,19 +1,21 @@
 import Link from "next/link";
-import SeoMeta from "@/partials/SeoMeta";
 import FaqSection from "@/partials/FaqSection";
 import {Suspense} from "react";
-import {FiPackage,FiMail,FiRefreshCcw} from "react-icons/fi";
+import {FiPackage,FiMail,FiRefreshCcw,FiArrowUpRight,FiHelpCircle,FiBox,FiClipboard,FiSearch} from "react-icons/fi";
 
 export const dynamic="force-dynamic";
 export default function Contact(){
  const configured=process.env.PAWLIRA_SUPPORT_EMAIL?.trim()||"";
  const email=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(configured)?configured:null;
- return <><SeoMeta title="Kundservice | Pawlira" description="Hjälp med produkter, beställningar, leveranser och returer."/>
- <section className="container py-14 lg:py-24"><p className="uppercase tracking-[.2em] text-xs mb-4">Kundservice</p><h1 className="text-5xl lg:text-7xl tracking-tight mb-6">Hur kan vi hjälpa dig?</h1><p className="text-lg max-w-2xl">Här hittar du information inför och efter ditt köp. Läs våra villkor eller utforska sortimentet.</p></section>
- <section className="container pb-16"><div className="grid md:grid-cols-3 gap-4">{[
- {Icon:FiPackage,title:"Leverans",detail:"Läs om leverans och frakt.",href:"/shipping-policy"},
- {Icon:FiRefreshCcw,title:"Retur och ångerrätt",detail:"Information om returer och dina rättigheter.",href:"/refund-policy"},
- {Icon:FiMail,title:"Kontakt",detail:email||"Har du redan beställt? Se kontaktuppgifterna i din orderbekräftelse.",href:email?"mailto:"+email:"/terms-services"}
- ].map(({Icon,title,detail,href})=><a key={title} href={href} className="pawlira-card p-8"><Icon size={30}/><h2 className="text-xl mt-5 mb-3">{title}</h2><p className="break-words">{detail}</p><span className="underline underline-offset-4 mt-5">{href.startsWith("mailto:")?"Skicka e-post":"Läs mer"}</span></a>)}</div></section>
- <Suspense fallback={<div className="container py-12"><h2>Vanliga frågor</h2></div>}><FaqSection/></Suspense></>;
+ const topics=[
+ {Icon:FiBox,title:"Produktfrågor",detail:"Hitta rätt modell, jämför funktioner och kontrollera användningskrav.",href:"/compare",label:"Jämför produkter"},
+ {Icon:FiPackage,title:"Leverans",detail:"Läs om leveransvillkor och hur du följer din beställning.",href:"/shipping-policy",label:"Leveransvillkor"},
+ {Icon:FiRefreshCcw,title:"Retur och ångerrätt",detail:"Se vad som gäller om du vill returnera en vara eller behöver reklamera den.",href:"/refund-policy",label:"Returinformation"}
+ ];
+ return <>
+ <section className="container pawlira-support-intro"><div className="pawlira-support-hero"><div><p className="pawlira-eyebrow">Pawlira · Kundservice</p><h1>Hur kan vi hjälpa dig?</h1><p>Från frågor inför ditt köp till hjälp med en beställning. Hitta information och vägledning på ett och samma ställe.</p><a href="#faq" className="btn !bg-white !text-black rounded-full inline-flex items-center gap-2"><FiSearch size={20}/> Hitta svar på din fråga</a></div><div className="pawlira-support-hero-icon"><FiHelpCircle aria-hidden="true"/></div></div></section>
+ <section className="container pawlira-home-section"><div className="pawlira-section-heading"><div><p className="pawlira-eyebrow">Välj ämne</p><h2>Vad behöver du hjälp med?</h2></div></div><div className="pawlira-support-grid">{topics.map(({Icon,title,detail,href,label})=><Link key={href} href={href} className="pawlira-guide-card"><Icon size={30}/><h3>{title}</h3><p>{detail}</p><span className="pawlira-text-link">{label}<FiArrowUpRight size={19}/></span></Link>)}</div></section>
+ <Suspense fallback={<section id="faq" className="container py-12"><h2>Vanliga frågor</h2></section>}><FaqSection/></Suspense>
+ <section id="kontakt" className="container pawlira-home-section scroll-mt-36"><div className="pawlira-about-manifesto"><div><p className="pawlira-eyebrow">Personlig hjälp</p><h2 className="pawlira-large-heading">Förbered ditt ärende.</h2><p className="pawlira-section-description">Med rätt uppgifter blir det lättare att förstå frågan och ge relevant hjälp.</p><div className="pawlira-support-contact"><FiMail size={25}/><div><h3>Kontakta kundservice</h3>{email?<><p>{email}</p><a href={"mailto:"+email} className="btn btn-primary rounded-full mt-4">Skicka e-post <FiArrowUpRight className="inline ml-1"/></a></>:<p>Har du redan beställt? Använd kontaktuppgifterna i din orderbekräftelse. Se även uppgifterna i våra <Link href="/terms-services" className="underline">köpvillkor</Link>.</p>}</div></div></div><div className="pawlira-support-checklist">{[{Icon:FiBox,title:"Om du har en produktfråga",text:"Ange modellnamn och vilken funktion, variant eller specifikation du undrar över."},{Icon:FiClipboard,title:"Om du har en beställningsfråga",text:"Ha ordernumret, din orderbekräftelse och en tydlig beskrivning av ärendet till hands."},{Icon:FiPackage,title:"Om något inte fungerar",text:"Beskriv vad som händer och dokumentera vid behov problemet med bilder. Följ tillverkarens säkerhetsinstruktioner."}].map(({Icon,title,text})=><article key={title}><Icon size={24}/><div><h3>{title}</h3><p>{text}</p></div></article>)}</div></div></section>
+ </>;
 }

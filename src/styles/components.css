@@ -657,3 +657,22 @@
 @media(hover:hover) and (pointer:fine){.pawlira-editorial-tile:hover .pawlira-about-category-photo img{transform:scale(1.04)}.pawlira-about-paths>a:hover{border-color:#111}}
 @media(max-width:767px){.pawlira-about-hero,.pawlira-about-manifesto,.pawlira-about-values{grid-template-columns:1fr}.pawlira-about-hero-copy{gap:16px}.pawlira-about-category-grid{grid-template-columns:1fr}.pawlira-about-hero-photo{aspect-ratio:1.3}}
 @media(prefers-reduced-motion:reduce){.pawlira-about-category-photo img,.pawlira-about-paths>a{transition:none;transform:none!important}}
+
+.pawlira-support-intro{padding-top:clamp(30px,5vw,68px)}
+.pawlira-support-hero{background:#000;color:#fff;border-radius:15px;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,.6fr);gap:22px;padding:clamp(28px,5vw,70px);align-items:center;overflow:hidden}
+.pawlira-support-hero h1,.pawlira-support-hero p{color:#fff!important}
+.pawlira-support-hero h1{font-size:clamp(2.4rem,5.2vw,4.8rem);letter-spacing:-.05em;line-height:1.08;margin:15px 0 18px}
+.pawlira-support-hero p:not(.pawlira-eyebrow){max-width:620px;line-height:1.65;font-size:1.06rem}
+.pawlira-support-hero .btn{margin-top:25px}
+.pawlira-support-hero-icon{display:grid;place-items:center}
+.pawlira-support-hero-icon svg{width:clamp(90px,13vw,175px);height:auto;stroke-width:.7;opacity:.92}
+.pawlira-support-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.pawlira-support-grid .pawlira-guide-card p{line-height:1.65}
+.pawlira-support-contact{display:flex;gap:15px;align-items:flex-start;padding:22px;border:1px solid #ddd;border-radius:12px;margin-top:24px}
+.pawlira-support-contact>svg{flex-shrink:0}
+.pawlira-support-contact h3,.pawlira-support-checklist h3{font-size:1.12rem;margin-bottom:9px}
+.pawlira-support-contact p,.pawlira-support-checklist p{font-size:.95rem;line-height:1.65;overflow-wrap:anywhere}
+.pawlira-support-checklist{border-top:1px solid #ddd}
+.pawlira-support-checklist article{display:flex;gap:18px;align-items:flex-start;padding:24px 0;border-bottom:1px solid #ddd}
+.pawlira-support-checklist article>svg{flex-shrink:0}
+@media(max-width:767px){.pawlira-support-hero{grid-template-columns:1fr}.pawlira-support-hero-icon{display:none}.pawlira-support-grid{grid-template-columns:1fr}}
