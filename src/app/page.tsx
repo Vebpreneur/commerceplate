@@ -5,9 +5,7 @@ import HeroSlider from "@/components/HeroSlider";
 import SkeletonCategory from "@/components/loadings/skeleton/SkeletonCategory";
 import SkeletonFeaturedProducts from "@/components/loadings/skeleton/SkeletonFeaturedProducts";
 import config from "@/config/config.json";
-import { getListPage } from "@/lib/contentParser";
-import { getCollectionProducts, getCollections } from "@/lib/shopify";
-import CallToAction from "@/partials/CallToAction";
+import { getCollectionProducts, getCollections, getProducts } from "@/lib/shopify";
 import FeaturedProducts from "@/partials/FeaturedProducts";
 import SeoMeta from "@/partials/SeoMeta";
 import { Suspense } from "react";
@@ -19,7 +17,8 @@ const ShowHeroSlider = async () => {
     collection: collections.hero_slider,
   });
   const { products } = sliderImages;
-  return <HeroSlider products={products} />;
+  const featured = products.length ? products : (await getProducts({})).products.filter((product) => product.availableForSale && product.featuredImage).slice(0, 3);
+  return featured.length ? <HeroSlider products={featured} /> : null;
 };
 
 const ShowCollections = async () => {
@@ -32,18 +31,18 @@ const ShowFeaturedProducts = async () => {
     collection: collections.featured_products,
     reverse: false,
   });
-  return <FeaturedProducts products={products} />;
+  const featured = products.length ? products : (await getProducts({})).products.slice(0, 8);
+  return <FeaturedProducts products={featured} />;
 };
 
 const Home = () => {
-  const callToAction = getListPage("sections/call-to-action.md");
 
   return (
     <>
       <SeoMeta />
       <section>
         <div className="container">
-          <div className="bg-gradient py-10 rounded-md">
+          <div className="bg-light py-10 lg:py-16 rounded-xl">
             <Suspense>
               <ShowHeroSlider />
             </Suspense>
@@ -55,7 +54,7 @@ const Home = () => {
       <section className="section">
         <div className="container">
           <div className="text-center mb-6 md:mb-14">
-            <h2>Collections</h2>
+            <h2>Upptäck sortimentet</h2>
           </div>
           <Suspense fallback={<SkeletonCategory />}>
             <ShowCollections />
@@ -67,8 +66,8 @@ const Home = () => {
       <section>
         <div className="container">
           <div className="text-center mb-6 md:mb-14">
-            <h2 className="mb-2">Featured Products</h2>
-            <p className="md:h5">Explore Today&apos;s Featured Picks!</p>
+            <h2 className="mb-2">Utvalda produkter</h2>
+            <p className="md:h5">Smartare vardag för dig och din katt.</p>
           </div>
           <Suspense fallback={<SkeletonFeaturedProducts />}>
             <ShowFeaturedProducts />
@@ -76,7 +75,7 @@ const Home = () => {
         </div>
       </section>
 
-      <CallToAction data={callToAction} />
+
     </>
   );
 };
