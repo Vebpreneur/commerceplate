@@ -26,7 +26,7 @@ const SearchBar = () => {
     const newParams = new URLSearchParams(pathname === "/products" ? searchParams.toString() : "");
     newParams.delete("q");
 
-    router.push(createUrl("/products", newParams));
+    if(pathname === "/products" && searchParams.has("q")) router.push(createUrl("/products", newParams));
   };
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -47,11 +47,11 @@ const SearchBar = () => {
   return (
     <form
       onSubmit={onSubmit}
-      className={`border border-border dark:border-darkmode-border rounded-full flex bg-white text-black pl-4 relative`}
+      className="pawlira-search-field border border-border rounded-full flex bg-white text-black pl-4 relative"
     >
       <input
         id="searchInput"
-        className="bg-transparent border-none search-input focus:ring-transparent p-2 w-full"
+        className="bg-transparent border-none search-input focus:ring-transparent p-2 w-full min-w-0"
         aria-label="Sök produkter"
         type="search"
         name="search"

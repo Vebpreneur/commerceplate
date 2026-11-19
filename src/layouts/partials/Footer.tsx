@@ -9,11 +9,11 @@ function FooterLinks({title,items}:{title:string;items:{title:string;url:string}
 }
 export default function Footer({categories=[]}:{categories?:NavigationCategory[]}){
  return <footer className="pawlira-footer"><div className="container">
- <div className="pawlira-footer-intro"><div><Logo variant="white" width={246}/><p>Smart teknik. Genomtänkt design.<br/>Ett enklare liv tillsammans.</p></div><Link href="/products" className="pawlira-footer-cta">Hitta din nästa favorit<FiArrowUpRight size={24}/></Link></div>
+ <div className="pawlira-footer-intro"><div><Logo variant="white" width={224}/><p>Smart teknik. Genomtänkt design.<br/>Ett enklare liv tillsammans.</p></div><Link href="/products" className="pawlira-footer-cta">Hitta din nästa favorit<FiArrowUpRight size={24}/></Link></div>
  <div className="pawlira-footer-grid">
  <FooterLinks title="Sortiment" items={[...categories.map(c=>({title:c.title,url:"/products?c="+encodeURIComponent(c.handle)})),{title:"Visa alla produkter",url:"/products"}]}/>
  <FooterLinks title="Upptäck" items={[...discover,...(categories.length?[{title:"Handla efter kategori",url:"/#kategorier"}]:[])]}/>
- <FooterLinks title="Kundservice" items={[{title:"Kontakta oss",url:"/contact"},{title:"Vanliga frågor",url:"/#faq"},...information.slice(0,2)]}/>
+ <FooterLinks title="Kundservice" items={[{title:"Kontakta oss",url:"/contact"},...information.slice(0,2),{title:"Produktfrågor",url:"/contact#faq"}]}/>
  <FooterLinks title="Information" items={information.slice(2)}/>
  </div>
  <div className="pawlira-footer-assurance">{[{Icon:FiPackage,title:"Leverans",url:"/shipping-policy"},{Icon:FiRefreshCcw,title:"Returer",url:"/refund-policy"},{Icon:FiMessageCircle,title:"Kundservice",url:"/contact"}].map(({Icon,title,url})=><Link key={url} href={url}><Icon size={22}/><span>{title}</span><FiArrowUpRight size={16}/></Link>)}</div>
