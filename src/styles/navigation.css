@@ -1,5 +1,5 @@
 .header {
-  @apply bg-body py-6 dark:bg-darkmode-body;
+  @apply bg-black text-white py-4;
 }
 
 /* navbar items */
@@ -99,3 +99,9 @@
 .footer-link {
   @apply text-sm md:text-base font-medium transition text-text-light hover:text-text-dark dark:text-darkmode-text dark:hover:text-darkmode-primary;
 }
+
+.header .navbar > div > .navbar-brand, .header .navbar > div > .navbar-brand:hover { color: white; }
+.header label[for="nav-toggle"] { color: white; }
+.header .navbar > div:last-child > button { color: white; }
+.header .navbar > div:last-child a { color: white; }
+.header .navbar .bg-white .navbar-brand, .header .navbar .bg-white a, .header .navbar .bg-white button { color: #111; }
