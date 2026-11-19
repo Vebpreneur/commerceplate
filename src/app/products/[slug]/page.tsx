@@ -5,6 +5,8 @@ import Tabs from "@/components/product/Tabs";
 import { VariantSelector } from "@/components/product/VariantSelector";
 import { getProduct, getProductRecommendations } from "@/lib/shopify";
 import LatestProducts from "@/partials/FeaturedProducts";
+import Link from "next/link";
+import Accordion from "@/shortcodes/Accordion";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
@@ -120,15 +122,17 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
         </div>
       </section>
 
+      <div className="bg-black text-white py-4"><div className="container flex flex-wrap justify-center gap-8 text-sm"><a href="#produktinformation" className="!text-white">Produktöversikt</a>{fields.length > 0 && <a href="#specifikationer" className="!text-white">Produktdetaljer</a>}<a href="#kundinformation" className="!text-white">Kundinformation</a></div></div>
       {/* Description of a product  */}
       <section id="produktinformation" className="section border-t border-border">
         <div className="container"><h2 className="text-center mb-8">Upptäck {title}</h2>
-        {images.slice(1,4).map((image,index)=><div key={image.url} className="grid md:grid-cols-2 gap-8 items-center my-12"><img src={image.url} alt={image.altText || title} className={`w-full object-contain max-h-[500px] rounded-lg ${index%2 ? "md:order-2" : ""}`} /><div><h3 className="mb-4">{title}</h3><a href="#produktinformation" className="underline">Produktinformation</a></div></div>)}
-        {fields.length > 0 && <div className="max-w-4xl mx-auto"><h2 className="mb-6">Produktdetaljer</h2><Tabs descriptionHtml="" fields={fields} /></div>}
+        <div className="grid md:grid-cols-2 items-center gap-10 my-10">{images[0] && <img src={images[0].url} alt={images[0].altText || title} className="w-full max-h-[540px] object-contain" />}<div>{description && <p className="text-lg leading-relaxed whitespace-pre-line">{description.split("--- split content ---")[0]}</p>}</div></div>
+        {fields.length > 0 && <div id="specifikationer" className="max-w-4xl mx-auto scroll-mt-32"><h2 className="mb-6">Produktdetaljer</h2><Tabs descriptionHtml="" fields={fields} /></div>}
         </div>
       </section>
       <section className="bg-black text-white py-16"><div className="container text-center"><h2 className="!text-white mb-6">Handla med trygghet.</h2><div className="flex flex-wrap justify-center gap-8"><a href="/contact" className="text-white underline">Kundservice</a><a href="/terms-services" className="text-white underline">Köpvillkor</a><a href="/privacy-policy" className="text-white underline">Integritet</a></div></div></section>
 
+      <section id="kundinformation" className="py-16 scroll-mt-28"><div className="container"><h2 className="text-center mb-8">Vanliga frågor</h2><div className="max-w-3xl mx-auto"><Accordion title="Var hittar jag produktens specifikationer?"><p>Se produktinformationen ovan för tillgängliga tekniska uppgifter.</p></Accordion><Accordion title="Hur fungerar leverans och retur?"><Link href="/terms-services" className="underline">Läs våra köpvillkor</Link></Accordion><Accordion title="Behöver du hjälp att välja?"><Link href="/contact" className="underline">Kontakta Pawlira</Link></Accordion></div></div></section>
       {/* Recommended Products section  */}
       <section className="section">
         <div className="container">
