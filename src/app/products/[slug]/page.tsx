@@ -10,7 +10,7 @@ import ProductSectionNav from "@/components/product/ProductSectionNav";
 import {productFields} from "@/lib/utils/productFields";
 import {customerOptions,customerText,customerHtml,customerVariants} from "@/lib/utils/customerProduct";
 import ProductStory from "@/components/product/ProductStory";
-import {FiPackage,FiRefreshCcw,FiHelpCircle,FiArrowUpRight} from "react-icons/fi";
+import {LuPackage as FiPackage,LuRefreshCcw as FiRefreshCcw,LuCircleHelp as FiHelpCircle,LuArrowUpRight as FiArrowUpRight} from "react-icons/lu";
 import { notFound } from "next/navigation";
 import { Suspense, cache } from "react";
 import config from "@/config/config.json";
@@ -100,8 +100,8 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
               </div>
 
               {description && <p className="text-sm leading-relaxed text-text-light mb-6">{description.slice(0, 240)}{description.length > 240 ? "…" : ""}</p>}
-              <Link href={"/compare?product="+encodeURIComponent(product.handle)} className="pawlira-product-compare-link">Jämför med andra modeller <FiArrowUpRight size={17}/></Link>
-              <div className="pawlira-purchase-facts">{[{Icon:FiPackage,title:"Leverans",href:"/shipping-policy"},{Icon:FiRefreshCcw,title:"Retur",href:"/refund-policy"},{Icon:FiHelpCircle,title:"Kundservice",href:"/contact"}].map(({Icon,title,href})=><Link href={href} key={href}><Icon size={20}/><span>{title}</span><FiArrowUpRight size={14}/></Link>)}</div><Tabs descriptionHtml={descriptionHtml} fields={fields} /></div>
+              <Link href={"/compare?product="+encodeURIComponent(product.handle)} className="pawlira-product-compare-link">Jämför med andra modeller <FiArrowUpRight size={20} strokeWidth={1.5}/></Link>
+              <div className="pawlira-purchase-facts">{[{Icon:FiPackage,title:"Leverans",href:"/shipping-policy"},{Icon:FiRefreshCcw,title:"Retur",href:"/refund-policy"},{Icon:FiHelpCircle,title:"Kundservice",href:"/contact"}].map(({Icon,title,href})=><Link href={href} key={href}><Icon size={20} strokeWidth={1.5}/><span>{title}</span><FiArrowUpRight size={20} strokeWidth={1.5}/></Link>)}</div><Tabs descriptionHtml={descriptionHtml} fields={fields} /></div>
             </div>
           </div>
         </div>
@@ -113,7 +113,7 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
       {relatedProducts?.length > 0 && <section id="relaterade" className="container pawlira-home-section scroll-mt-48">
           {relatedProducts?.length > 0 && (
             <>
-              <div className="pawlira-section-heading"><div><p className="pawlira-eyebrow">Fler möjligheter</p><h2>Fler produkter för din katt</h2></div><Link href="/products" className="pawlira-text-link">Hela sortimentet<FiArrowUpRight size={20}/></Link></div>
+              <div className="pawlira-section-heading"><div><p className="pawlira-eyebrow">Fler möjligheter</p><h2>Fler produkter för din katt</h2></div><Link href="/products" className="pawlira-text-link">Hela sortimentet<FiArrowUpRight size={20} strokeWidth={1.5}/></Link></div>
               <LatestProducts products={relatedProducts.slice(0, 6)} />
             </>
           )}
