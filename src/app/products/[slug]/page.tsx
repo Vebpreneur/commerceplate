@@ -48,6 +48,15 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
   } = product;
 
   const relatedProducts = await getProductRecommendations(id);
+  const labels: Record<string,string> = {specifications:"Tekniska specifikationer", spec:"Specifikationer", technical_specifications:"Tekniska specifikationer", details:"Produktdetaljer", detaljer:"Produktdetaljer", included:"Vad ingår?", ingar:"Vad ingår?", features:"Funktioner och egenskaper", faq:"Vanliga frågor"};
+  const fields = (product.metafields || []).flatMap(field => {
+    if (!field?.value || field.type.includes("reference")) return [];
+    let value = field.value;
+    if (field.type === "rich_text_field") {
+      try { const flatten = (node:any):string => node.type === "text" ? node.value || "" : (node.children || []).map(flatten).join(node.type === "root" || node.type === "list" ? "\n" : ""); value = flatten(JSON.parse(value)); } catch { return []; }
+    } else if (field.type.startsWith("list.")) { try { value = JSON.parse(value).join("\n"); } catch {} }
+    return [{title: labels[field.key] || field.key, value}];
+  });
 
   const defaultVariantId = variants.length > 0 ? variants[0].id : undefined;
 
@@ -104,24 +113,21 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
                 </Suspense>
               </div>
 
-              {description && <p className="text-sm leading-relaxed text-text-light">{description.slice(0, 240)}{description.length > 240 ? "…" : ""}</p>}
+              {description && <p className="text-sm leading-relaxed text-text-light mb-6">{description.slice(0, 240)}{description.length > 240 ? "…" : ""}</p>}
+              <Tabs descriptionHtml={descriptionHtml} fields={fields} />
             </div>
           </div>
         </div>
       </section>
 
       {/* Description of a product  */}
-      {description && (
-        <section id="produktinformation" className="section scroll-mt-28">
-          <div className="container">
-            <div className="row">
-              <div className="col-12 lg:col-10 mx-auto">
-                <Tabs descriptionHtml={descriptionHtml} />
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
+      <section id="produktinformation" className="section border-t border-border">
+        <div className="container"><h2 className="text-center mb-8">Upptäck {title}</h2>
+        {images.slice(1,4).map((image,index)=><div key={image.url} className="grid md:grid-cols-2 gap-8 items-center my-12"><img src={image.url} alt={image.altText || title} className={`w-full object-contain max-h-[500px] rounded-lg ${index%2 ? "md:order-2" : ""}`} /><div><h3 className="mb-4">{title}</h3><a href="#produktinformation" className="underline">Produktinformation</a></div></div>)}
+        {fields.length > 0 && <div className="max-w-4xl mx-auto"><h2 className="mb-6">Produktdetaljer</h2><Tabs descriptionHtml="" fields={fields} /></div>}
+        </div>
+      </section>
+      <section className="bg-black text-white py-16"><div className="container text-center"><h2 className="!text-white mb-6">Handla med trygghet.</h2><div className="flex flex-wrap justify-center gap-8"><a href="/contact" className="text-white underline">Kundservice</a><a href="/terms-services" className="text-white underline">Köpvillkor</a><a href="/privacy-policy" className="text-white underline">Integritet</a></div></div></section>
 
       {/* Recommended Products section  */}
       <section className="section">
