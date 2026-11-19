@@ -5,7 +5,7 @@ import type { user } from "@/lib/shopify/types";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Gravatar from "react-gravatar";
 import { BsPerson } from "react-icons/bs";
 
@@ -30,6 +30,8 @@ const NavUser = () => {
   const pathname = usePathname();
   const [user, setUser] = useState<any>();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const region=useRef<HTMLDivElement>(null);
+  useEffect(()=>{if(!dropdownOpen)return;const outside=(e:PointerEvent)=>{if(!region.current?.contains(e.target as Node))setDropdownOpen(false)};const escape=(e:KeyboardEvent)=>{if(e.key==="Escape")setDropdownOpen(false)};document.addEventListener("pointerdown",outside);document.addEventListener("keydown",escape);return()=>{document.removeEventListener("pointerdown",outside);document.removeEventListener("keydown",escape)}},[dropdownOpen]);
 
   useEffect(() => {
     const getUser = async () => {
@@ -52,9 +54,10 @@ const NavUser = () => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative" ref={region}>
       {user ? (
         <button
+          type="button" aria-label="Mitt konto" aria-expanded={dropdownOpen}
           onClick={toggleDropdown}
           className="relative cursor-pointer text-left sm:text-xs flex items-center justify-center"
         >
@@ -91,19 +94,19 @@ const NavUser = () => {
         <Link
           className="text-xl text-white hover:text-neutral-300 dark:border-darkmode-border dark:text-white flex items-center"
           href="/login"
-          aria-label="login"
+          aria-label="Logga in"
         >
           <BsPerson className="dark:hover:text-darkmode-primary" />
         </Link>
       )}
 
       {dropdownOpen && (
-        <div className="z-20 text-center absolute w-full right-8 bg-transparent shadow-md rounded mt-2">
+        <div className="pawlira-account-dropdown">
           <button
             onClick={handleLogout}
             className="btn btn-primary max-md:btn-sm mt-2"
           >
-            Logout
+            Logga ut
           </button>
         </div>
       )}

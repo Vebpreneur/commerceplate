@@ -114,7 +114,7 @@
 .pawlira-header-inner{display:grid;grid-template-columns:auto minmax(0,1fr) minmax(210px,28%) auto;align-items:center;gap:22px;position:relative}
 .pawlira-main-links{display:flex;align-items:center;justify-content:center;gap:clamp(12px,1.65vw,26px);white-space:nowrap;font-size:.88rem;font-weight:500}
 .pawlira-main-links a,.pawlira-menu-toggle{color:#fff!important}
-.pawlira-main-links a:hover{opacity:.75}
+.pawlira-main-links>a:hover{opacity:.85}
 .pawlira-header-actions{display:flex;align-items:center;gap:20px;color:#fff;justify-content:flex-end}
 .pawlira-header-actions>button{color:#fff}
 .pawlira-header-search{min-width:0}
@@ -146,7 +146,7 @@
 .pawlira-menu-category summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 0;font-weight:600;font-size:1.03rem}
 .pawlira-menu-category summary::-webkit-details-marker{display:none}
 .pawlira-menu-category summary svg{transition:transform .2s;flex-shrink:0}
-.pawlira-menu-category[open] summary svg{transform:rotate(180deg)}
+.pawlira-menu-category[open] summary>svg{transform:rotate(180deg)}
 .pawlira-menu-models{padding:0 0 14px}
 .pawlira-menu-model{display:flex;align-items:center;gap:12px;border:1px solid transparent;border-radius:8px;padding:7px 5px;color:#111!important;transition:border-color .2s}
 .pawlira-menu-model:hover{border-color:#aaa}
@@ -186,7 +186,7 @@
 /* Shared visual language for all navigation surfaces */
 .pawlira-polished-header{padding-block:13px}
 .pawlira-header-inner{column-gap:clamp(16px,1.6vw,25px)}
-.pawlira-main-links>.pawlira-mega-region,.pawlira-main-links>a{position:relative}
+.pawlira-main-links>.pawlira-mega-region{position:static}.pawlira-main-links>a{position:relative}
 .pawlira-main-links>a{padding:10px 0}
 .pawlira-main-links>a:after,.pawlira-main-menu-button:after{content:"";position:absolute;left:0;right:0;bottom:2px;height:1px;background:#fff;transform:scaleX(0);transform-origin:left;transition:transform .22s}
 .pawlira-main-links>a:hover:after,.pawlira-main-links>a[aria-current=page]:after,.pawlira-main-menu-button:hover:after,.pawlira-main-menu-button[aria-expanded=true]:after{transform:scaleX(1)}
@@ -260,3 +260,7 @@
 @media(max-width:1280px){.pawlira-mega-layout{grid-template-columns:205px minmax(0,1fr);gap:22px}.pawlira-mega-products{gap:9px}.pawlira-mega-product{padding:8px}}
 @media(max-width:640px){.pawlira-polished-header{padding-block:12px}.pawlira-header-logo img{width:138px!important}.pawlira-header-actions{gap:10px}.pawlira-header-actions .pawlira-menu-toggle{min-width:36px;padding:5px}.pawlira-drawer-title{font-size:1.65rem}.pawlira-menu-head{padding-top:16px;padding-bottom:16px}.pawlira-menu-content{padding-top:20px}.pawlira-footer-grid{gap:26px 16px}}
 @media(prefers-reduced-motion:reduce){.pawlira-mega-menu,.pawlira-mega-content{animation:none}.pawlira-mega-product-image img,.pawlira-mega-product>svg,.pawlira-main-menu-button svg,.pawlira-main-menu-button:after,.pawlira-main-links>a:after,.pawlira-footer-cta svg{transition:none;transform:none!important}}
+
+.pawlira-main-menu-button:focus-visible,.pawlira-header-actions button:focus-visible,.pawlira-main-links>a:focus-visible{outline:2px solid white;outline-offset:4px}.pawlira-mega-menu button:focus-visible,.pawlira-mega-menu a:focus-visible,.pawlira-menu-shell a:focus-visible,.pawlira-menu-shell summary:focus-visible,.pawlira-menu-shell button:focus-visible{outline:2px solid #111;outline-offset:2px}
+
+.pawlira-account-dropdown{position:absolute;right:0;top:calc(100% + 12px);min-width:155px;padding:10px;background:#fff;color:#111;border:1px solid #ddd;border-radius:10px;box-shadow:0 10px 24px #0002;z-index:50}.pawlira-account-dropdown button{width:100%;margin:0;border-radius:999px;font-size:.82rem}
