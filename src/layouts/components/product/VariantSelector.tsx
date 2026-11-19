@@ -4,7 +4,8 @@ import { ProductOption, ProductVariant } from "@/lib/shopify/types";
 import { createUrl } from "@/lib/utils";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
-import { ImageItem } from "./ProductGallery";
+import {selectedProductVariant} from "@/lib/utils/productSelection";
+import type { ImageItem } from "./ProductGallery";
 
 export const generateImageMap = (images: ImageItem[]) => Object.fromEntries(images.filter(image=>image.altText).map(image=>[image.altText.toLowerCase(),image.url]));
 
@@ -12,10 +13,7 @@ export function VariantSelector({options, variants, images}: {options:ProductOpt
  const router = useRouter();
  const pathname = usePathname();
  const params = useSearchParams();
- const names = new Set(options.map(o=>o.name.toLowerCase()));
- const selected = Array.from(params.entries()).filter(([key])=>names.has(key));
- const matches = variants.filter(v=>selected.every(([key,value])=>v.selectedOptions.some(o=>o.name.toLowerCase()===key && o.value===value)));
- const active = matches.find(v=>v.availableForSale) || matches[0];
+ const active=selectedProductVariant(variants,params);
  const imageMap = generateImageMap(images);
  const money = (m:{amount:string;currencyCode:string})=>new Intl.NumberFormat("sv-SE",{style:"currency",currency:m.currencyCode}).format(Number(m.amount));
  const labels:Record<string,string> = {color:"Färg",colour:"Färg",size:"Storlek",material:"Material",style:"Utförande"};
@@ -29,7 +27,7 @@ export function VariantSelector({options, variants, images}: {options:ProductOpt
          const candidates=variants.filter(v=>v.selectedOptions.some(o=>o.name.toLowerCase()===key&&o.value===item));
          const preferred=candidates.find(v=>v.availableForSale&&v.selectedOptions.every(o=>o.name.toLowerCase()===key||active?.selectedOptions.some(a=>a.name===o.name&&a.value===o.value)))||candidates.find(v=>v.availableForSale);
          const isActive=value===item;
-         const thumb=["color","colour","färg"].includes(key)?imageMap[item.toLowerCase()]:undefined;
+         const thumb=["color","colour","färg"].includes(key)?preferred?.image?.url||candidates.find(v=>v.image?.url)?.image?.url||imageMap[item.toLowerCase()]:undefined;
          return <button key={item} type="button" aria-pressed={isActive} disabled={!preferred} className={`pawlira-option ${isActive?"is-selected":""}`} onClick={()=>{if(!preferred)return;const next=new URLSearchParams(params.toString());preferred.selectedOptions.forEach(o=>next.set(o.name.toLowerCase(),o.value));router.replace(createUrl(pathname,next),{scroll:false});}}>{thumb&&<Image src={thumb} alt="" width={42} height={42} className="rounded object-contain aspect-square"/>}{item}{!preferred&&<span className="sr-only"> – slut i lager</span>}</button>
        })}
      </div></fieldset>

@@ -1,375 +1,51 @@
 "use client";
-
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
-import {
-  JSX,
-  MouseEvent,
-  TouchEvent,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { FiZoomIn } from "react-icons/fi";
-import {
-  HiOutlineArrowNarrowLeft,
-  HiOutlineArrowNarrowRight,
-} from "react-icons/hi";
-import type { Swiper as TSwiper } from "swiper";
-import "swiper/css";
-import "swiper/css/free-mode";
-import "swiper/css/navigation";
-import "swiper/css/thumbs";
-import { FreeMode, Navigation, Thumbs } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
+import {useSearchParams} from "next/navigation";
+import {useEffect,useRef,useState} from "react";
+import {FiChevronLeft,FiChevronRight,FiMaximize2,FiMinimize2,FiImage,FiX} from "react-icons/fi";
+import type {ProductVariant} from "@/lib/shopify/types";
+import {selectedProductVariant} from "@/lib/utils/productSelection";
 
-export interface ImageItem {
-  url: string;
-  altText: string;
-  width: number;
-  height: number;
+export interface ImageItem {url:string;altText:string;width:number;height:number}
+type Props={images:ImageItem[];variants?:ProductVariant[];title?:string};
+const imageKey=(url:string)=>url.split("?")[0];
+function GalleryView({images,title}:{images:ImageItem[];title:string}){
+ const [index,setIndex]=useState(0),[failed,setFailed]=useState<string[]>([]),[expanded,setExpanded]=useState(false),[zoom,setZoom]=useState(false);
+ const dialog=useRef<HTMLDialogElement>(null),thumbs=useRef<HTMLDivElement>(null),trigger=useRef<HTMLButtonElement>(null);
+ const touch=useRef<{x:number;y:number}|null>(null);
+ const list=images.filter(p=>!failed.includes(p.url)),i=Math.min(index,Math.max(0,list.length-1)),current=list[i];
+ const move=(step:number)=>{if(list.length<2)return;setIndex((i+step+list.length)%list.length);setZoom(false)};
+ useEffect(()=>{const el=dialog.current;if(!el)return;if(expanded&&!el.open)el.showModal();if(!expanded&&el.open)el.close();if(!expanded)return;const prev=document.body.style.overflow;document.body.style.overflow="hidden";return()=>{document.body.style.overflow=prev}},[expanded]);
+ useEffect(()=>{const el=thumbs.current?.children[i] as HTMLElement|undefined;if(!el||!thumbs.current)return;const holder=thumbs.current;const left=el.offsetLeft-holder.offsetLeft;if(left<holder.scrollLeft||left+el.offsetWidth>holder.scrollLeft+holder.clientWidth){holder.scrollTo({left:Math.max(0,left-12),behavior:"auto"})}},[i]);
+ const keys=(e:React.KeyboardEvent)=>{if(e.key==="ArrowLeft"||e.key==="ArrowRight"){e.preventDefault();move(e.key==="ArrowLeft"?-1:1)}};
+ const close=()=>{setExpanded(false);setZoom(false)};
+ const error=(url:string)=>setFailed(old=>old.includes(url)?old:[...old,url]);
+ if(!current)return <div className="pawlira-gallery-missing"><FiImage size={38}/><p>Produktbild saknas</p></div>;
+ return <div className="pawlira-product-gallery" onKeyDown={keys}>
+ <div className="pawlira-gallery-stage" onTouchStart={e=>{const t=e.changedTouches[0];touch.current={x:t.clientX,y:t.clientY}}} onTouchEnd={e=>{const start=touch.current,t=e.changedTouches[0];touch.current=null;if(start&&Math.abs(t.clientX-start.x)>55&&Math.abs(t.clientY-start.y)<45)move(t.clientX<start.x?1:-1)}}>
+ <button ref={trigger} type="button" className="pawlira-gallery-photo" aria-label="Öppna produktbild i stort format" onClick={()=>setExpanded(true)}>
+ <Image key={current.url} src={current.url} alt={current.altText||title} fill sizes="(max-width: 1023px) 95vw, 720px" className="object-contain" onError={()=>error(current.url)} priority={i===0}/>
+ </button>
+ <span className="pawlira-gallery-counter" aria-live="polite">{i+1} / {list.length}</span>
+ <button type="button" className="pawlira-gallery-expand" aria-label="Förstora bild" onClick={()=>setExpanded(true)}><FiMaximize2 size={20}/></button>
+ {list.length>1&&<><button type="button" className="pawlira-gallery-arrow prev" aria-label="Föregående bild" onClick={()=>move(-1)}><FiChevronLeft size={25}/></button><button type="button" className="pawlira-gallery-arrow next" aria-label="Nästa bild" onClick={()=>move(1)}><FiChevronRight size={25}/></button></>}
+ </div>
+ {list.length>1&&<div ref={thumbs} className="pawlira-gallery-thumbs" aria-label="Produktbilder">{list.map((p,n)=><button type="button" key={p.url} aria-label={`Visa produktbild ${n+1}`} aria-pressed={i===n} onClick={()=>{setIndex(n);setZoom(false)}}><Image src={p.url} alt="" fill sizes="100px" className="object-contain" onError={()=>error(p.url)}/></button>)}</div>}
+ <dialog ref={dialog} className="pawlira-gallery-dialog" aria-label="Förstorad produktbild" onClose={()=>{close();trigger.current?.focus()}} onClick={e=>{if(e.target===e.currentTarget)close()}}>
+ <div className="pawlira-lightbox">
+ <div className="pawlira-lightbox-head"><div><p>{title}</p><span>Bild {i+1} av {list.length}</span></div><div className="flex items-center gap-2"><button type="button" aria-label={zoom?"Återställ zoom":"Zooma in"} aria-pressed={zoom} onClick={()=>setZoom(!zoom)}>{zoom?<FiMinimize2 size={22}/>:<FiMaximize2 size={22}/>}</button><button type="button" autoFocus aria-label="Stäng bildvisning" onClick={close}><FiX size={23}/></button></div></div>
+ {expanded&&<div className={"pawlira-lightbox-body "+(zoom?"is-zoomed":"")}><div className="pawlira-lightbox-image"><Image src={current.url} alt={current.altText||title} fill sizes="(max-width: 767px) 100vw, 1200px" className="object-contain" onError={()=>error(current.url)}/></div></div>}
+ <div className="pawlira-lightbox-foot">{list.length>1&&<><button type="button" aria-label="Föregående bild" onClick={()=>move(-1)}><FiChevronLeft size={24}/></button><div className="pawlira-lightbox-thumbs">{list.map((p,n)=><button key={p.url} type="button" aria-label={`Visa bild ${n+1}`} aria-pressed={i===n} onClick={()=>{setIndex(n);setZoom(false)}}><Image src={p.url} alt="" width={58} height={58} className="object-contain aspect-square"/></button>)}</div><button type="button" aria-label="Nästa bild" onClick={()=>move(1)}><FiChevronRight size={24}/></button></>}</div>
+ </div></dialog>
+ </div>;
 }
-
-interface Position {
-  x: number;
-  y: number;
+export default function ProductGallery({images,variants=[],title="Produktbild"}:Props){
+ const params=useSearchParams();
+ const variant=selectedProductVariant(variants,params);
+ const variantImage=variant?.image;
+ const color=params.get("color")||params.get("colour")||params.get("färg");
+ const preferred=variantImage?.url?{url:variantImage.url,altText:variantImage.altText||title,width:variantImage.width||800,height:variantImage.height||800}:color?images.find(p=>p.altText?.toLowerCase()===color.toLowerCase()):undefined;
+ const unique=Array.from(new Map(images.filter(p=>p.url).map(p=>[imageKey(p.url),p])).values());
+ const ordered=preferred?[preferred,...unique.filter(p=>imageKey(p.url)!==imageKey(preferred.url))]:unique;
+ return <GalleryView key={preferred?.url||"default"} images={ordered} title={title}/>;
 }
-
-interface CustomZoomImageProps {
-  src: string;
-  alt: string;
-  width: number;
-  height: number;
-}
-
-const CustomZoomImage = ({
-  src,
-  alt,
-  width,
-  height,
-}: CustomZoomImageProps): JSX.Element => {
-  const [isZoomed, setIsZoomed] = useState<boolean>(false);
-  const [position, setPosition] = useState<Position>({ x: 0.5, y: 0.5 });
-  const [showMagnifier, setShowMagnifier] = useState<boolean>(false);
-  const [isTouchDevice] = useState<boolean>(() =>
-    typeof window !== "undefined"
-      ? "ontouchstart" in window || navigator.maxTouchPoints > 0
-      : false,
-  );
-  const [touchStartPosition, setTouchStartPosition] = useState<Position | null>(
-    null,
-  );
-  const [touchMoveCount, setTouchMoveCount] = useState<number>(0);
-  const imageRef = useRef<HTMLDivElement | null>(null);
-
-  const updatePosition = (clientX: number, clientY: number): void => {
-    if (!imageRef.current) return;
-
-    const { left, top, width, height } =
-      imageRef.current.getBoundingClientRect();
-
-    // Calculate position in percentage (0 to 1)
-    const x = Math.max(0, Math.min(1, (clientX - left) / width));
-    const y = Math.max(0, Math.min(1, (clientY - top) / height));
-
-    setPosition({ x, y });
-  };
-
-  const handleMouseMove = (e: MouseEvent<HTMLDivElement>): void => {
-    if (isTouchDevice) return;
-    updatePosition(e.clientX, e.clientY);
-  };
-
-  // Handle touch events
-  const handleTouchStart = (e: TouchEvent<HTMLDivElement>): void => {
-    if (e.touches.length === 1) {
-      const touch = e.touches[0];
-      updatePosition(touch.clientX, touch.clientY);
-
-      // Store touch start position to determine if it was a tap or pan
-      setTouchStartPosition({
-        x: touch.clientX,
-        y: touch.clientY,
-      });
-
-      setTouchMoveCount(0);
-
-      // Only show magnifier on first touch if not already zoomed
-      if (!isZoomed) {
-        setShowMagnifier(true);
-      }
-    }
-  };
-
-  const handleTouchMove = (e: TouchEvent<HTMLDivElement>): void => {
-    if (e.touches.length === 1) {
-      const touch = e.touches[0];
-      updatePosition(touch.clientX, touch.clientY);
-      setTouchMoveCount((prev) => prev + 1);
-    }
-  };
-
-  const handleTouchEnd = (_e: TouchEvent<HTMLDivElement>): void => {
-    // If almost no movement (less than 5 position updates), consider it a tap
-    if (touchMoveCount < 5 && touchStartPosition) {
-      handleClick();
-    }
-
-    // Reset touch tracking
-    setTouchStartPosition(null);
-
-    // Hide magnifier on touch end if not zoomed
-    if (!isZoomed) {
-      setShowMagnifier(false);
-    }
-  };
-
-  const handleClick = (): void => {
-    setIsZoomed(!isZoomed);
-  };
-
-  return (
-    <div
-      className={`relative w-full h-full overflow-hidden rounded-md ${
-        !isZoomed && showMagnifier
-          ? "cursor-zoom-in"
-          : isZoomed
-            ? "cursor-zoom-out"
-            : ""
-      }`}
-      ref={imageRef}
-      onMouseEnter={() => !isTouchDevice && setShowMagnifier(true)}
-      onMouseLeave={() => !isTouchDevice && setShowMagnifier(false)}
-      onMouseMove={handleMouseMove}
-      onClick={!isTouchDevice ? handleClick : undefined}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-    >
-      <Image
-        src={src}
-        alt={alt}
-        width={width}
-        height={height}
-        className="w-full h-full object-contain"
-        draggable={false}
-      />
-
-      {/* Magnifying glass icon - shown on hover for desktop, shown on touch for mobile */}
-      {showMagnifier && !isZoomed && (
-        <div
-          className="absolute z-10 flex items-center justify-center bg-white opacity-70 rounded-full p-1 shadow-md"
-          style={{
-            left: `${position.x * 100}%`,
-            top: `${position.y * 100}%`,
-            transform: "translate(-50%, -50%)",
-            pointerEvents: "none",
-            width: isTouchDevice ? "40px" : "24px",
-            height: isTouchDevice ? "40px" : "24px",
-          }}
-        >
-          <FiZoomIn size={isTouchDevice ? 24 : 16} />
-        </div>
-      )}
-
-      {/* Zoomed view */}
-      {isZoomed && (
-        <div
-          className="absolute top-0 left-0 right-0 bottom-0 cursor-zoom-out"
-          style={{
-            backgroundImage: `url(${src})`,
-            backgroundSize: "200% 200%",
-            backgroundPosition: `${position.x * 100}% ${position.y * 100}%`,
-            zIndex: 10,
-          }}
-        />
-      )}
-
-      {/* Touch zoom instructions - only shown briefly on first touch */}
-      {isTouchDevice && isZoomed && (
-        <div className="absolute bottom-2 left-0 right-0 text-center bg-black opacity-50 text-white py-1 text-sm z-20">
-          Dra för att flytta, tryck för att avsluta
-        </div>
-      )}
-    </div>
-  );
-};
-
-interface ProductGalleryProps {
-  images: ImageItem[];
-}
-
-// Helper function to get active index from color - defined outside component
-const getActiveIndexFromColor = (
-  color: string | null,
-  uniqueAltTexts: string[],
-): number => {
-  if (!color) return 0;
-  const index = uniqueAltTexts.indexOf(color);
-  return index >= 0 ? index : 0;
-};
-
-interface ProductGalleryInnerProps extends ProductGalleryProps {
-  activeIndex: number;
-  uniqueAltTexts: string[];
-  colorParam: string | null;
-}
-
-const ProductGalleryInner = ({
-  images,
-  activeIndex,
-  uniqueAltTexts,
-  colorParam,
-}: ProductGalleryInnerProps): JSX.Element => {
-  const [thumbsSwiper, setThumbsSwiper] = useState<TSwiper | null>(null);
-  const [mainSwiper, setMainSwiper] = useState<TSwiper | null>(null);
-  const [isHovered, setIsHovered] = useState<boolean>(false);
-  const [isTouchDevice] = useState<boolean>(() =>
-    typeof window !== "undefined"
-      ? "ontouchstart" in window || navigator.maxTouchPoints > 0
-      : false,
-  );
-
-  const matchingImages = images.filter((item) => item.altText === uniqueAltTexts[activeIndex]);
-  const filteredImages: ImageItem[] = colorParam && matchingImages.length && uniqueAltTexts.includes(colorParam) ? [...matchingImages, ...images.filter(item => !matchingImages.includes(item))] : images;
-
-  const [picUrl, setPicUrl] = useState<string>(filteredImages[0]?.url || "");
-
-  const [prevEl, setPrevEl] = useState<HTMLDivElement | null>(null);
-  const [nextEl, setNextEl] = useState<HTMLDivElement | null>(null);
-
-  // Reset swiper to first slide when color changes (activeIndex changes)
-  useEffect(() => {
-    if (mainSwiper) {
-      mainSwiper.slideTo(0);
-    }
-  }, [activeIndex, mainSwiper]);
-
-  const handleSlideChange = (swiper: TSwiper): void => {
-    setPicUrl(filteredImages[swiper.activeIndex]?.url || "");
-  };
-
-  const handleThumbSlideClick = (clickedUrl: string): void => {
-    const foundIndex: number = filteredImages.findIndex(
-      (item: ImageItem) => item.url === clickedUrl,
-    );
-    if (foundIndex !== -1) {
-      // Navigate main swiper to the clicked thumb
-      if (mainSwiper) {
-        mainSwiper.slideTo(foundIndex);
-      }
-      setPicUrl(filteredImages[foundIndex]?.url || "");
-    }
-  };
-
-  return (
-    <>
-      <div
-        className="relative"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
-        <Swiper
-          spaceBetween={10}
-          thumbs={{ swiper: thumbsSwiper }}
-          modules={[FreeMode, Navigation, Thumbs]}
-          navigation={{
-            prevEl,
-            nextEl,
-          }}
-          onSwiper={setMainSwiper}
-          onSlideChange={handleSlideChange}
-          allowTouchMove={isTouchDevice || !isHovered} // Disable Swiper touch when zooming is active
-        >
-          {filteredImages.map((item: ImageItem) => (
-            <SwiperSlide key={item.url}>
-              <div className="mb-4 bg-white rounded-xl aspect-square overflow-hidden">
-                <CustomZoomImage
-                  src={item.url}
-                  alt={item.altText || "Produktbild"}
-                  width={item.width || 722}
-                  height={item.height || 623}
-                />
-              </div>
-            </SwiperSlide>
-          ))}
-          {filteredImages.length > 1 && <div
-            className={`w-full absolute top-1/2 -translate-y-1/2 z-10 px-6 text-text-dark pointer-events-none ${
-              isHovered
-                ? "opacity-100 transition-opacity duration-300 ease-in-out"
-                : "opacity-100 lg:opacity-60 transition-opacity duration-300 ease-in-out"
-            }`}
-          >
-            <div
-              role="button" tabIndex={0} aria-label="Föregående bild" onKeyDown={e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();mainSwiper?.slidePrev();}}}
-              ref={setPrevEl}
-              className="pointer-events-auto p-2 lg:p-3 rounded-full bg-white border border-border cursor-pointer shadow-sm absolute left-4"
-            >
-              <HiOutlineArrowNarrowLeft size={24} />
-            </div>
-            <div
-              role="button" tabIndex={0} aria-label="Nästa bild" onKeyDown={e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();mainSwiper?.slideNext();}}}
-              ref={setNextEl}
-              className="pointer-events-auto p-2 lg:p-3 rounded-full bg-white border border-border cursor-pointer shadow-sm absolute right-4"
-            >
-              <HiOutlineArrowNarrowRight size={24} />
-            </div>
-          </div>}
-        </Swiper>
-      </div>
-      {filteredImages.length > 1 && <Swiper
-        onSwiper={setThumbsSwiper}
-        spaceBetween={10}
-        slidesPerView={isTouchDevice ? 3.5 : 4}
-        freeMode={true}
-        watchSlidesProgress={true}
-        modules={[FreeMode, Navigation, Thumbs]}
-      >
-        {filteredImages.map((item: ImageItem) => (
-          <SwiperSlide key={item.url}>
-            <button type="button" aria-label={`Visa bild ${filteredImages.indexOf(item)+1}`} aria-pressed={picUrl === item.url}
-              onClick={() => handleThumbSlideClick(item.url)}
-              className={`w-full rounded-md cursor-pointer overflow-hidden transition-colors hover:border-black ${
-                picUrl === item.url
-                  ? "border border-darkmode-border dark:border-yellow-500"
-                  : "border border-border dark:border-border/40"
-              }`}
-            >
-              <Image
-                src={item.url}
-                alt={item.altText}
-                width={168}
-                height={146}
-                className="aspect-square w-full object-contain"
-                draggable={false}
-              />
-            </button>
-          </SwiperSlide>
-        ))}
-      </Swiper>}
-    </>
-  );
-};
-
-const ProductGallery = ({ images }: ProductGalleryProps): JSX.Element => {
-  const searchParams = useSearchParams();
-  const colorParam = searchParams.get("color") || searchParams.get("colour") || searchParams.get("färg");
-
-  const altTextArray: string[] = images.map((item: ImageItem) => item.altText);
-  const uniqueAltTexts = [...new Set(altTextArray)];
-  const activeIndex = getActiveIndexFromColor(colorParam, uniqueAltTexts);
-
-  if (!images.length) return <div className="aspect-square flex items-center justify-center border border-border rounded-xl">Produktbild saknas</div>;
-  // Use key to force remount when color changes
-  return (
-    <ProductGalleryInner
-      key={colorParam || "default"}
-      images={images}
-      activeIndex={activeIndex}
-      uniqueAltTexts={uniqueAltTexts}
-      colorParam={colorParam}
-    />
-  );
-};
-
-export default ProductGallery;

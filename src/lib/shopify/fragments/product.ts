@@ -44,6 +44,7 @@ const productFragment = /* GraphQL */ `
             amount
             currencyCode
           }
+          image { ...image }
           compareAtPrice {
             amount
             currencyCode

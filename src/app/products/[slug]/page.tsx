@@ -6,6 +6,7 @@ import { VariantSelector } from "@/components/product/VariantSelector";
 import { getProduct, getProductRecommendations } from "@/lib/shopify";
 import LatestProducts from "@/partials/FeaturedProducts";
 import Link from "next/link";
+import ProductSectionNav from "@/components/product/ProductSectionNav";
 import ProductStory from "@/components/product/ProductStory";
 import {FiPackage,FiRefreshCcw,FiHelpCircle,FiArrowUpRight} from "react-icons/fi";
 import { notFound } from "next/navigation";
@@ -82,7 +83,7 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
             {/* right side contents  */}
             <div className="col-12 lg:col-7"><div className="lg:sticky lg:top-28 pawlira-gallery-frame">
               <Suspense>
-                <ProductGallery images={images} />
+                <ProductGallery images={images} variants={variants} title={title} />
               </Suspense></div>
             </div>
 
@@ -111,15 +112,13 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
         </div>
       </section>
 
-      <nav aria-label="Produktnavigation" className="pawlira-detail-nav pawlira-product-section-nav bg-black text-white py-3"><div className="container flex overflow-x-auto gap-6 md:justify-center md:gap-10 text-sm"><a href="#kop" className="!text-white">Köp</a><a href="#produktinformation" className="!text-white">Produktöversikt</a>{fields.some(f=>f.title!=="Vanliga frågor"&&f.value.trim()) && <a href="#specifikationer" className="!text-white">Produktdetaljer</a>}<a href="#kundinformation" className="!text-white">Kundinformation</a></div></nav>
+      <ProductSectionNav hasDetails={fields.some(f=>f.title!=="Vanliga frågor"&&f.value.trim())} hasGallery={images.length>2} hasRelated={relatedProducts.length>0}/>
       <ProductStory product={product} fields={fields}/>
       {/* Recommended Products section  */}
-      {relatedProducts?.length > 0 && <section className="container pawlira-home-section">
+      {relatedProducts?.length > 0 && <section id="relaterade" className="container pawlira-home-section scroll-mt-48">
           {relatedProducts?.length > 0 && (
             <>
-              <div className="text-center mb-6 md:mb-14">
-                <h2 className="mb-2">Du kanske också gillar</h2>
-              </div>
+              <div className="pawlira-section-heading"><div><p className="pawlira-eyebrow">Fler möjligheter</p><h2>Du kanske också gillar.</h2></div><Link href="/products" className="pawlira-text-link">Hela sortimentet<FiArrowUpRight size={20}/></Link></div>
               <LatestProducts products={relatedProducts.slice(0, 6)} />
             </>
           )}

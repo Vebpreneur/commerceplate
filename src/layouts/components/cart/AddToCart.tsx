@@ -1,5 +1,6 @@
 "use client";
 
+import {selectedProductVariant} from "@/lib/utils/productSelection";
 import { ProductVariant } from "@/lib/shopify/types";
 import { addSelectedItem } from "@/lib/utils/cartActions";
 import Link from "next/link";
@@ -81,20 +82,9 @@ export function AddToCart({
   const [quantity,setQuantity]=useState(1);
   const searchParams = useSearchParams();
 
-  // Find the variant based on selected options
-  const optionNames = new Set(variants.flatMap(v => v.selectedOptions.map(o => o.name.toLowerCase())));
-  const selectedOptions = Array.from(searchParams.entries()).filter(([key]) => optionNames.has(key));
-  const matches = variants.filter((variant: ProductVariant) =>
-    selectedOptions.every(([key, value]) =>
-      variant.selectedOptions.some(
-        (option) => option.name.toLowerCase() === key && option.value === value,
-      ),
-    ),
-  );
-
-  const variant = matches.find(v => v.availableForSale) || matches[0];
+  const variant = selectedProductVariant(variants,searchParams);
   // Use the default variant ID if no variant is found
-  const selectedVariantId = variant?.id || (selectedOptions.length === 0 ? defaultVariantId : undefined);
+  const selectedVariantId = variant?.id || (variants.length===0 ? defaultVariantId : undefined);
 
 
   return (
