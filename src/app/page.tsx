@@ -52,7 +52,7 @@ const Home = () => {
         </div>
       </section>
       {/* category section  */}
-      <section className="section">
+      <section className="py-12 lg:py-20">
         <div className="container">
           <div className="text-center mb-6 md:mb-14">
             <h2>Upptäck sortimentet</h2>
@@ -64,7 +64,7 @@ const Home = () => {
       </section>
 
       {/* Featured Products section  */}
-      <section className="section">
+      <section className="py-12 lg:py-20">
         <div className="container">
           <div className="text-center mb-6 md:mb-14">
             <h2 className="mb-2">Utvalda produkter</h2>
@@ -84,8 +84,8 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <section className="section"><div className="container text-center max-w-3xl"><h2 className="mb-5">Ett enklare liv tillsammans.</h2><p className="text-lg mb-8">Pawlira fokuserar på smarta produkter för livet med katt. Teknik och design som hör hemma i vardagen.</p><Link href="/about" className="btn btn-outline-primary rounded-full">Om Pawlira</Link></div></section>
-      <section className="section border-t border-border"><div className="container"><h2 className="text-center mb-8">Vanliga frågor</h2><div className="max-w-3xl mx-auto"><Accordion title="Var hittar jag produktens funktioner?"><p>På respektive produktsida hittar du tillgänglig produktinformation.</p></Accordion><Accordion title="Hur kontaktar jag Pawlira?"><Link href="/contact" className="underline">Kontakta oss</Link></Accordion><Accordion title="Var hittar jag köpvillkoren?"><Link href="/terms-services" className="underline">Läs köpvillkoren</Link></Accordion></div></div></section>
+      <section className="py-12 lg:py-20"><div className="container text-center max-w-3xl"><h2 className="mb-5">Ett enklare liv tillsammans.</h2><p className="text-lg mb-8">Pawlira fokuserar på smarta produkter för livet med katt. Teknik och design som hör hemma i vardagen.</p><Link href="/about" className="btn btn-outline-primary rounded-full">Om Pawlira</Link></div></section>
+      <section className="py-12 lg:py-20 border-t border-border"><div className="container"><h2 className="text-center mb-8">Vanliga frågor</h2><div className="max-w-3xl mx-auto"><Accordion title="Var hittar jag produktens funktioner?"><p>På respektive produktsida hittar du tillgänglig produktinformation.</p></Accordion><Accordion title="Hur kontaktar jag Pawlira?"><Link href="/contact" className="underline">Kontakta oss</Link></Accordion><Accordion title="Var hittar jag köpvillkoren?"><Link href="/terms-services" className="underline">Läs köpvillkoren</Link></Accordion></div></div></section>
     </>
   );
 };
