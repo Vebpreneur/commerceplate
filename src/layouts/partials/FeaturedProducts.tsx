@@ -1,12 +1,10 @@
 "use client";
 import { AddToCart } from "@/components/cart/AddToCart";
-import config from "@/config/config.json";
 import ImageFallback from "@/helpers/ImageFallback";
 import { Product } from "@/lib/shopify/types";
 import Link from "next/link";
 
 const FeaturedProducts = ({ products }: { products: Product[] }) => {
-  const { currencySymbol } = config.shopify;
 
   return (
     <>
@@ -35,7 +33,7 @@ const FeaturedProducts = ({ products }: { products: Product[] }) => {
                   width={312}
                   height={269}
                   alt={featuredImage?.altText || "fallback image"}
-                  className="w-[312px] h-[150px] md:h-[269px] object-cover border border-border rounded-md"
+                  className="w-[312px] h-[150px] md:h-[269px] object-contain bg-light border border-border rounded-md"
                 />
 
                 <AddToCart
@@ -59,17 +57,13 @@ const FeaturedProducts = ({ products }: { products: Product[] }) => {
                 </h2>
                 <div className="flex flex-wrap justify-center items-center gap-x-2 mt-2 md:mt-4">
                   <span className="text-base md:text-xl font-bold text-text-dark dark:text-darkmode-text-dark">
-                    {currencySymbol}{" "}
-                    {priceRange.minVariantPrice.amount}{" "}
-                    {compareAtPriceRange?.maxVariantPrice?.currencyCode}
+                    {new Intl.NumberFormat("sv-SE", { style: "currency", currency: priceRange.minVariantPrice.currencyCode }).format(Number(priceRange.minVariantPrice.amount))}
                   </span>
 
                   {parseFloat(compareAtPriceRange?.maxVariantPrice.amount) >
                     0 ? (
                     <s className="text-text-light dark:text-darkmode-text-light text-xs md:text-base font-medium">
-                      {currencySymbol}{" "}
-                      {compareAtPriceRange?.maxVariantPrice.amount}{" "}
-                      {compareAtPriceRange?.maxVariantPrice?.currencyCode}
+                      {new Intl.NumberFormat("sv-SE", { style: "currency", currency: compareAtPriceRange.maxVariantPrice.currencyCode }).format(Number(compareAtPriceRange.maxVariantPrice.amount))}
                     </s>
                   ) : (
                     ""
@@ -86,7 +80,7 @@ const FeaturedProducts = ({ products }: { products: Product[] }) => {
           className="btn btn-sm md:btn-lg btn-primary font-medium"
           href={"/products"}
         >
-          + See All Products
+          Visa alla produkter
         </Link>
       </div>
     </>
