@@ -122,7 +122,7 @@
 .pawlira-mega-toggle{display:grid;place-items:center;color:#fff;cursor:pointer;width:28px;height:32px}
 .pawlira-mega-toggle svg{transition:transform .2s}
 .pawlira-mega-menu{position:absolute;left:0;right:0;top:calc(100% + 16px);background:#fff;color:#111;box-shadow:0 16px 35px #0002;border:1px solid #ddd;border-radius:0 0 14px 14px;padding:28px;white-space:normal;z-index:45;max-height:70vh;overflow:auto}
-.pawlira-mega-menu a{color:#111!important}
+.pawlira-mega-menu a{color:#111}
 .pawlira-mega-top{display:flex;justify-content:space-between;align-items:center;padding-bottom:18px;border-bottom:1px solid #ddd;margin-bottom:22px;font-size:1rem}
 .pawlira-mega-top a,.pawlira-mega-category,.pawlira-mega-more{display:flex;gap:8px;align-items:center}
 .pawlira-mega-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:30px}
@@ -245,7 +245,7 @@
 .pawlira-menu-model[aria-current=page]{border-color:#111}
 .pawlira-menu-model-name{overflow-wrap:anywhere}
 .pawlira-menu-category-more{padding:12px 9px;border:1px solid #111;border-radius:999px;margin:8px 2px 0;align-items:center;transition:background .2s,color .2s}
-.pawlira-menu-category-more:hover{background:#000;color:#fff!important}
+.pawlira-menu-category-more:hover{background:#000;color:#fff}
 .pawlira-menu-empty{font-size:.88rem;line-height:1.6;padding:14px 0}
 .pawlira-menu-empty a{text-decoration:underline}
 .pawlira-menu-support a{padding:14px 0}

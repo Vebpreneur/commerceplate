@@ -1,5 +1,6 @@
 export const dynamic = "force-dynamic";
 import Link from "next/link";
+import {LuArrowUpRight} from "react-icons/lu";
 import SeoMeta from "@/partials/SeoMeta";
 import HomeSections from "@/partials/HomeSections";
 import SkeletonFeaturedProducts from "@/components/loadings/skeleton/SkeletonFeaturedProducts";
@@ -14,7 +15,7 @@ export default function Home(){
             <p className="pawlira-eyebrow">Pawlira</p>
             <h1 className="pawlira-h1 !text-white mb-6">Mindre städning. Mer tid med din katt</h1>
             <p className="text-white text-lg mb-8">Självrengörande kattlådor, foderautomater och vattenfontäner som sköter vardagsrutinerna och passar in i hemmet.</p>
-            <Link href="/products" className="btn btn-inverse !rounded-full">Upptäck sortimentet</Link>
+            <Link href="/products" className="btn btn-inverse !rounded-full">Upptäck sortimentet<LuArrowUpRight size={18} strokeWidth={1.5}/></Link>
           </div>
         </div>
       </section>

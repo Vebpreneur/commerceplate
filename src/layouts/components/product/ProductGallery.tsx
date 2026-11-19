@@ -2,7 +2,7 @@
 import Image from "next/image";
 import {useSearchParams} from "next/navigation";
 import {useEffect,useRef,useState} from "react";
-import {FiChevronLeft,FiChevronRight,FiMaximize2,FiMinimize2,FiImage,FiX} from "react-icons/fi";
+import {LuChevronLeft as FiChevronLeft,LuChevronRight as FiChevronRight,LuMaximize2 as FiMaximize2,LuMinimize2 as FiMinimize2,LuImage as FiImage,LuX as FiX} from "react-icons/lu";
 import type {ProductVariant} from "@/lib/shopify/types";
 import {selectedProductVariant} from "@/lib/utils/productSelection";
 
@@ -21,22 +21,22 @@ function GalleryView({images,title}:{images:ImageItem[];title:string}){
  const keys=(e:React.KeyboardEvent)=>{if(e.key==="ArrowLeft"||e.key==="ArrowRight"){e.preventDefault();move(e.key==="ArrowLeft"?-1:1)}};
  const close=()=>{setExpanded(false);setZoom(false)};
  const error=(url:string)=>setFailed(old=>old.includes(url)?old:[...old,url]);
- if(!current)return <div className="pawlira-gallery-missing"><FiImage size={38}/><p>Produktbild saknas</p></div>;
+ if(!current)return <div className="pawlira-gallery-missing"><FiImage size={38} strokeWidth={1.5}/><p>Produktbild saknas</p></div>;
  return <div className="pawlira-product-gallery" onKeyDown={keys}>
  <div className="pawlira-gallery-stage" onTouchStart={e=>{const t=e.changedTouches[0];touch.current={x:t.clientX,y:t.clientY}}} onTouchEnd={e=>{const start=touch.current,t=e.changedTouches[0];touch.current=null;if(start&&Math.abs(t.clientX-start.x)>55&&Math.abs(t.clientY-start.y)<45){if(e.cancelable)e.preventDefault();move(t.clientX<start.x?1:-1)}}}>
  <button ref={trigger} type="button" className="pawlira-gallery-photo" aria-label="Öppna produktbild i stort format" onClick={()=>setExpanded(true)}>
  <Image key={current.url} src={current.url} alt={current.altText||title} fill sizes="(max-width: 1023px) 95vw, 720px" className="object-contain" onError={()=>error(current.url)} priority={i===0}/>
  </button>
  <span className="pawlira-gallery-counter" aria-live="polite">{i+1} / {list.length}</span>
- <button type="button" className="pawlira-gallery-expand" aria-label="Förstora bild" onClick={()=>setExpanded(true)}><FiMaximize2 size={20}/></button>
- {list.length>1&&<><button type="button" className="pawlira-gallery-arrow prev" aria-label="Föregående bild" onClick={()=>move(-1)}><FiChevronLeft size={25}/></button><button type="button" className="pawlira-gallery-arrow next" aria-label="Nästa bild" onClick={()=>move(1)}><FiChevronRight size={25}/></button></>}
+ <button type="button" className="pawlira-gallery-expand" aria-label="Förstora bild" onClick={()=>setExpanded(true)}><FiMaximize2 size={20} strokeWidth={1.5}/></button>
+ {list.length>1&&<><button type="button" className="pawlira-gallery-arrow prev" aria-label="Föregående bild" onClick={()=>move(-1)}><FiChevronLeft size={25} strokeWidth={1.5}/></button><button type="button" className="pawlira-gallery-arrow next" aria-label="Nästa bild" onClick={()=>move(1)}><FiChevronRight size={25} strokeWidth={1.5}/></button></>}
  </div>
  {list.length>1&&<div ref={thumbs} className="pawlira-gallery-thumbs" aria-label="Produktbilder">{list.map((p,n)=><button type="button" key={p.url} aria-label={`Visa produktbild ${n+1}`} aria-pressed={i===n} onClick={()=>{setIndex(n);setZoom(false)}}><Image src={p.url} alt="" fill sizes="100px" className="object-contain" onError={()=>error(p.url)}/></button>)}</div>}
  <dialog ref={dialog} className="pawlira-gallery-dialog" aria-label="Förstorad produktbild" onClose={()=>{close();trigger.current?.focus()}} onClick={e=>{if(e.target===e.currentTarget)close()}}>
  <div className="pawlira-lightbox">
- <div className="pawlira-lightbox-head"><div><p>{title}</p><span>Bild {i+1} av {list.length}</span></div><div className="flex items-center gap-2"><button type="button" aria-label={zoom?"Återställ zoom":"Zooma in"} aria-pressed={zoom} onClick={()=>setZoom(!zoom)}>{zoom?<FiMinimize2 size={22}/>:<FiMaximize2 size={22}/>}</button><button type="button" autoFocus aria-label="Stäng bildvisning" onClick={close}><FiX size={23}/></button></div></div>
+ <div className="pawlira-lightbox-head"><div><p>{title}</p><span>Bild {i+1} av {list.length}</span></div><div className="flex items-center gap-2"><button type="button" aria-label={zoom?"Återställ zoom":"Zooma in"} aria-pressed={zoom} onClick={()=>setZoom(!zoom)}>{zoom?<FiMinimize2 size={22} strokeWidth={1.5}/>:<FiMaximize2 size={22} strokeWidth={1.5}/>}</button><button type="button" autoFocus aria-label="Stäng bildvisning" onClick={close}><FiX size={23} strokeWidth={1.5}/></button></div></div>
  {expanded&&<div className={"pawlira-lightbox-body "+(zoom?"is-zoomed":"")}><div className="pawlira-lightbox-image"><Image src={current.url} alt={current.altText||title} fill sizes="(max-width: 767px) 100vw, 1200px" className="object-contain" onError={()=>error(current.url)}/></div></div>}
- <div className="pawlira-lightbox-foot">{list.length>1&&<><button type="button" aria-label="Föregående bild" onClick={()=>move(-1)}><FiChevronLeft size={24}/></button><div className="pawlira-lightbox-thumbs">{list.map((p,n)=><button key={p.url} type="button" aria-label={`Visa bild ${n+1}`} aria-pressed={i===n} onClick={()=>{setIndex(n);setZoom(false)}}><Image src={p.url} alt="" width={58} height={58} className="object-contain aspect-square"/></button>)}</div><button type="button" aria-label="Nästa bild" onClick={()=>move(1)}><FiChevronRight size={24}/></button></>}</div>
+ <div className="pawlira-lightbox-foot">{list.length>1&&<><button type="button" aria-label="Föregående bild" onClick={()=>move(-1)}><FiChevronLeft size={24} strokeWidth={1.5}/></button><div className="pawlira-lightbox-thumbs">{list.map((p,n)=><button key={p.url} type="button" aria-label={`Visa bild ${n+1}`} aria-pressed={i===n} onClick={()=>{setIndex(n);setZoom(false)}}><Image src={p.url} alt="" width={58} height={58} className="object-contain aspect-square"/></button>)}</div><button type="button" aria-label="Nästa bild" onClick={()=>move(1)}><FiChevronRight size={24} strokeWidth={1.5}/></button></>}</div>
  </div></dialog>
  </div>;
 }
