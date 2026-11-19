@@ -10,6 +10,7 @@
 @import "./safe.css";
 @import "./utilities.css";
 @import "./pawlira-system.css";
+@import "./pawlira-typography.css";
 
 @layer base {
   @import "./base.css";
