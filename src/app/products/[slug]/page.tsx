@@ -42,8 +42,6 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
     title,
     description,
     descriptionHtml,
-    priceRange,
-    compareAtPriceRange,
     images,
     options,
     variants,
@@ -66,6 +64,7 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
     <>
       <section id="kop" className="py-8 lg:py-16 bg-white scroll-mt-32">
         <div className="container">
+          <nav aria-label="Brödsmulor" className="flex flex-wrap gap-2 text-xs text-neutral-600 mb-6"><Link href="/">Hem</Link><span aria-hidden="true">/</span><Link href="/products">Produkter</Link><span aria-hidden="true">/</span><span aria-current="page">{title}</span></nav>
           <div className="row justify-center">
             {/* right side contents  */}
             <div className="col-12 lg:col-7"><div className="lg:sticky lg:top-28">
@@ -78,32 +77,9 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
             <div className="col-12 lg:col-5 py-6 lg:py-0 lg:pl-10">
               <h1 className="text-3xl lg:text-4xl tracking-tight mb-4">{title}</h1>
 
-              <div className="flex gap-2 items-center">
-                <h4 className="text-text-light dark:text-darkmode-text-light max-md:h2">
-                  {new Intl.NumberFormat("sv-SE", {style:"currency",currency:priceRange.minVariantPrice.currencyCode}).format(Number(priceRange.minVariantPrice.amount))}
-                </h4>
-                {Number(compareAtPriceRange?.maxVariantPrice?.amount) > Number(priceRange.minVariantPrice.amount) ? (
-                  <s className="text-text-light max-md:h3 dark:text-darkmode-text-light">
-                    {new Intl.NumberFormat("sv-SE", {style:"currency",currency:compareAtPriceRange.maxVariantPrice.currencyCode}).format(Number(compareAtPriceRange.maxVariantPrice.amount))}
-                  </s>
-                ) : (
-                  ""
-                )}
-              </div>
+              <div className="my-6"><Suspense><VariantSelector options={options} variants={variants} images={images} /></Suspense></div>
 
-              <div className="my-10 md:my-10 space-y-6 md:space-y-10">
-                <div>
-                  {options && (
-                    <VariantSelector
-                      options={options}
-                      variants={variants}
-                      images={images}
-                    />
-                  )}
-                </div>
-              </div>
-
-              <div className="flex gap-4 mt-8 md:mt-10 mb-6">
+              <div className="flex gap-4 mt-6 mb-6">
                 <Suspense>
                   <AddToCart
                     variants={product?.variants}
@@ -126,8 +102,9 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
       {/* Description of a product  */}
       <section id="produktinformation" className="section border-t border-border scroll-mt-32">
         <div className="container"><h2 className="text-center mb-8">Upptäck {title}</h2>
-        <div className="grid md:grid-cols-2 items-center gap-10 my-10">{images[0] && <img src={images[0].url} alt={images[0].altText || title} className="w-full max-h-[540px] object-contain" />}<div>{description && <p className="text-lg leading-relaxed whitespace-pre-line">{description.split("--- split content ---")[0]}</p>}</div></div>
-        {fields.length > 0 && <div id="specifikationer" className="max-w-4xl mx-auto scroll-mt-32"><h2 className="mb-6">Produktdetaljer</h2><Tabs descriptionHtml="" fields={fields} /></div>}
+        <div className="grid md:grid-cols-2 items-center gap-10 my-10">{images[0] && <img src={images[0].url} alt={images[0].altText || title} className="w-full max-h-[540px] object-contain" />}<div>{description && <div className="content text-lg max-w-none" dangerouslySetInnerHTML={{__html:descriptionHtml.split("--- split content ---")[0]}} />}</div></div>
+        {images.length > 1 && <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 my-10">{images.slice(1,7).map((image,index)=><div key={image.url+index} className="pawlira-card-image border border-border"><img src={image.url} alt={image.altText || title} className="w-full aspect-square object-contain" loading="lazy" /></div>)}</div>}
+        {fields.length > 0 && <div id="specifikationer" className="max-w-4xl mx-auto scroll-mt-32 mt-12"><h2 className="mb-6">Produktdetaljer</h2><div className="grid md:grid-cols-2 gap-4">{fields.map((field,index)=><article key={field.title+index} className="rounded-xl border border-border p-6"><h3 className="text-xl mb-3">{field.title}</h3><p className="whitespace-pre-wrap leading-relaxed">{field.value}</p></article>)}</div></div>}
         </div>
       </section>
       <section className="bg-black text-white py-16"><div className="container text-center"><h2 className="!text-white mb-6">Handla med trygghet.</h2><div className="flex flex-wrap justify-center gap-8"><a href="/contact" className="text-white underline">Kundservice</a><a href="/terms-services" className="text-white underline">Köpvillkor</a><a href="/privacy-policy" className="text-white underline">Integritet</a></div></div></section>

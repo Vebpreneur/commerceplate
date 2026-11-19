@@ -231,7 +231,7 @@ const ProductGalleryInner = ({
   );
 
   const matchingImages = images.filter((item) => item.altText === uniqueAltTexts[activeIndex]);
-  const filteredImages: ImageItem[] = colorParam && uniqueAltTexts.includes(colorParam) ? matchingImages : images;
+  const filteredImages: ImageItem[] = colorParam && matchingImages.length && uniqueAltTexts.includes(colorParam) ? [...matchingImages, ...images.filter(item => !matchingImages.includes(item))] : images;
 
   const [picUrl, setPicUrl] = useState<string>(filteredImages[0]?.url || "");
 
@@ -279,16 +279,16 @@ const ProductGalleryInner = ({
           }}
           onSwiper={setMainSwiper}
           onSlideChange={handleSlideChange}
-          allowTouchMove={!isHovered} // Disable Swiper touch when zooming is active
+          allowTouchMove={isTouchDevice || !isHovered} // Disable Swiper touch when zooming is active
         >
           {filteredImages.map((item: ImageItem) => (
             <SwiperSlide key={item.url}>
               <div className="mb-4 bg-white rounded-xl aspect-square overflow-hidden">
                 <CustomZoomImage
                   src={item.url}
-                  alt={item.altText}
-                  width={722}
-                  height={623}
+                  alt={item.altText || "Produktbild"}
+                  width={item.width || 722}
+                  height={item.height || 623}
                 />
               </div>
             </SwiperSlide>
@@ -297,25 +297,27 @@ const ProductGalleryInner = ({
             className={`hidden lg:block w-full absolute top-1/2 -translate-y-1/2 z-10 px-6 text-text-dark ${
               isHovered
                 ? "opacity-100 transition-opacity duration-300 ease-in-out"
-                : "opacity-0 transition-opacity duration-300 ease-in-out"
+                : "opacity-100 lg:opacity-60 transition-opacity duration-300 ease-in-out"
             }`}
           >
             <div
+              role="button" tabIndex={0} aria-label="Föregående bild" onKeyDown={e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();mainSwiper?.slidePrev();}}}
               ref={setPrevEl}
-              className="p-2 lg:p-4 rounded-md bg-body cursor-pointer shadow-sm absolute left-4"
+              className="pointer-events-auto p-2 lg:p-3 rounded-full bg-white border border-border cursor-pointer shadow-sm absolute left-4"
             >
               <HiOutlineArrowNarrowLeft size={24} />
             </div>
             <div
+              role="button" tabIndex={0} aria-label="Nästa bild" onKeyDown={e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();mainSwiper?.slideNext();}}}
               ref={setNextEl}
-              className="p-2 lg:p-4 rounded-md bg-body cursor-pointer shadow-sm absolute right-4"
+              className="pointer-events-auto p-2 lg:p-3 rounded-full bg-white border border-border cursor-pointer shadow-sm absolute right-4"
             >
               <HiOutlineArrowNarrowRight size={24} />
             </div>
-          </div>
+          </div>}
         </Swiper>
       </div>
-      <Swiper
+      {filteredImages.length > 1 && <Swiper
         onSwiper={setThumbsSwiper}
         spaceBetween={10}
         slidesPerView={isTouchDevice ? 3.5 : 4}
@@ -325,9 +327,9 @@ const ProductGalleryInner = ({
       >
         {filteredImages.map((item: ImageItem) => (
           <SwiperSlide key={item.url}>
-            <div
+            <button type="button" aria-label={`Visa bild ${filteredImages.indexOf(item)+1}`} aria-pressed={picUrl === item.url}
               onClick={() => handleThumbSlideClick(item.url)}
-              className={`rounded-md cursor-pointer overflow-hidden ${
+              className={`w-full rounded-md cursor-pointer overflow-hidden transition-colors hover:border-black ${
                 picUrl === item.url
                   ? "border border-darkmode-border dark:border-yellow-500"
                   : "border border-border dark:border-border/40"
@@ -341,22 +343,23 @@ const ProductGalleryInner = ({
                 className="aspect-square w-full object-contain"
                 draggable={false}
               />
-            </div>
+            </button>
           </SwiperSlide>
         ))}
-      </Swiper>
+      </Swiper>}
     </>
   );
 };
 
 const ProductGallery = ({ images }: ProductGalleryProps): JSX.Element => {
   const searchParams = useSearchParams();
-  const colorParam = searchParams.get("color");
+  const colorParam = searchParams.get("color") || searchParams.get("colour") || searchParams.get("färg");
 
   const altTextArray: string[] = images.map((item: ImageItem) => item.altText);
   const uniqueAltTexts = [...new Set(altTextArray)];
   const activeIndex = getActiveIndexFromColor(colorParam, uniqueAltTexts);
 
+  if (!images.length) return <div className="aspect-square flex items-center justify-center border border-border rounded-xl">Produktbild saknas</div>;
   // Use key to force remount when color changes
   return (
     <ProductGalleryInner
