@@ -593,3 +593,26 @@
 .pawlira-detail-paragraphs{font-size:.95rem;overflow-wrap:anywhere}
 .pawlira-spec-row .pawlira-detail-values{gap:0}
 @media(max-width:480px){.pawlira-detail-values>div{grid-template-columns:minmax(0,1fr);gap:3px}}
+
+.pawlira-compare-page-intro{padding:clamp(30px,6vw,85px);background:#000;color:white;border-radius:16px}
+.pawlira-compare-page-intro h1{color:white!important;font-size:clamp(2.5rem,5.5vw,5.5rem);letter-spacing:-.05em;line-height:1.04;max-width:850px;margin:12px 0 24px}
+.pawlira-compare-page-intro p{color:white!important;max-width:650px;line-height:1.65}
+.pawlira-compare-step{margin-top:clamp(40px,6vw,75px)}
+.pawlira-comparison-status{font-size:.8rem;color:#555;padding:0 0 12px}
+.pawlira-comparison-slot-head{display:flex;justify-content:space-between;align-items:center;min-height:29px;margin-bottom:8px;font-size:.76rem;color:#555}
+.pawlira-comparison-slot-head button{border:1px solid #ddd;border-radius:50%;padding:5px;cursor:pointer}
+.pawlira-comparison-slot-head button:hover{background:#000;color:white}
+.pawlira-full-comparison .pawlira-comparison-image{aspect-ratio:1.2}
+.pawlira-full-comparison .pawlira-detail-values>div{grid-template-columns:1fr;gap:4px;font-size:.8rem}
+.pawlira-comparison-field+.pawlira-comparison-field{border-top:1px solid #ddd;padding-top:12px;margin-top:12px}
+.pawlira-comparison-field{font-size:.85rem;line-height:1.5;overflow-wrap:anywhere}
+.pawlira-comparison-stock{display:inline-flex;gap:8px;align-items:center;font-size:.8rem}
+.pawlira-comparison-stock>span{border:1px solid #999;width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.pawlira-comparison-stock>span.in-stock{background:#111;border-color:#111}
+.pawlira-compare-help{display:flex;justify-content:space-between;align-items:center;gap:20px;border:1px solid #ddd;border-radius:13px;padding:28px;margin-top:32px}
+.pawlira-compare-help h3{font-size:1.3rem;margin-bottom:8px}
+.pawlira-compare-help p{font-size:.9rem}
+.pawlira-card-compare-link{display:flex;align-items:center;justify-content:center;gap:7px;font-size:.76rem;line-height:1.4;min-height:27px;text-underline-offset:4px;color:#333}
+.pawlira-product-compare-link{display:flex;gap:8px;justify-content:center;align-items:center;font-size:.85rem;font-weight:600;text-underline-offset:4px;border:1px solid #ddd;border-radius:99px;padding:12px;transition:border-color .2s}
+.pawlira-card-compare-link:hover,.pawlira-product-compare-link:hover{text-decoration:underline;border-color:#111}
+@media(max-width:767px){.pawlira-compare-help{align-items:flex-start;flex-direction:column;padding:20px}.pawlira-full-comparison{min-width:680px}.pawlira-compare-page-intro{padding:28px}}

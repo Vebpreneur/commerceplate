@@ -7,6 +7,7 @@ import { getProduct, getProductRecommendations } from "@/lib/shopify";
 import LatestProducts from "@/partials/FeaturedProducts";
 import Link from "next/link";
 import ProductSectionNav from "@/components/product/ProductSectionNav";
+import {productFields} from "@/lib/utils/productFields";
 import ProductStory from "@/components/product/ProductStory";
 import {FiPackage,FiRefreshCcw,FiHelpCircle,FiArrowUpRight} from "react-icons/fi";
 import { notFound } from "next/navigation";
@@ -55,17 +56,8 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
   } = product;
 
   const relatedProducts = await getProductRecommendations(id).catch(()=>[]);
-  const labels: Record<string,string> = {specifications:"Tekniska specifikationer", spec:"Specifikationer", technical_specifications:"Tekniska specifikationer", details:"Produktdetaljer", detaljer:"Produktdetaljer", included:"Vad ingår?", ingar:"Vad ingår?", features:"Funktioner och egenskaper", faq:"Vanliga frågor"};
-  const rawFields = (product.metafields || []).flatMap(field => {
-    if (!field?.value || field.type.includes("reference")) return [];
-    let value = field.value;
-    if (field.type === "rich_text_field") {
-      try { const flatten = (node:any):string => node.type === "text" ? node.value || "" : (node.children || []).map(flatten).join(node.type === "root" || node.type === "list" ? "\n" : ""); value = flatten(JSON.parse(value)); } catch { return []; }
-    } else if (field.type.startsWith("list.")) { try { value = JSON.parse(value).join("\n"); } catch {} }
-    return [{title: labels[field.key] || field.key, value}];
-  });
+  const fields=productFields(product);
 
-  const fields=rawFields.filter((field,index,all)=>field.value.trim()&&all.findIndex(other=>other.value.trim()===field.value.trim())===index);
   const defaultVariantId = variants.length > 0 ? variants[0].id : undefined;
   const url=new URL("/products/"+encodeURIComponent(product.handle),config.site.base_url).toString();
   const offers=variants.filter(v=>Number.isFinite(Number(v.price.amount))&&Number(v.price.amount)>=0).map(v=>{
@@ -107,6 +99,7 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
               </div>
 
               {description && <p className="text-sm leading-relaxed text-text-light mb-6">{description.slice(0, 240)}{description.length > 240 ? "…" : ""}</p>}
+              <Link href={"/compare?product="+encodeURIComponent(product.handle)} className="pawlira-product-compare-link">Jämför med andra modeller <FiArrowUpRight size={17}/></Link>
               <div className="pawlira-purchase-facts">{[{Icon:FiPackage,title:"Leverans",href:"/shipping-policy"},{Icon:FiRefreshCcw,title:"Retur",href:"/refund-policy"},{Icon:FiHelpCircle,title:"Kundservice",href:"/contact"}].map(({Icon,title,href})=><Link href={href} key={href}><Icon size={20}/><span>{title}</span><FiArrowUpRight size={14}/></Link>)}</div><Tabs descriptionHtml={descriptionHtml} fields={fields} /></div>
             </div>
           </div>

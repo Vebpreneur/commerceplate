@@ -264,3 +264,5 @@
 .pawlira-main-menu-button:focus-visible,.pawlira-header-actions button:focus-visible,.pawlira-main-links>a:focus-visible{outline:2px solid white;outline-offset:4px}.pawlira-mega-menu button:focus-visible,.pawlira-mega-menu a:focus-visible,.pawlira-menu-shell a:focus-visible,.pawlira-menu-shell summary:focus-visible,.pawlira-menu-shell button:focus-visible{outline:2px solid #111;outline-offset:2px}
 
 .pawlira-account-dropdown{position:absolute;right:0;top:calc(100% + 12px);min-width:155px;padding:10px;background:#fff;color:#111;border:1px solid #ddd;border-radius:10px;box-shadow:0 10px 24px #0002;z-index:50}.pawlira-account-dropdown button{width:100%;margin:0;border-radius:999px;font-size:.82rem}
+
+.pawlira-mega-bottom{grid-template-columns:repeat(4,minmax(0,1fr))}.pawlira-mega-bottom a{font-size:.8rem;padding:12px;gap:7px}

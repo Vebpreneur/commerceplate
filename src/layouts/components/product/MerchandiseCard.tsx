@@ -2,7 +2,7 @@
 import {useState} from "react";
 import Image from "next/image";
 import Link from "next/link";
-import {FiArrowUpRight,FiChevronLeft,FiChevronRight,FiImage} from "react-icons/fi";
+import {FiArrowUpRight,FiBarChart2,FiChevronLeft,FiChevronRight,FiImage} from "react-icons/fi";
 import type {Product} from "@/lib/shopify/types";
 import CatalogPrice from "./CatalogPrice";
 
@@ -33,6 +33,6 @@ export default function MerchandiseCard({product,compact=false}:{product:Product
   <h3><Link href={href}>{product.title}</Link></h3>
   {(count||other.length>0)&&<p className="pawlira-merch-options">{count?count+" färger":""}{count&&other.length?" · ":""}{other.length?other.map(o=>o.values.length+" "+(o.name.toLowerCase()==="size"?"storlekar":"alternativ")).join(" · "):""}</p>}
   <CatalogPrice product={product}/>
-  <Link href={href} className="pawlira-merch-cta">Visa produkt<FiArrowUpRight size={19}/></Link>
+  <Link href={href} className="pawlira-merch-cta">Visa produkt<FiArrowUpRight size={19}/></Link><Link href={"/compare?product="+encodeURIComponent(product.handle)} className="pawlira-card-compare-link"><FiBarChart2 size={14}/> Jämför modell</Link>
  </div></article>;
 }

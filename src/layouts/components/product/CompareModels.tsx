@@ -28,6 +28,6 @@ export default function CompareModels({groups}:{groups:Group[]}){
  {optionNames.map(name=><tr key={name}><th scope="row">{name}</th>{chosen.map(p=><td key={p.id}>{p.options.find(o=>normalized(o.name)===name)?.values.filter(v=>v!=="Default Title").join(", ")||"Ej angivet"}</td>)}</tr>)}
  <tr><th scope="row">Produktbeskrivning</th>{chosen.map(p=><td key={p.id}><p className="pawlira-compare-description">{p.description?.trim()||"Se produktinformationen."}</p></td>)}</tr>
  <tr><th scope="row">Mer information</th>{chosen.map(p=><td key={p.id}><Link href={"/products/"+encodeURIComponent(p.handle)} className="pawlira-merch-cta">Se modellen<FiArrowUpRight size={18}/></Link></td>)}</tr>
- </tbody></table></div><p className="pawlira-comparison-note">Priser och alternativ hämtas från aktuellt sortiment. Fullständiga specifikationer finns på respektive produktsida.</p>
+ </tbody></table></div><p className="pawlira-comparison-note">Priser och alternativ hämtas från aktuellt sortiment. Fullständiga specifikationer finns på respektive produktsida.</p><div className="flex justify-center mt-6"><Link href={"/compare?c="+encodeURIComponent(group.handle)+chosen.map(p=>"&product="+encodeURIComponent(p.handle)).join("")} className="btn btn-primary rounded-full">Öppna fullständig jämförelse <FiArrowUpRight className="inline ml-2"/></Link></div>
  </section>;
 }
