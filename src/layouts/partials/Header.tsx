@@ -10,7 +10,7 @@ import {usePathname} from "next/navigation";
 import {Suspense,useEffect,useRef,useState} from "react";
 import {FiMenu,FiX,FiChevronDown,FiChevronRight,FiArrowUpRight,FiArrowRight,FiBox,FiHelpCircle,FiSearch,FiGrid,FiBookOpen,FiHeart} from "react-icons/fi";
 
-function modelName(title:string){const name=title.split(/\s+[–—-]\s+/)[0].trim();return name.length>=5&&name.length<=55?name:title;}
+import {modelName} from "@/lib/utils/modelName";
 const categoryHref=(handle:string)=>"/products?c="+encodeURIComponent(handle);
 const productHref=(handle:string)=>"/products/"+encodeURIComponent(handle);
 const support=[{title:"Om Pawlira",href:"/about"},{title:"Vanliga frågor",href:"/#faq"},{title:"Köpguide",href:"/#kopguide"},{title:"Jämför produkter",href:"/compare"},{title:"Kundservice",href:"/contact"},{title:"Leverans",href:"/shipping-policy"},{title:"Retur och ångerrätt",href:"/refund-policy"}];
@@ -30,7 +30,7 @@ export default function Header({children,categories=[]}:{children:any;categories
  const pathname=usePathname();
  const close=()=>setOpen(false);
  const closeAll=()=>{setOpen(false);setMega(false)};
- const activeCategory=categories.find(c=>c.handle===active)||categories[0];
+ const activeCategory=categories.find(c=>c.handle===active)||categories.find(c=>c.products.some(p=>pathname===productHref(p.handle)))||categories[0];
  const needle=query.trim().toLocaleLowerCase("sv-SE");
  const matching=categories.map(c=>({...c,products:!needle||c.title.toLocaleLowerCase("sv-SE").includes(needle)?c.products:c.products.filter(p=>p.title.toLocaleLowerCase("sv-SE").includes(needle))})).filter(c=>c.products.length);
  useEffect(()=>{closeAll()},[pathname]);
@@ -64,7 +64,7 @@ export default function Header({children,categories=[]}:{children:any;categories
   <div className="pawlira-menu-head"><Logo variant="black" width={180} onClick={closeAll}/><button type="button" onClick={close} aria-label="Stäng meny" autoFocus className="pawlira-menu-close"><FiX size={22}/></button></div>
   <div className="pawlira-menu-content"><p className="pawlira-menu-label">Upptäck sortimentet</p><h2 className="pawlira-drawer-title">Hitta din favorit.</h2><div className="pawlira-menu-search"><FiSearch size={19}/><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Sök kategori eller modell" aria-label="Sök i menyn"/>{query&&<button type="button" onClick={()=>setQuery("")} aria-label="Rensa menysökning"><FiX size={18}/></button>}</div>
   <Link href="/products" onClick={closeAll} className="pawlira-menu-all"><FiGrid size={20}/><span>Alla produkter</span><FiArrowUpRight size={20}/></Link>
-  <div className="pawlira-drawer-categories">{matching.map(c=><details key={c.handle+"-"+(needle?"search":"browse")} className="pawlira-menu-category" open={needle?true:undefined}><summary><span className="pawlira-menu-category-thumb"><MenuImage image={c.image||c.products[0]?.featuredImage}/></span><span className="pawlira-menu-category-title">{c.title}</span><FiChevronDown size={19}/></summary><div className="pawlira-menu-models">{c.products.map(p=><MenuModel key={p.handle} product={p} onClick={closeAll} selected={pathname===productHref(p.handle)}/>)}<Link href={categoryHref(c.handle)} onClick={closeAll} className="pawlira-menu-category-more">Visa hela kategorin<FiArrowRight size={17}/></Link></div></details>)}</div>
+  <div className="pawlira-drawer-categories">{matching.map(c=><details key={c.handle+"-"+(needle?"search":"browse")} className="pawlira-menu-category" open={needle?true:undefined}><summary><span className="pawlira-menu-category-thumb"><MenuImage image={c.image?.url?c.image:c.products[0]?.featuredImage}/></span><span className="pawlira-menu-category-title">{c.title}</span><FiChevronDown size={19}/></summary><div className="pawlira-menu-models">{c.products.map(p=><MenuModel key={p.handle} product={p} onClick={closeAll} selected={pathname===productHref(p.handle)}/>)}<Link href={categoryHref(c.handle)} onClick={closeAll} className="pawlira-menu-category-more">Visa hela kategorin<FiArrowRight size={17}/></Link></div></details>)}</div>
   {needle&&!matching.length&&<p className="pawlira-menu-empty">Inga matchande modeller. Prova ett annat ord eller <Link href={"/products?q="+encodeURIComponent(query.trim())} onClick={closeAll}>sök i hela sortimentet</Link>.</p>}
   <div className="pawlira-menu-support"><p className="pawlira-menu-label">Upptäck & få hjälp</p>{support.map(item=><Link key={item.href} href={item.href} onClick={closeAll}>{item.title}<FiArrowUpRight size={17}/></Link>)}</div>
   </div><div className="pawlira-menu-bottom"><Link href="/contact" onClick={closeAll}><FiHelpCircle size={20}/> Behöver du hjälp?<FiArrowRight/></Link></div>

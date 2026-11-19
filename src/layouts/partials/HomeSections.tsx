@@ -11,6 +11,8 @@ import CompareModels from "@/components/product/CompareModels";
 import ProductGuide from "@/components/ProductGuide";
 import {Suspense} from "react";
 import config from "@/config/config.json";
+import {categoryEditorial} from "@/lib/utils/categoryEditorial";
+import {categoryName} from "@/lib/utils/modelName";
 
 type Category = Collection & {image?:{url:string;altText?:string}|null};
 type Group = {category:Category;products:Product[]};
@@ -31,7 +33,7 @@ function CategoryCard({group}:{group:Group}){
  const img=category.image?.url?category.image:products.map(picture).find(Boolean);
  return <Link href={collectionPath(category)} className="pawlira-home-category">
   <div className="pawlira-home-category-photo">{img?<Photo image={img} alt={category.title} cover={!!category.image?.url}/>:<div className="h-full flex items-center justify-center"><FiGrid size={60} className="text-black"/></div>}</div>
-  <div className="pawlira-home-category-caption"><div><h3>{category.title}</h3><p>Upptäck sortimentet</p></div><span className="pawlira-category-arrow"><FiArrowUpRight size={23}/></span></div>
+  <div className="pawlira-home-category-caption"><div><h3>{category.title}</h3><p>{categoryEditorial(category.title,category.handle).label}</p></div><span className="pawlira-category-arrow"><FiArrowUpRight size={23}/></span></div>
  </Link>;
 }
 function ProductRail({group}:{group:Group}){
@@ -44,15 +46,15 @@ function DailyLife({groups}:{groups:Group[]}){
  if(!picks.length)return null;
  return <section id="vardagsinspiration" className="container pawlira-home-section scroll-mt-36"><Heading eyebrow="Vardagen med katt" title="Små rutiner. Stor betydelse." description="Utgå från din katts behov och hitta produkter för de dagliga rutinerna."/>
  <div className="pawlira-editorial-grid">{picks.map(g=>{
- const detailPhoto=g.products.flatMap(p=>p.images.filter(i=>i.url&&i.url!==p.featuredImage?.url))[0];
- const photo=detailPhoto||g.category.image||g.products.map(picture).find(Boolean);
- return <Link key={g.category.handle} href={collectionPath(g.category)} className="pawlira-editorial-tile"><div className="pawlira-editorial-tile-photo"><Photo image={photo} alt={g.category.title} cover={!detailPhoto&&!!g.category.image?.url}/></div><div className="pawlira-editorial-tile-caption"><p className="pawlira-eyebrow">Vardagen med katt</p><h3>{g.category.title}</h3><p>{g.category.description?short(g.category.description,135):"Hitta produkter för din katts vardag."}</p><span className="pawlira-text-link">Utforska<FiArrowUpRight size={20}/></span></div></Link>;
+ const editorial=categoryEditorial(g.category.title,g.category.handle);
+ const photo=g.category.image?.url?g.category.image:g.products.map(picture).find(Boolean);
+ return <Link key={g.category.handle} href={collectionPath(g.category)} className="pawlira-editorial-tile"><div className="pawlira-editorial-tile-photo"><Photo image={photo} alt={g.category.title} cover={!!g.category.image?.url}/></div><div className="pawlira-editorial-tile-caption"><p className="pawlira-eyebrow">{editorial.label}</p><h3>{editorial.heading}</h3><p>{editorial.description}</p><span className="pawlira-text-link">Utforska<FiArrowUpRight size={20}/></span></div></Link>;
  })}</div></section>;
 }
 
 export default async function HomeSections(){
  const [allCollections,all,featured]=await Promise.all([getCollections().catch(()=>[]),getProducts({}).catch(()=>({products:[]})),getCollectionProducts({collection:config.shopify.collections.featured_products,first:8}).catch(()=>({products:[]}))]);
- const categories=(allCollections as Category[]).filter(c=>!["frontpage","home-page","homepage","featured-products","all"].includes(c.handle)&&!c.handle.startsWith("hidden")&&c.title.toLowerCase()!=="home page").slice(0,6);
+ const categories=(allCollections as Category[]).filter(c=>!["frontpage","home-page","homepage","featured-products","all"].includes(c.handle)&&!c.handle.startsWith("hidden")&&c.title.toLowerCase()!=="home page").map(c=>({...c,title:categoryName(c.title)})).slice(0,6);
  const groups:Group[]=await Promise.all(categories.map(async category=>{const result=await getCollectionProducts({collection:category.handle,first:6}).catch(()=>({products:[]}));return {category,products:result.products};}));
  const available=groups.filter(g=>g.products.length||g.category.image?.url);
  const catalog=unique([...featured.products,...all.products,...groups.flatMap(g=>g.products)]);

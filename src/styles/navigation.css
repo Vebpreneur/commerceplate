@@ -266,3 +266,15 @@
 .pawlira-account-dropdown{position:absolute;right:0;top:calc(100% + 12px);min-width:155px;padding:10px;background:#fff;color:#111;border:1px solid #ddd;border-radius:10px;box-shadow:0 10px 24px #0002;z-index:50}.pawlira-account-dropdown button{width:100%;margin:0;border-radius:999px;font-size:.82rem}
 
 .pawlira-mega-bottom{grid-template-columns:repeat(4,minmax(0,1fr))}.pawlira-mega-bottom a{font-size:.8rem;padding:12px;gap:7px}
+
+/* Menu names, equal card heights and comfortable navigation */
+.pawlira-mega-product{grid-template-rows:auto minmax(3.9em,auto);align-items:start}
+.pawlira-mega-product-name{font-size:.88rem;line-height:1.4;align-self:start}
+.pawlira-mega-product>svg{align-self:end;margin-bottom:2px}
+.pawlira-mega-content-head a{font-size:.87rem}
+.pawlira-mega-categories button>span:nth-child(2){font-size:.92rem}
+.pawlira-menu-model-name{line-height:1.45}
+.pawlira-menu-model{min-height:62px}
+.pawlira-menu-support a{min-height:48px}
+.pawlira-menu-close{min-width:44px;min-height:44px}
+.pawlira-mega-bottom a{min-height:44px}
