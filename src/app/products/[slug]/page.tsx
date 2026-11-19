@@ -74,18 +74,18 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(structuredData).replace(/</g,"\\u003c")}} />
       <section id="kop" className="py-16 lg:py-24 bg-white scroll-mt-32">
-        <div className="container">
+        <div className="pawlira-pdp-container">
           <nav aria-label="Brödsmulor" className="flex flex-wrap gap-2 text-xs text-neutral-600 mb-6"><Link href="/">Hem</Link><span aria-hidden="true">/</span><Link href="/products">Produkter</Link><span aria-hidden="true">/</span><span aria-current="page">{title}</span></nav>
-          <div className="pawlira-pdp-grid">
+          <div className="pawlira-pdp-grid grid grid-cols-1 lg:grid-cols-12 gap-12">
             {/* right side contents  */}
-            <div className="min-w-0"><div className="lg:sticky lg:top-28 pawlira-gallery-frame">
+            <div className="min-w-0 lg:col-span-7"><div className="pawlira-gallery-frame">
               <Suspense>
                 <ProductGallery images={images} variants={variants} title={title} />
               </Suspense></div>
             </div>
 
             {/* left side contents  */}
-            <div className="min-w-0"><div className="pawlira-purchase-panel">
+            <div className="min-w-0 lg:col-span-5"><div className="pawlira-purchase-panel lg:sticky lg:top-28">
               <p className="pawlira-eyebrow">Pawlira</p><h1 className="pawlira-h1 mb-5">{title}</h1>
 
               <div className="my-6"><Suspense><VariantSelector options={options} variants={variants} images={images} /></Suspense></div>
@@ -120,7 +120,7 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
           {relatedProducts?.length > 0 && (
             <>
               <div className="pawlira-section-heading"><div><p className="pawlira-eyebrow">Fler möjligheter</p><h2>Fler produkter för din katt</h2></div><Link href="/products" className="pawlira-text-link">Hela sortimentet<FiArrowUpRight size={20} strokeWidth={1.5}/></Link></div>
-              <LatestProducts products={relatedProducts.slice(0, 6)} />
+              <LatestProducts products={relatedProducts.slice(0, 4)} />
             </>
           )}
       </section>}

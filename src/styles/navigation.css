@@ -113,7 +113,7 @@
 .pawlira-logo img{display:block;object-fit:contain}
 .pawlira-header-inner{display:grid;grid-template-columns:auto minmax(0,1fr) minmax(210px,28%) auto;align-items:center;gap:22px;position:relative}
 .pawlira-main-links{display:flex;align-items:center;justify-content:center;gap:clamp(12px,1.65vw,26px);white-space:nowrap;font-size:.88rem;font-weight:500}
-.pawlira-main-links a,.pawlira-menu-toggle{color:#fff!important}
+.pawlira-main-links>a,.pawlira-main-menu-button,.pawlira-menu-toggle{color:#fff!important}
 .pawlira-main-links>a:hover{opacity:.85}
 .pawlira-header-actions{display:flex;align-items:center;gap:20px;color:#fff;justify-content:flex-end}
 .pawlira-header-actions>button{color:#fff}
