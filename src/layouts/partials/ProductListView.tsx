@@ -1,10 +1,9 @@
 "use client";
+import CatalogPrice from "@/components/product/CatalogPrice";
 import ImageFallback from "@/helpers/ImageFallback";
 import type {Product} from "@/lib/shopify/types";
 import Link from "next/link";
 import {useCatalogProducts, type CatalogData} from "@/hooks/useCatalogProducts";
-import { AddToCart } from "@/components/cart/AddToCart";
-import { Suspense } from "react";
 const ProductListView=({searchParams,initialData}:{searchParams:Record<string,string|string[]|undefined>;initialData:CatalogData})=>{
  const {products,endCursor,hasNextPage,isLoadingMore,error,fetchDataWithNewCursor}=useCatalogProducts(searchParams,initialData);
  const searchValue=Array.isArray(searchParams.q)?searchParams.q[0]:searchParams.q;
@@ -15,7 +14,7 @@ const ProductListView=({searchParams,initialData}:{searchParams:Record<string,st
       <div className="row">
         {searchValue ? (
           <p className="mb-4">
-            {products.length === 0
+            {products.length === 0 && !hasNextPage
               ? "Inga produkter matchar "
               : `Visar ${products.length} ${resultsText} för `}
             <span className="font-bold">&quot;{searchValue}&quot;</span>
@@ -43,27 +42,22 @@ const ProductListView=({searchParams,initialData}:{searchParams:Record<string,st
             const {
               id,
               title,
-              variants,
               handle,
               featuredImage,
-              priceRange,
               description,
-              compareAtPriceRange,
             } = product;
 
-            const defaultVariantId =
-              variants.length > 0 ? variants[0].id : undefined;
 
             return (
               <div className="col-12" key={id}>
-                <div className="row">
+                <div className="row border-b border-border pb-6">
                   <div className="col-4">
                     <ImageFallback
                       src={featuredImage?.url || "/images/product_image404.jpg"}
                       // fallback={'/images/category-1.png'}
                       width={312}
                       height={269}
-                      alt={featuredImage?.altText || "fallback image"}
+                      alt={featuredImage?.altText || title}
                       className="w-full aspect-square object-contain bg-white rounded-lg"
                     />
                   </div>
@@ -73,33 +67,12 @@ const ProductListView=({searchParams,initialData}:{searchParams:Record<string,st
                       <Link href={`/products/${handle}`}>{title}</Link>
                     </h2>
 
-                    <div className="flex items-center gap-x-2 mt-2">
-                      <span className="text-text-light dark:text-darkmode-text-light text-xs md:text-lg font-bold">
-                        {new Intl.NumberFormat("sv-SE",{style:"currency",currency:priceRange.minVariantPrice.currencyCode}).format(Number(priceRange.minVariantPrice.amount))}
-                      </span>
-                      {Number(compareAtPriceRange?.maxVariantPrice?.amount) > Number(priceRange.minVariantPrice.amount) ? (
-                        <s className="text-text-light dark:text-darkmode-text-light text-xs md:text-base font-medium">
-                          {new Intl.NumberFormat("sv-SE",{style:"currency",currency:compareAtPriceRange.maxVariantPrice.currencyCode}).format(Number(compareAtPriceRange.maxVariantPrice.amount))}
-                        </s>
-                      ) : (
-                        ""
-                      )}
-                    </div>
+                    <CatalogPrice product={product} />
 
                     <p className="max-md:text-xs text-text-light dark:text-darkmode-text-light my-4 md:mb-8 line-clamp-1 md:line-clamp-3">
                       {description}
                     </p>
-                    <Suspense>
-                      <AddToCart
-                        variants={product?.variants}
-                        availableForSale={product?.availableForSale}
-                        handle={handle}
-                        defaultVariantId={defaultVariantId}
-                        stylesClass={
-                          "btn btn-outline-primary max-md:btn-sm drop-shadow-md"
-                        }
-                      />
-                    </Suspense>
+                    <Link href={`/products/${handle}`} className="btn btn-outline-primary rounded-full">Visa produkt</Link>
                   </div>
                 </div>
               </div>

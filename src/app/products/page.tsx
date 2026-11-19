@@ -12,7 +12,7 @@ const one=(v:SearchParams[string])=>Array.isArray(v)?v[0]:v;
 export const metadata={title:"Produkter | Pawlira",description:"Upptäck Pawliras sortiment av smarta kattprodukter."};
 
 async function ShowProducts({searchParams}:{searchParams:SearchParams}){
- const [initialData,allCategories,vendors,maxPriceData]=await Promise.all([getCatalogPage(searchParams),getCollections(),getVendors({}),getHighestProductPrice()]);
+ const [initialData,allCategories,vendors,maxPriceData]=await Promise.all([getCatalogPage(searchParams),getCollections().catch(()=>[]),getVendors({}).catch(()=>[]),getHighestProductPrice().catch(()=>null)]);
  const categories=allCategories.filter(c=>!["frontpage","home-page","homepage","featured-products"].includes(c.handle)&&!c.handle.startsWith("hidden-")&&c.title.toLowerCase()!=="home page");
  const tags=[...new Set(initialData.products.flatMap(p=>p.tags))].filter(t=>!t.startsWith("hidden-")&&!t.startsWith("nextjs-"));
  const filterProps={categories,vendors,tags,maxPriceData:maxPriceData||{amount:"0",currencyCode:"SEK"},vendorsWithCounts:[],categoriesWithCounts:[]};

@@ -1,6 +1,6 @@
 "use client";
+import CatalogPrice from "@/components/product/CatalogPrice";
 import ImageFallback from "@/helpers/ImageFallback";
-import type {Product} from "@/lib/shopify/types";
 import Link from "next/link";
 import {useCatalogProducts, type CatalogData} from "@/hooks/useCatalogProducts";
 
@@ -13,7 +13,7 @@ const ProductCardView=({searchParams,initialData}:{searchParams:Record<string,st
     <div className="row">
       {searchValue ? (
         <p className="mb-4">
-          {products.length === 0
+          {products.length === 0 && !hasNextPage
             ? "Inga produkter matchar "
             : `Visar ${products.length} ${resultsText} för `}
           <span className="font-bold">&quot;{searchValue}&quot;</span>
@@ -65,18 +65,7 @@ const ProductCardView=({searchParams,initialData}:{searchParams:Record<string,st
                     {product?.title}
                   </Link>
                 </h2>
-                <div className="flex flex-wrap items-center gap-x-2">
-                  <span className="text-base md:text-xl font-bold text-text-dark dark:text-darkmode-text-dark">
-                    {new Intl.NumberFormat("sv-SE",{style:"currency",currency:product.priceRange.minVariantPrice.currencyCode}).format(Number(product.priceRange.minVariantPrice.amount))}
-                  </span>
-                  {Number(product.compareAtPriceRange?.maxVariantPrice?.amount) > Number(product.priceRange.minVariantPrice.amount) ? (
-                    <s className="text-text-light dark:text-darkmode-text-light text-xs md:text-base font-medium">
-                      {new Intl.NumberFormat("sv-SE",{style:"currency",currency:product.compareAtPriceRange.maxVariantPrice.currencyCode}).format(Number(product.compareAtPriceRange.maxVariantPrice.amount))}
-                    </s>
-                  ) : (
-                    ""
-                  )}
-                </div>
+                <CatalogPrice product={product} />
                 <Link href={`/products/${product.handle}`} className="btn btn-outline-primary pawlira-card-action">Visa produkt</Link>
               </div></div>
             </div>

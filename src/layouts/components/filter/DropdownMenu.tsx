@@ -43,8 +43,10 @@ const DropdownMenu = ({ list }: { list: ListItem[] }) => {
         onClick={() => {
           setOpenSelect(!openSelect);
         }}
+        onKeyDown={e=>{if(e.key==="Escape")setOpenSelect(false)}}
         id="menu-button"
         aria-haspopup="true"
+        aria-expanded={openSelect}
       >
         <div>{active}</div>
         <svg

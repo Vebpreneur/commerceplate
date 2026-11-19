@@ -1,4 +1,5 @@
 "use client";
+import CatalogPrice from "@/components/product/CatalogPrice";
 import ImageFallback from "@/helpers/ImageFallback";
 import { Product } from "@/lib/shopify/types";
 import Link from "next/link";
@@ -8,14 +9,12 @@ const FeaturedProducts = ({ products }: { products: Product[] }) => {
   return (
     <>
       <div className="row">
-        {products.map((product: any) => {
+        {products.map((product: Product) => {
           const {
             id,
             title,
             handle,
             featuredImage,
-            priceRange,
-            compareAtPriceRange,
           } = product;
 
           return (
@@ -42,19 +41,7 @@ const FeaturedProducts = ({ products }: { products: Product[] }) => {
                     {title}
                   </Link>
                 </h2>
-                <div className="flex flex-wrap items-center gap-x-2">
-                  <span className="text-base md:text-xl font-bold text-text-dark dark:text-darkmode-text-dark">
-                    {new Intl.NumberFormat("sv-SE", { style: "currency", currency: priceRange.minVariantPrice.currencyCode }).format(Number(priceRange.minVariantPrice.amount))}
-                  </span>
-
-                  {Number(compareAtPriceRange?.maxVariantPrice?.amount) > Number(priceRange.minVariantPrice.amount) ? (
-                    <s className="text-text-light dark:text-darkmode-text-light text-xs md:text-base font-medium">
-                      {new Intl.NumberFormat("sv-SE", { style: "currency", currency: compareAtPriceRange.maxVariantPrice.currencyCode }).format(Number(compareAtPriceRange.maxVariantPrice.amount))}
-                    </s>
-                  ) : (
-                    ""
-                  )}
-                </div>
+                <CatalogPrice product={product} />
                 <Link href={`/products/${handle}`} className="btn btn-outline-primary pawlira-card-action">Visa produkt</Link>
               </div></div>
             </div>
