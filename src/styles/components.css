@@ -676,3 +676,58 @@
 .pawlira-support-checklist article{display:flex;gap:18px;align-items:flex-start;padding:24px 0;border-bottom:1px solid #ddd}
 .pawlira-support-checklist article>svg{flex-shrink:0}
 @media(max-width:767px){.pawlira-support-hero{grid-template-columns:1fr}.pawlira-support-hero-icon{display:none}.pawlira-support-grid{grid-template-columns:1fr}}
+
+/* Editorial cards and commerce cards use the same circular directional control. */
+.pawlira-card-arrow,.pawlira-home-category-caption .pawlira-category-arrow{
+  display:grid;place-items:center;flex-shrink:0;width:52px;height:52px;
+  border:1px solid #111;border-radius:50%;background:#000;color:#fff;
+  transition:background-color .24s ease,color .24s ease,border-color .24s ease;
+}
+.pawlira-card-arrow svg,.pawlira-home-category-caption .pawlira-category-arrow svg{
+  width:24px;height:24px;transition:transform .24s ease;
+}
+.pawlira-merch-info>.pawlira-merch-actions{margin-top:5px;display:flex;flex-direction:column;gap:8px}
+.pawlira-card-open{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:52px;color:#111;text-decoration:none;cursor:pointer}
+.pawlira-card-open-label{font-size:.93rem;font-weight:600;line-height:1.25;min-width:0}
+.pawlira-merch-actions .pawlira-card-compare-link{justify-content:flex-start;min-height:32px;gap:7px;font-size:.8rem;width:fit-content;max-width:100%}
+.pawlira-merch-actions .pawlira-card-compare-link svg{flex-shrink:0}
+.pawlira-merch-cta{font-size:.9rem;min-height:48px;padding:12px 17px}
+.pawlira-card-open:focus-visible,.pawlira-home-category:focus-visible,.pawlira-merch-card h3 a:focus-visible{outline:2px solid #000;outline-offset:3px;border-radius:8px}
+.pawlira-home-category:focus-visible .pawlira-category-arrow,.pawlira-card-open:focus-visible .pawlira-card-arrow{background:#fff;color:#000}
+.pawlira-merch-info h3 a,.pawlira-list-copy h3 a,.pawlira-comparison-name,.pawlira-catalog-breadcrumb a{transition:color .2s ease;text-underline-offset:4px;text-decoration-thickness:1px}
+.pawlira-purchase-facts a,.pawlira-product-compare-link,.pawlira-help-card,.pawlira-guide-card,.pawlira-about-paths>a{transition:border-color .2s ease,box-shadow .2s ease,transform .2s ease}
+.pawlira-purchase-facts a>svg:last-child,.pawlira-product-compare-link svg,.pawlira-help-card>svg:last-child,.pawlira-about-paths>a>svg:last-child{transition:transform .2s ease}
+.pawlira-accordion .accordion-header{transition:color .2s ease;min-height:48px}
+.pawlira-accordion .accordion-header:focus-visible{outline:2px solid #111;outline-offset:2px}
+.pawlira-faq-topics button,.pawlira-option,.pawlira-filter-choice,.pawlira-spotlight-tabs button,.pawlira-guide-choice-grid>button{transition:border-color .2s ease,box-shadow .2s ease,background-color .2s ease,color .2s ease}
+@media(hover:hover) and (pointer:fine){
+  .pawlira-card-open:hover .pawlira-card-arrow,
+  .pawlira-home-category:hover .pawlira-category-arrow{background:#fff;color:#000;border-color:#111}
+  .pawlira-card-open:hover .pawlira-card-arrow svg,
+  .pawlira-home-category:hover .pawlira-category-arrow svg{transform:translate(2px,-2px)}
+  .pawlira-card-open:hover .pawlira-card-open-label,
+  .pawlira-merch-info h3 a:hover,.pawlira-list-copy h3 a:hover,.pawlira-comparison-name:hover,
+  .pawlira-catalog-breadcrumb a:hover,
+  nav[aria-label="Brödsmulor"] a:hover,
+  a.pawlira-text-link:hover,a.pawlira-white-link:hover,
+  .pawlira-card-compare-link:hover{text-decoration:underline;text-underline-offset:4px}
+  .pawlira-merch-card:has(.pawlira-card-open:hover){border-color:#111}
+  .pawlira-home-category:hover,.pawlira-editorial-tile:hover,.pawlira-help-card:hover,.pawlira-guide-card:hover,.pawlira-about-paths>a:hover,.pawlira-purchase-facts a:hover,.pawlira-product-compare-link:hover{border-color:#111;box-shadow:0 5px 16px #0000000a}
+  .pawlira-purchase-facts a:hover>svg:last-child,.pawlira-product-compare-link:hover svg,.pawlira-help-card:hover>svg:last-child,.pawlira-about-paths>a:hover>svg:last-child{transform:translate(2px,-2px)}
+  .pawlira-accordion .accordion-header:hover{color:#000;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
+  .pawlira-option:not(:disabled):hover,.pawlira-faq-topics button:not([aria-pressed=true]):hover,.pawlira-guide-choice-grid>button:hover,.pawlira-spotlight-tabs button:hover,.pawlira-filter-choice:hover{border-color:#111;box-shadow:inset 0 0 0 1px #111}
+  .pawlira-guide-card:hover .pawlira-text-link svg,.pawlira-editorial-tile:hover .pawlira-text-link svg{transform:translate(2px,-2px)}
+}
+@media(max-width:767px){
+  .pawlira-card-arrow,.pawlira-home-category-caption .pawlira-category-arrow{width:44px;height:44px}
+  .pawlira-card-arrow svg,.pawlira-home-category-caption .pawlira-category-arrow svg{width:22px;height:22px}
+  .pawlira-card-open{min-height:44px}
+  .pawlira-card-open-label{font-size:.83rem}
+  .pawlira-merch-actions .pawlira-card-compare-link{font-size:.74rem}
+  .pawlira-merch-cta{font-size:.82rem;padding:11px 13px}
+  .pawlira-home-category-caption{align-items:center;gap:8px}
+  .pawlira-home-category-caption>div{min-width:0;overflow-wrap:anywhere}
+}
+@media(prefers-reduced-motion:reduce){
+  .pawlira-card-arrow,.pawlira-card-arrow svg,.pawlira-home-category-caption .pawlira-category-arrow,.pawlira-home-category-caption .pawlira-category-arrow svg,.pawlira-purchase-facts a,.pawlira-product-compare-link,.pawlira-purchase-facts a>svg:last-child,.pawlira-product-compare-link svg,.pawlira-help-card>svg:last-child,.pawlira-about-paths>a>svg:last-child,.pawlira-accordion .accordion-header{transition:none;transform:none!important}
+}

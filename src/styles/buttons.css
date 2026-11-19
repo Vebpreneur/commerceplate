@@ -2,14 +2,14 @@
 :root {
   --pawlira-cta-fill: #000;
   --pawlira-cta-text: #fff;
-  --pawlira-cta-hover: #242424;
-  --pawlira-cta-hover-text: #fff;
+  --pawlira-cta-hover: #fff;
+  --pawlira-cta-hover-text: #000;
   --pawlira-cta-radius: 999px;
 }
 .btn {
   @apply inline-block border border-transparent px-5 py-2 font-semibold transition cursor-pointer;
   border-radius: var(--pawlira-cta-radius);
-  min-height: 44px;
+  min-height: 48px;
   line-height: 1.35;
   align-content: center;
   text-align: center;
@@ -20,8 +20,8 @@
 .pawlira-guide-detail-intro .btn {
   --pawlira-cta-fill: #fff;
   --pawlira-cta-text: #000;
-  --pawlira-cta-hover: #ededed;
-  --pawlira-cta-hover-text: #000;
+  --pawlira-cta-hover: #000;
+  --pawlira-cta-hover-text: #fff;
 }
 .btn-primary,
 .btn-inverse,
@@ -33,7 +33,7 @@
   color: var(--pawlira-cta-text);
   border: 1px solid var(--pawlira-cta-fill);
   border-radius: var(--pawlira-cta-radius);
-  min-height: 44px;
+  min-height: 48px;
   font-weight: 600;
   transition: background-color .2s ease, color .2s ease, border-color .2s ease, box-shadow .2s ease, transform .2s ease;
 }
@@ -55,9 +55,9 @@
   .pawlira-footer .pawlira-footer-cta:hover,
   .pawlira-product-sticky-inner .pawlira-product-nav-buy:hover {
     background: var(--pawlira-cta-hover);
-    border-color: var(--pawlira-cta-hover);
+    border-color: var(--pawlira-cta-fill);
     color: var(--pawlira-cta-hover-text)!important;
-    box-shadow: 0 4px 12px #00000012;
+    box-shadow: none;
   }
   .btn-outline-primary:not(:disabled):hover { background:#000; color:#fff; border-color:#000; }
   .btn:not(:disabled):active, .pawlira-merch-cta:active { transform: translateY(1px); }
@@ -69,3 +69,8 @@
 @media (prefers-reduced-motion: reduce) {
   .btn,.pawlira-merch-cta,.pawlira-mega-all,.pawlira-footer-cta,.pawlira-product-nav-buy { transition:none;transform:none!important; }
 }
+
+/* Primary purchase action: intentionally remains a wide, labeled button. */
+.btn.pawlira-purchase-cta{min-height:58px;font-size:1.04rem;letter-spacing:.005em;display:flex;justify-content:center;align-items:center}
+.btn-primary:focus-visible,.pawlira-merch-cta:focus-visible{outline:2px solid #000;outline-offset:4px}
+.pawlira-guide-detail-intro .btn-inverse:focus-visible{outline-color:#fff}

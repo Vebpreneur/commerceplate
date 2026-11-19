@@ -91,7 +91,7 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
                   <AddToCart
                     variants={product?.variants}
                     availableForSale={product?.availableForSale}
-                    stylesClass={"btn btn-primary w-full rounded-full py-4"}
+                    stylesClass={"btn btn-primary pawlira-purchase-cta w-full rounded-full py-4"}
                     handle={null}
                     defaultVariantId={defaultVariantId}
                   />

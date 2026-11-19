@@ -33,6 +33,6 @@ export default function MerchandiseCard({product,compact=false}:{product:Product
   <h3><Link href={href}>{product.title}</Link></h3>
   {(count||other.length>0)&&<p className="pawlira-merch-options">{count?count+" färger":""}{count&&other.length?" · ":""}{other.length?other.map(o=>o.values.length+" "+(o.name.toLowerCase()==="size"?"storlekar":"alternativ")).join(" · "):""}</p>}
   <CatalogPrice product={product}/>
-  <Link href={href} className="pawlira-merch-cta">Visa produkt<FiArrowUpRight size={19}/></Link><Link href={"/compare?product="+encodeURIComponent(product.handle)} className="pawlira-card-compare-link"><FiBarChart2 size={14}/> Jämför modell</Link>
+  <div className="pawlira-merch-actions"><Link href={href} className="pawlira-card-open" aria-label={"Visa produkt: "+product.title}><span className="pawlira-card-open-label">Visa produkt</span><span className="pawlira-card-arrow" aria-hidden="true"><FiArrowUpRight size={24}/></span></Link><Link href={"/compare?product="+encodeURIComponent(product.handle)} className="pawlira-card-compare-link"><FiBarChart2 size={15} aria-hidden="true"/> Jämför modell</Link></div>
  </div></article>;
 }
