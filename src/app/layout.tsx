@@ -7,10 +7,12 @@ import TwSizeIndicator from "@/helpers/TwSizeIndicator";
 import Footer from "@/partials/Footer";
 import Header from "@/partials/Header";
 import Providers from "@/partials/Providers";
+import {getStoreNavigation} from "@/lib/shopify/navigation";
 import "@/styles/main.css";
 import { GoogleTagManager } from "@next/third-parties/google";
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const categories = await getStoreNavigation();
   // import google font css
   const pf = theme.fonts.font_family.primary;
   const sf = theme.fonts.font_family.secondary;
@@ -65,12 +67,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       >
         <Providers>
           <Announcement />
-          <Header>
+          <Header categories={categories}>
             <OpenCart />
             <Cart />
           </Header>
           <main className="grow">{children}</main>
-          <Footer />
+          <Footer categories={categories} />
         </Providers>
         <TwSizeIndicator />
       </body>

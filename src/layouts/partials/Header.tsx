@@ -3,312 +3,58 @@
 import Logo from "@/components/Logo";
 import NavUser from "@/components/NavUser";
 import SearchBar from "@/components/SearchBar";
-import ThemeSwitcher from "@/components/ThemeSwitcher";
 import config from "@/config/config.json";
-import menu from "@/config/menu.json";
+import type {NavigationCategory} from "@/lib/shopify/navigation";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import React, { Suspense, useEffect, useState } from "react";
+import Image from "next/image";
+import {usePathname,useSearchParams} from "next/navigation";
+import {Suspense,useEffect,useRef,useState} from "react";
+import {FiMenu,FiX,FiChevronDown,FiArrowUpRight,FiArrowRight,FiBox,FiHelpCircle} from "react-icons/fi";
 
-interface IChildNavigationLink {
-  name: string;
-  url: string;
+function modelName(title:string){const name=title.split(/\s+[–—-]\s+/)[0].trim();return name.length>=5&&name.length<=55?name:title;}
+const categoryHref=(handle:string)=>"/products?c="+encodeURIComponent(handle);
+const productHref=(handle:string)=>"/products/"+encodeURIComponent(handle);
+const support=[{title:"Om Pawlira",href:"/about"},{title:"Vanliga frågor",href:"/#faq"},{title:"Köpguide",href:"/#kopguide"},{title:"Kundservice",href:"/contact"},{title:"Leverans",href:"/shipping-policy"},{title:"Retur och ångerrätt",href:"/refund-policy"}];
+
+export default function Header({children,categories=[]}:{children:any;categories?:NavigationCategory[]}){
+ const [open,setOpen]=useState(false);
+ const [mega,setMega]=useState(false);
+ const dialog=useRef<HTMLDialogElement>(null);
+ const trigger=useRef<HTMLButtonElement>(null);
+ const megaRegion=useRef<HTMLDivElement>(null);
+ const pathname=usePathname();
+ const close=()=>setOpen(false);
+ const closeAll=()=>{setOpen(false);setMega(false)};
+ useEffect(()=>{closeAll()},[pathname]);
+ useEffect(()=>{
+ const el=dialog.current;if(!el)return;
+ if(open&&!el.open)el.showModal();
+ if(!open&&el.open)el.close();
+ if(!open)return;
+ const previous=document.body.style.overflow;document.body.style.overflow="hidden";return()=>{document.body.style.overflow=previous};
+ },[open]);
+ useEffect(()=>{if(!mega)return;const outside=(event:PointerEvent)=>{if(!megaRegion.current?.contains(event.target as Node))setMega(false)};const escape=(event:KeyboardEvent)=>{if(event.key==="Escape")setMega(false)};document.addEventListener("pointerdown",outside);document.addEventListener("keydown",escape);return()=>{document.removeEventListener("pointerdown",outside);document.removeEventListener("keydown",escape)}},[mega]);
+ return <header className={`header z-30 ${config.settings.sticky_header?"sticky top-0":""}`}>
+  <div className="container pawlira-header-inner">
+    <Logo variant="white" width={184} className="pawlira-header-logo"/>
+    <nav aria-label="Huvudmeny" className="pawlira-main-links">
+     <div ref={megaRegion} className="pawlira-mega-region">
+      <div className="flex items-center gap-1"><Link href="/products" onClick={closeAll}>Produkter</Link><button type="button" aria-label="Visa produktkategorier" aria-expanded={mega} aria-controls="pawlira-mega" onClick={()=>setMega(!mega)} className="pawlira-mega-toggle"><FiChevronDown className={mega?"rotate-180":""}/></button></div>
+      {mega&&<div id="pawlira-mega" className="pawlira-mega-menu"><div className="pawlira-mega-top"><p>Utforska vårt sortiment</p><Link href="/products" onClick={closeAll}>Alla produkter <FiArrowUpRight/></Link></div><div className="pawlira-mega-grid">{categories.map(c=><div key={c.handle}><Link href={categoryHref(c.handle)} onClick={closeAll} className="pawlira-mega-category">{c.title}<FiArrowUpRight/></Link><div className="pawlira-mega-models">{c.products.slice(0,5).map(p=><Link href={productHref(p.handle)} key={p.handle} onClick={closeAll} title={p.title}>{modelName(p.title)}</Link>)}</div>{c.products.length>5&&<Link href={categoryHref(c.handle)} onClick={closeAll} className="pawlira-mega-more">Visa alla modeller <FiArrowRight/></Link>}</div>)}</div>{!categories.length&&<Link href="/products" onClick={closeAll}>Upptäck hela sortimentet</Link>}</div>}
+     </div>
+     <Link href="/about" onClick={closeAll}>Om Pawlira</Link><Link href="/contact" onClick={closeAll}>Kundservice</Link>
+    </nav>
+    <div className="pawlira-header-search">{config.settings.search&&<Suspense><SearchBar/></Suspense>}</div>
+    <div className="pawlira-header-actions"><Suspense fallback={children[0]}>{children[1]}</Suspense>{config.settings.account&&<NavUser/>}<button ref={trigger} type="button" aria-label="Öppna meny" aria-haspopup="dialog" aria-expanded={open} className="pawlira-menu-toggle" onClick={()=>{setMega(false);setOpen(true)}}><FiMenu size={23}/><span className="hidden xl:inline">Meny</span></button></div>
+  </div>
+  <dialog ref={dialog} aria-label="Meny" className="pawlira-menu-dialog" onClose={()=>{close();trigger.current?.focus()}} onClick={e=>{if(e.target===e.currentTarget)close()}}>
+   <div className="pawlira-menu-shell" onClick={e=>e.stopPropagation()}>
+    <div className="pawlira-menu-head"><Logo variant="black" width={196} onClick={closeAll}/><button type="button" onClick={close} aria-label="Stäng meny" autoFocus className="pawlira-menu-close"><FiX size={24}/></button></div>
+    <div className="pawlira-menu-content"><p className="pawlira-menu-label">Handla efter kategori</p><Link href="/products" onClick={closeAll} className="pawlira-menu-all"><span>Alla produkter</span><FiArrowUpRight size={21}/></Link>
+    {categories.map((c,i)=><details key={c.handle} className="pawlira-menu-category" open={i===0||undefined}><summary><span>{c.title}</span><FiChevronDown size={20}/></summary><div className="pawlira-menu-models">{c.products.map(p=><Link key={p.handle} href={productHref(p.handle)} onClick={closeAll} title={p.title} className="pawlira-menu-model">{p.featuredImage?.url?<span className="pawlira-menu-thumbnail"><Image src={p.featuredImage.url} alt="" width={52} height={52} className="object-contain w-full h-full"/></span>:<span className="pawlira-menu-thumbnail"><FiBox size={20}/></span>}<span>{modelName(p.title)}</span><FiArrowUpRight size={16}/></Link>)}<Link href={categoryHref(c.handle)} onClick={closeAll} className="pawlira-menu-category-more">Alla modeller i kategorin <FiArrowRight/></Link></div></details>)}
+    <div className="pawlira-menu-support"><p className="pawlira-menu-label">Upptäck & få hjälp</p>{support.map(item=><Link key={item.href} href={item.href} onClick={closeAll}>{item.title}<FiArrowUpRight size={17}/></Link>)}</div>
+    </div><div className="pawlira-menu-bottom"><Link href="/contact" onClick={closeAll}><FiHelpCircle size={20}/> Behöver du hjälp? <FiArrowRight/></Link></div>
+   </div>
+  </dialog>
+ </header>;
 }
-
-interface INavigationLink {
-  name: string;
-  url: string;
-  hasChildren?: boolean;
-  children?: IChildNavigationLink[];
-}
-
-const isMenuItemActive = (menu: INavigationLink, pathname: string) => {
-  return (pathname === `${menu.url}/` || pathname === menu.url) && "nav-active";
-};
-
-const renderMenuItem = (
-  menu: INavigationLink,
-  pathname: string,
-  handleToggleChildMenu: () => void,
-  showChildMenu: boolean,
-) => {
-  return menu.hasChildren ? (
-    <li className="nav-item nav-dropdown group relative" key={menu.name}>
-      <button
-        className={`nav-link inline-flex items-center ${
-          (menu.children?.map(({ url }) => url).includes(pathname) ||
-            menu.children?.map(({ url }) => `${url}/`).includes(pathname)) &&
-          "active"
-        }`}
-        onClick={handleToggleChildMenu}
-      >
-        {menu.name}
-        <svg
-          className={`h-6 w-6 fill-current ml-2 transition-transform ${showChildMenu ? "transform rotate-180" : ""}`}
-          viewBox="0 0 20 20"
-        >
-          <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-        </svg>
-      </button>
-      <ul
-        className={`nav-dropdown-list ${showChildMenu ? "visible" : "hidden"}`}
-      >
-        {menu.children?.map((child, i) => (
-          <li className="nav-dropdown-item" key={`children-${i}`}>
-            <Link
-              href={child.url}
-              className={`nav-dropdown-link ${isMenuItemActive(child, pathname)}`}
-            >
-              {child.name}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </li>
-  ) : (
-    <li className="nav-item" key={menu.name}>
-      <Link
-        href={menu.url}
-        className={`nav-link block ${isMenuItemActive(menu, pathname)}`}
-      >
-        {menu.name}
-      </Link>
-    </li>
-  );
-};
-
-const Header: React.FC<{ children: any }> = ({ children }) => {
-  const [navbarShadow, setNavbarShadow] = useState(false);
-  const { main }: { main: INavigationLink[] } = menu;
-  const { navigation_button, settings } = config;
-  const pathname = usePathname();
-  const [showSidebar, setShowSidebar] = useState(false);
-  const [showChildMenu, setShowChildMenu] = useState(false);
-
-  useEffect(() => {
-    window.scroll(0, 0);
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setShowSidebar(false);
-  }, [pathname]);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setNavbarShadow(window.scrollY > 0);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
-  const handleToggleSidebar = () => {
-    setShowSidebar(!showSidebar);
-    setShowChildMenu(false);
-  };
-
-  const handleToggleChildMenu = () => {
-    setShowChildMenu(!showChildMenu);
-  };
-
-  return (
-    <header
-      className={`header z-30 ${settings.sticky_header && "sticky top-0"} ${navbarShadow ? "shadow-sm" : "shadow-none"}`}
-    >
-      <nav className="navbar flex-wrap container">
-        <div className="order-1 flex items-center justify-between space-x-7 lg:space-x-14">
-          <Logo />
-          <div className="hidden lg:flex items-center gap-5 text-white">{main.filter(item=>item.url!=="/").map(item=><Link key={item.url} href={item.url} className="!text-white text-sm font-medium whitespace-nowrap">{item.name}</Link>)}</div>
-
-          <div className="relative z-40 hidden xl:block">
-            <label
-              htmlFor="nav-toggle"
-              className="order-3 cursor-pointer flex items-center text-white lg:order-1"
-            >
-              <p className="mr-2 font-medium !text-white">Meny</p>
-              <button
-                id="nav-toggle"
-                className="focus:outline-none"
-                onClick={handleToggleSidebar}
-              >
-                {showSidebar ? (
-                  <svg className="h-3 fill-current block" viewBox="0 0 20 20">
-                    <title>Menu Close</title>
-                    <polygon
-                      points="11 9 22 9 22 11 11 11 11 22 9 22 9 11 -2 11 -2 9 9 9 9 -2 11 -2"
-                      transform="rotate(45 10 10)"
-                    ></polygon>
-                  </svg>
-                ) : (
-                  <svg className="h-3 fill-current block" viewBox="0 0 20 20">
-                    <title>Menu Open</title>
-                    <path d="M0 3h20v2H0V3z m0 6h20v2H0V9z m0 6h20v2H0V0z"></path>
-                  </svg>
-                )}
-              </button>
-            </label>
-
-            <div
-              className={`fixed top-0 left-0 h-full bg-black opacity-50 w-full ${showSidebar ? "block" : "hidden"}`}
-              onClick={handleToggleSidebar}
-            ></div>
-
-            <div
-              className={`fixed top-0 left-0 h-full bg-white dark:bg-darkmode-body overflow-y-auto w-full md:w-96 p-9 ${showSidebar ? "transition-transform transform translate-x-0" : "transition-transform transform -translate-x-full"}`}
-            >
-              <div className="flex justify-between items-center mb-14">
-                <Logo />
-
-                <button onClick={handleToggleSidebar} className="p-2">
-                  <svg className="h-5 fill-current block" viewBox="0 0 20 20">
-                    <title>Menu Close</title>
-                    <polygon
-                      points="11 9 22 9 22 11 11 11 11 22 9 22 9 11 -2 11 -2 9 9 9 9 -2 11 -2"
-                      transform="rotate(45 10 10)"
-                    ></polygon>
-                  </svg>
-                </button>
-              </div>
-              <ul>
-                {main.map((menu, i) => (
-                  <React.Fragment key={`menu-${i}`}>
-                    {renderMenuItem(
-                      menu,
-                      pathname,
-                      handleToggleChildMenu,
-                      showChildMenu,
-                    )}
-                  </React.Fragment>
-                ))}
-                {navigation_button.enable && (
-                  <li className="mt-4 inline-block lg:hidden mr-4 md:mr-6">
-                    <Link
-                      className="btn btn-outline-primary btn-sm"
-                      href={navigation_button.link}
-                      target={
-                        navigation_button.link.startsWith("http")
-                          ? "_blank"
-                          : "_self"
-                      }
-                      rel={
-                        navigation_button.link.startsWith("http")
-                          ? "noopener noreferrer"
-                          : undefined
-                      }
-                    >
-                      {navigation_button.label}
-                    </Link>
-                  </li>
-                )}
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div className="max-lg:mt-4 w-full lg:w-[36%] xl:w-[30%] lg:order-2 order-3">
-          {settings.search && (
-            <Suspense>
-              <SearchBar />
-            </Suspense>
-          )}
-        </div>
-
-        <div className="order-2 lg:order-3 ml-auto flex items-center lg:ml-0">
-          {settings.theme_switcher && <ThemeSwitcher className="mr-4 md:mr-6" />}
-          <Suspense fallback={children[0]}>{children[1]}</Suspense>
-
-          {settings.account && (
-            <div className="ml-4 md:ml-6">
-              <NavUser />
-            </div>
-          )}
-
-          <div className="relative z-40 block xl:hidden ml-6">
-            <label
-              htmlFor="nav-toggle"
-              className="cursor-pointer flex items-center text-white border dark:border-border/40 p-1 rounded-md"
-            >
-              <button
-                id="nav-toggle"
-                className="focus:outline-none"
-                onClick={handleToggleSidebar}
-              >
-                {showSidebar ? (
-                  <svg className="h-5 fill-current block" viewBox="0 0 20 20">
-                    <title>Menu Close</title>
-                    <polygon
-                      points="11 9 22 9 22 11 11 11 11 22 9 22 9 11 -2 11 -2 9 9 9 9 -2 11 -2"
-                      transform="rotate(45 10 10)"
-                    ></polygon>
-                  </svg>
-                ) : (
-                  <svg className="h-5 fill-current block" viewBox="0 0 20 20">
-                    <title>Menu Open</title>
-                    <path d="M0 3h20v2H0V3z m0 6h20v2H0V9z m0 6h20v2H0V0z"></path>
-                  </svg>
-                )}
-              </button>
-            </label>
-
-            <div
-              className={`fixed top-0 left-0 h-full bg-black opacity-50 w-full ${showSidebar ? "block" : "hidden"}`}
-              onClick={handleToggleSidebar}
-            ></div>
-
-            <div
-              className={`fixed top-0 left-0 h-full bg-white dark:bg-darkmode-body overflow-y-auto w-full md:w-96 p-9 ${showSidebar ? "transition-transform transform translate-x-0" : "transition-transform transform -translate-x-full"}`}
-            >
-              <div className="flex justify-between items-center mb-14">
-                <Logo />
-
-                <button onClick={handleToggleSidebar} className="p-2">
-                  <svg className="h-5 fill-current block" viewBox="0 0 20 20">
-                    <title>Menu Close</title>
-                    <polygon
-                      points="11 9 22 9 22 11 11 11 11 22 9 22 9 11 -2 11 -2 9 9 9 9 -2 11 -2"
-                      transform="rotate(45 10 10)"
-                    ></polygon>
-                  </svg>
-                </button>
-              </div>
-              <ul>
-                {main.map((menu, i) => (
-                  <React.Fragment key={`menu-${i}`}>
-                    {renderMenuItem(
-                      menu,
-                      pathname,
-                      handleToggleChildMenu,
-                      showChildMenu,
-                    )}
-                  </React.Fragment>
-                ))}
-                {navigation_button.enable && (
-                  <li className="mt-4 inline-block lg:hidden mr-4 md:mr-6">
-                    <Link
-                      className="btn btn-outline-primary btn-sm"
-                      href={navigation_button.link}
-                      target={
-                        navigation_button.link.startsWith("http")
-                          ? "_blank"
-                          : "_self"
-                      }
-                      rel={
-                        navigation_button.link.startsWith("http")
-                          ? "noopener noreferrer"
-                          : undefined
-                      }
-                    >
-                      {navigation_button.label}
-                    </Link>
-                  </li>
-                )}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </nav>
-    </header>
-  );
-};
-
-export default Header;

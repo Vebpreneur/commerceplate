@@ -9,6 +9,7 @@ import {BsBag} from "react-icons/bs";
 import Price from "../Price";
 import CloseCart from "./CloseCart";
 import OpenCart from "./OpenCart";
+import Logo from "@/components/Logo";
 import {DeleteItemButton} from "./DeleteItemButton";
 import {EditItemQuantityButton} from "./EditItemQuantityButton";
 
@@ -33,7 +34,7 @@ export default function CartModal({cart}:{cart:Cart|undefined}){
   <button ref={trigger} type="button" aria-label={`Öppna varukorg, ${quantity} produkter`} aria-haspopup="dialog" aria-expanded={isOpen} onClick={()=>setOpen(true)} className="cursor-pointer p-1"><OpenCart quantity={quantity}/></button>
   <dialog ref={dialog} aria-labelledby="cart-heading" className="pawlira-cart-dialog" onClose={()=>{close();trigger.current?.focus();}} onClick={e=>{if(e.target===e.currentTarget)close();}}>
    <section className="flex flex-col h-full bg-white text-black" onClick={e=>e.stopPropagation()}>
-    <div className="border-b border-border p-6 flex justify-between items-center"><div><h2 id="cart-heading" className="text-2xl">Din varukorg</h2><p className="text-sm mt-1">{quantity} {quantity===1?"produkt":"produkter"}</p></div><button type="button" className="rounded-full border border-border p-3 cursor-pointer hover:border-black" onClick={close} aria-label="Stäng varukorg" autoFocus><CloseCart/></button></div>
+    <div className="border-b border-border p-6 flex justify-between items-start"><div><Logo variant="black" width={132} onClick={close} className="mb-4"/><h2 id="cart-heading" className="text-2xl">Din varukorg</h2><p className="text-sm mt-1">{quantity} {quantity===1?"produkt":"produkter"}</p></div><button type="button" className="rounded-full border border-border p-3 cursor-pointer hover:border-black" onClick={close} aria-label="Stäng varukorg" autoFocus><CloseCart/></button></div>
     {!cart?.lines.length ? <div className="flex-1 flex flex-col items-center justify-center gap-5 px-8 text-center"><BsBag size={54}/><h3 className="text-xl">Din varukorg är tom</h3><p>Upptäck smart teknik för livet med katt.</p><Link onClick={close} href="/products" className="btn btn-primary rounded-full w-full py-3">Utforska sortimentet</Link></div>:
     <><ul className="flex-1 min-h-0 overflow-y-auto px-6 divide-y divide-neutral-200">
      {cart.lines.map(item=>{

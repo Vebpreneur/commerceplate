@@ -5,10 +5,10 @@
     "base_path": "/",
     "trailing_slash": false,
     "favicon": "/pawlira-icon.svg",
-    "logo": "",
-    "logo_darkmode": "",
-    "logo_width": "150",
-    "logo_height": "27",
+    "logo": "/images/pawlira-logo-black.svg",
+    "logo_darkmode": "/images/pawlira-logo-white.svg",
+    "logo_width": "184",
+    "logo_height": "55",
     "logo_text": "Pawlira"
   },
   "announcement": {

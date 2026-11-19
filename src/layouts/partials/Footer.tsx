@@ -1,75 +1,22 @@
-"use client";
-
 import Logo from "@/components/Logo";
-import config from "@/config/config.json";
-import menu from "@/config/menu.json";
-import social from "@/config/social.json";
-import DynamicIcon from "@/helpers/DynamicIcon";
-import { markdownify } from "@/lib/utils/textConverter";
+import type {NavigationCategory} from "@/lib/shopify/navigation";
 import Link from "next/link";
-
-export interface ISocial {
-  name: string;
-  icon: string;
-  link: string;
+import {FiArrowUpRight,FiPackage,FiRefreshCcw,FiMessageCircle} from "react-icons/fi";
+const information=[{title:"Leverans",url:"/shipping-policy"},{title:"Retur och ångerrätt",url:"/refund-policy"},{title:"Köpvillkor",url:"/terms-services"},{title:"Integritetspolicy",url:"/privacy-policy"}];
+const discover=[{title:"Alla produkter",url:"/products"},{title:"Om Pawlira",url:"/about"},{title:"Köpguide",url:"/#kopguide"},{title:"Vanliga frågor",url:"/#faq"}];
+function FooterLinks({title,items}:{title:string;items:{title:string;url:string}[]}){
+ return <div><h3>{title}</h3><ul>{items.map(item=><li key={item.url}><Link href={item.url}>{item.title}<FiArrowUpRight size={14}/></Link></li>)}</ul></div>;
 }
-
-const Footer = () => {
-  const { copyright } = config.params;
-
-  return (
-    <footer className="bg-black text-white [&_.navbar-brand]:!text-white [&_.footer-link]:!text-neutral-300 [&_.footer-link:hover]:!text-white">
-      <div className="container">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 py-14 lg:py-20 items-start">
-          <div><Logo /><p className="mt-5 text-neutral-300 max-w-xs text-sm leading-relaxed">Smart teknik. Genomtänkt design. Ett enklare liv tillsammans.</p></div>
-
-          <div><h3 className="!text-white text-base mb-5">Pawlira</h3><ul className="space-y-3">
-            {menu.footer.map((menu) => (
-              <li className="footer-link" key={menu.name}>
-                <Link href={menu.url}>{menu.name}</Link>
-              </li>
-            ))}
-          </ul>
-
-          </div><div><h3 className="!text-white text-base mb-5">Kundinformation</h3><ul className="space-y-3">{menu.footerCopyright.map(item=><li key={item.url} className="footer-link"><Link href={item.url}>{item.name}</Link></li>)}</ul></div>
-          <div><h3 className="!text-white text-base mb-5">Upptäck</h3><Link href="/products" className="text-neutral-300 text-sm underline">Utforska sortimentet</Link>
-          {/* social share */}
-          <ul className="social-icons social-icons-footer">
-            {social?.main.map((social: ISocial) => (
-              <li key={social.name}>
-                <a
-                  aria-label={social.name}
-                  href={social.link}
-                  target="_blank"
-                  rel="noopener noreferrer nofollow"
-                >
-                  <span className="sr-only">{social.name}</span>
-                  <DynamicIcon className="inline-block" icon={social.icon} />
-                </a>
-              </li>
-            ))}
-          </ul></div>
-        </div>
-
-        <div className="border-t border-neutral-800 py-5">
-          <div className="flex flex-col md:flex-row gap-y-2 justify-between items-center text-neutral-300">
-            <ul className="flex flex-wrap justify-center md:justify-start gap-x-4 gap-y-2">
-              {menu.footerCopyright.map((menu) => (
-                <li className="footer-link" key={menu.name}>
-                  <Link href={menu.url}>{menu.name}</Link>
-                </li>
-              ))}
-            </ul>
-
-            <p
-              className="text-sm font-light"
-              dangerouslySetInnerHTML={markdownify(copyright)}
-            />
-          </div>
-        </div>
-      </div>
-    </footer>
-  );
-};
-
-export default Footer;
+export default function Footer({categories=[]}:{categories?:NavigationCategory[]}){
+ return <footer className="pawlira-footer"><div className="container">
+ <div className="pawlira-footer-intro"><div><Logo variant="white" width={246}/><p>Smart teknik. Genomtänkt design.<br/>Ett enklare liv tillsammans.</p></div><Link href="/products" className="pawlira-footer-cta">Hitta din nästa favorit<FiArrowUpRight size={24}/></Link></div>
+ <div className="pawlira-footer-grid">
+ <FooterLinks title="Sortiment" items={[...categories.map(c=>({title:c.title,url:"/products?c="+encodeURIComponent(c.handle)})),{title:"Visa alla produkter",url:"/products"}]}/>
+ <FooterLinks title="Upptäck" items={discover.filter(x=>x.url!=="/products")}/>
+ <FooterLinks title="Kundservice" items={[{title:"Kontakta oss",url:"/contact"},{title:"Vanliga frågor",url:"/#faq"},...information.slice(0,2)]}/>
+ <FooterLinks title="Information" items={information.slice(2)}/>
+ </div>
+ <div className="pawlira-footer-assurance">{[{Icon:FiPackage,title:"Leverans",url:"/shipping-policy"},{Icon:FiRefreshCcw,title:"Returer",url:"/refund-policy"},{Icon:FiMessageCircle,title:"Kundservice",url:"/contact"}].map(({Icon,title,url})=><Link key={url} href={url}><Icon size={22}/><span>{title}</span><FiArrowUpRight size={16}/></Link>)}</div>
+ <div className="pawlira-footer-bottom"><span>© {new Date().getFullYear()} Pawlira</span><div><Link href="/privacy-policy">Integritetspolicy</Link><Link href="/terms-services">Köpvillkor</Link></div><span>Smart Pet Care</span></div>
+ </div></footer>;
+}
