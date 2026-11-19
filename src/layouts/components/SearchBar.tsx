@@ -64,7 +64,7 @@ const SearchBar = () => {
   return (
     <form
       onSubmit={onSubmit}
-      className={`border border-border dark:border-darkmode-border rounded-full flex bg-light/90 dark:bg-dark/10 pl-4 relative`}
+      className={`border border-border dark:border-darkmode-border rounded-full flex bg-white text-black pl-4 relative`}
     >
       <input
         id="searchInput"
@@ -72,7 +72,7 @@ const SearchBar = () => {
         key={searchParams?.get("q")}
         type="search"
         name="search"
-        placeholder="Search for products"
+        placeholder="Sök produkter"
         autoComplete="off"
         value={inputValue}
         onChange={handleChange}
