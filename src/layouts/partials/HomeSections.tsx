@@ -7,6 +7,8 @@ import FeaturedProducts from "@/partials/FeaturedProducts";
 import CatalogPrice from "@/components/product/CatalogPrice";
 import MerchandiseRail from "@/components/product/ProductRail";
 import FaqSection from "@/partials/FaqSection";
+import CompareModels from "@/components/product/CompareModels";
+import ProductGuide from "@/components/ProductGuide";
 import {Suspense} from "react";
 import config from "@/config/config.json";
 
@@ -43,13 +45,6 @@ function ProductRail({group}:{group:Group}){
   <MerchandiseRail products={group.products.slice(0,6)} label={group.category.title}/>
  </section>;
 }
-function ProductComparison({group}:{group:Group}){
- const products=group.products.slice(0,3);
- const options=(p:Product)=>p.options.filter(o=>o.values.length>1).map(o=>o.name+": "+o.values.join(", ")).join(" · ")||"Inga valbara alternativ";
- return <section className="container pawlira-home-section"><Heading eyebrow="Hitta din favorit" title="Vilken modell passar dig?" description={"Jämför modeller i "+group.category.title.toLowerCase()+" och läs mer om respektive produkt."} href={collectionPath(group.category)} label="Visa kategorin"/>
- <div className="pawlira-compare-scroll"><div className="pawlira-compare-grid" style={{gridTemplateColumns:"repeat("+products.length+", minmax(0, 1fr))"}}>{products.map(p=><article key={p.id} className="pawlira-compare-card"><Link href={path(p)} className="pawlira-compare-photo"><Photo image={picture(p)} alt={p.title}/></Link><div className="pawlira-compare-body"><h3>{p.title}</h3><CatalogPrice product={p}/><dl><dt>Alternativ</dt><dd>{options(p)}</dd><dt>Produktinformation</dt><dd>{p.description?short(p.description,105):"Läs mer på produktsidan."}</dd></dl><Link href={path(p)} className="btn btn-outline-primary rounded-full w-full">Se modellen</Link></div></article>)}</div></div>
- </section>;
-}
 function DailyLife({groups}:{groups:Group[]}){
  const picks=groups.filter(g=>g.products.length||g.category.image?.url).slice(0,3);
  if(!picks.length)return null;
@@ -71,7 +66,7 @@ export default async function HomeSections(){
  const used=new Set(featuredProducts.map(p=>p.id));
  const spotlight=catalog.find(p=>!used.has(p.id)&&p.availableForSale&&picture(p))||catalog.find(p=>p.availableForSale&&picture(p));
  const shelves=available.filter(g=>g.products.length>=2).slice(0,3);
- const compareGroup=shelves.find(g=>g.products.length>=3)||shelves[0];
+ const compareGroups=available.filter(g=>g.products.length>=2).map(g=>({title:g.category.title,handle:g.category.handle,products:g.products}));
  return <>
  {available.length>0&&<section id="kategorier" className="container pawlira-home-section scroll-mt-36"><Heading eyebrow="Handla efter kategori" title="Allt börjar med en vardagsrutin." description="Hitta rätt produkter för ditt hem och din katt." href="/products" label="Hela sortimentet"/><div className="pawlira-home-categories">{available.map(group=><CategoryCard key={group.category.handle} group={group}/>)}</div></section>}
  {featuredProducts.length>0&&<section className="container pawlira-home-section"><Heading eyebrow="Utvalt för dig" title="Upptäck Pawlira" description="Smarta lösningar för livet med katt." href="/products"/><FeaturedProducts products={featuredProducts} showAllLink={false}/></section>}
@@ -80,9 +75,9 @@ export default async function HomeSections(){
  {shelves[0]&&<ProductRail group={shelves[0]}/>}
  <DailyLife groups={available}/>
  {shelves[1]&&<ProductRail group={shelves[1]}/>}
- {compareGroup&&<ProductComparison group={compareGroup}/>}
+ {compareGroups.length>0&&<CompareModels groups={compareGroups}/>}
  {shelves[2]&&<ProductRail group={shelves[2]}/>}
- <section id="kopguide" className="container pawlira-home-section scroll-mt-36"><Heading eyebrow="Inför ditt köp" title="Hitta rätt på dina villkor." description="Bra val börjar med bra information."/><div className="pawlira-guide-grid">{[{Icon:FiSliders,title:"Jämför funktioner",text:"Läs respektive produkts specifikationer och alternativ. Välj utifrån vad du faktiskt behöver.",href:"/products"},{Icon:FiCheckCircle,title:"Kontrollera detaljerna",text:"Titta på mått, innehåll och användningsinformation innan du väljer modell.",href:"/products"},{Icon:FiMessageCircle,title:"Frågor inför köpet?",text:"Läs vår kundinformation för hjälp med produkter och beställningar.",href:"/contact"}].map(({Icon,title,text,href})=><Link className="pawlira-guide-card" key={title} href={href}><Icon size={30}/><h3>{title}</h3><p>{text}</p><span className="pawlira-text-link">Läs mer<FiArrowUpRight size={18}/></span></Link>)}</div></section>
+ {available.length>0?<ProductGuide categories={available.map(g=>({title:g.category.title,handle:g.category.handle,image:g.category.image?.url?g.category.image:g.products.map(picture).find(Boolean)}))}/>:<section id="kopguide" className="container pawlira-home-section"><Heading eyebrow="Pawlira köpguide" title="Hitta rätt för din katt."/><Link href="/products" className="btn btn-primary rounded-full">Utforska sortimentet</Link></section>}
  <section className="pawlira-help-section"><div className="container"><Heading eyebrow="Kundinformation" title="Här när du behöver oss."/><div className="grid sm:grid-cols-3 gap-4">{[{Icon:FiPackage,title:"Leverans",text:"Information om leverans och frakt.",href:"/shipping-policy"},{Icon:FiRefreshCcw,title:"Retur och ångerrätt",text:"Information om dina rättigheter.",href:"/refund-policy"},{Icon:FiMessageCircle,title:"Kundservice",text:"Hjälp inför och efter ditt köp.",href:"/contact"}].map(({Icon,title,text,href})=><Link key={title} href={href} className="pawlira-help-card"><Icon size={28}/><div><h3>{title}</h3><p>{text}</p></div><FiArrowUpRight size={20}/></Link>)}</div></div></section>
  <Suspense fallback={<section id="faq" className="container pawlira-home-section"><h2 className="pawlira-large-heading">Vanliga frågor.</h2></section>}><FaqSection/></Suspense>
  <section className="pawlira-home-final"><div className="container"><p className="pawlira-eyebrow">Pawlira</p><h2>Ett enklare liv tillsammans.</h2><Link href="/products" className="btn !bg-white !text-black rounded-full">Upptäck sortimentet<FiArrowRight className="inline ml-2"/></Link></div></section>
