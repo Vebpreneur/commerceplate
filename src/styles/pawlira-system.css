@@ -102,7 +102,7 @@ main .pawlira-section-description,.pawlira-about-hero-copy>p:not(.pawlira-eyebro
 .pawlira-hotspot-stage{position:relative;aspect-ratio:16/9;background:#f5f5f7;border-radius:16px;isolation:isolate}
 .pawlira-hotspot-stage>img{border-radius:16px}
 .pawlira-hotspot{position:absolute;z-index:2;transform:translate(-50%,-50%);display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:#0a0a0a;color:white;border:1px solid #fff;box-shadow:0 3px 12px #0004;cursor:pointer}
-.pawlira-hotspot[aria-expanded=false]::after{content:"";position:absolute;inset:-4px;border:1px solid #fff;border-radius:50%;animation:pawlira-hotspot-pulse 2.8s ease-out infinite;pointer-events:none}
+.pawlira-hotspot[aria-pressed=false]::after{content:"";position:absolute;inset:-4px;border:1px solid #fff;border-radius:50%;animation:pawlira-hotspot-pulse 2.8s ease-out infinite;pointer-events:none}
 @keyframes pawlira-hotspot-pulse{0%{transform:scale(1);opacity:.8}70%,100%{transform:scale(1.35);opacity:0}}
 .pawlira-hotspot-popover{position:absolute;z-index:3;background:#fffffff2;backdrop-filter:blur(12px);border:1px solid #e5e5e5;border-radius:16px;padding:20px;width:min(300px,40%);box-shadow:0 12px 28px #0002}
 .pawlira-hotspot-popover.is-right{margin-left:25px}.pawlira-hotspot-popover.is-left{margin-right:25px}
@@ -218,3 +218,39 @@ body:has(dialog[open]) .pawlira-sticky-buy,body:has(.pawlira-mega-menu) .pawlira
 @media(max-width:1023px){.pawlira-home-content .pawlira-home-four{grid-template-columns:repeat(2,minmax(0,1fr))}.pawlira-pdp-grid{gap:32px}.pawlira-hotspot-inline{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:767px){.pawlira-home-content{--pawlira-section-space:36px;--pawlira-heading-gap:18px}.pawlira-home-content .pawlira-home-categories{grid-template-columns:1fr;gap:12px}.pawlira-home-content .pawlira-home-four{gap:10px}.pawlira-home-four .pawlira-merch-info{padding:10px;gap:10px}.pawlira-home-four .pawlira-merch-heading h3{font-size:14px}.pawlira-home-four .pawlira-merch-cta{padding-inline:8px;font-size:12px}.pawlira-home-comparison .pawlira-system-compare th,.pawlira-home-comparison .pawlira-system-compare td{padding:10px 7px;font-size:12px}.pawlira-hotspot-inline .pawlira-hotspot-popover{padding:16px}.pawlira-home-feature-banner .pawlira-brand-points{gap:18px}}
 @media(max-width:359px){.pawlira-home-content .pawlira-home-four{grid-template-columns:1fr}}
+
+/* Keep the existing simplified homepage. No floating content overlays. */
+.pawlira-hotspot-inline .pawlira-hotspot-stage{aspect-ratio:16/9}
+.pawlira-hotspot-inline .pawlira-hotspot-popover{justify-content:flex-start;gap:10px;overflow-wrap:anywhere;padding:24px}
+.pawlira-hotspot-inline .pawlira-hotspot-popover .pawlira-eyebrow{margin:4px 0 0;font-size:11px;color:#737373}
+.pawlira-hotspot-inline .pawlira-hotspot-popover h3{margin:0}
+.pawlira-hotspot-model{margin-top:auto;padding-top:16px;border-top:1px solid #e5e5e5}
+.pawlira-hotspot-model small{display:block;color:#525252;font-size:12px}
+.pawlira-hotspot-model .pawlira-text-link{width:100%;min-width:0;justify-content:space-between;text-align:left}
+.pawlira-hotspot-model .pawlira-text-link svg{flex-shrink:0}
+.pawlira-hotspot-tabs button{min-width:0;overflow-wrap:anywhere}
+.pawlira-hotspot[aria-pressed=true]{outline:2px solid #0a0a0a;outline-offset:3px}
+.pawlira-dimension-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))}
+.pawlira-dimension-grid article{min-width:0}
+.pawlira-product-sticky-nav{position:relative;top:auto!important;z-index:1}
+.pawlira-product-sticky-inner{max-width:1360px;min-width:0}
+.pawlira-sticky-buy-inner{min-width:0}
+.pawlira-sticky-buy .btn{flex-shrink:0}
+.pawlira-cart-extra-item>div{overflow-wrap:anywhere}
+.pawlira-order-bump>span{min-width:0;overflow-wrap:anywhere}
+.pawlira-order-bump{background:#fff}
+.pawlira-purchase-assurance>span,.pawlira-purchase-assurance>a{min-width:0}
+.pawlira-home-four .pawlira-merch-info{min-width:0}
+@media(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){
+ /* Scale by only 3% within the existing 16px safe inset; preserve the entire supplier image. */
+ .pawlira-merch-photos img{transition:transform .5s ease-out}
+ .pawlira-merch-card:hover .pawlira-merch-photos img{transform:scale(1.03)!important}
+}
+@media(max-width:767px){
+ .pawlira-hotspot-inline .pawlira-hotspot-stage{aspect-ratio:16/9}
+ .pawlira-hotspot-inline .pawlira-hotspot-popover{min-height:180px;padding:16px}
+ .pawlira-cart-extra-item{flex-wrap:wrap}
+ .pawlira-cart-extra-item .btn{margin-left:auto}
+ .pawlira-sticky-buy-inner{padding-inline:12px}
+ .pawlira-dimension-grid{grid-template-columns:1fr}
+}
