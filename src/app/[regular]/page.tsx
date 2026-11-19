@@ -13,7 +13,7 @@ export const generateStaticParams = () => {
   const regularPages = getSinglePage("pages").map((page: RegularPage) => ({
     regular: page.slug,
   }));
-  return regularPages;
+  return [...regularPages, {regular:"shipping-policy"}, {regular:"refund-policy"}];
 };
 
 // For all regular pages

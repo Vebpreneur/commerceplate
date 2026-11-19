@@ -15,6 +15,9 @@ import { BiLoaderAlt } from "react-icons/bi";
 const ProductListView = ({ searchParams }: { searchParams: any }) => {
   const [isLoading, setIsLoading] = useState(true);
   const targetElementRef = useRef<HTMLDivElement>(null);
+  const loadingMore = useRef(false);
+  const [isLoadingMore,setLoadingMore] = useState(false);
+  const queryRef=useRef("");
   const [data, setData] = useState<{
     products: Product[];
     pageInfo: PageInfo;
@@ -73,9 +76,8 @@ const ProductListView = ({ searchParams }: { searchParams: any }) => {
             });
           }
 
-          if (minPrice || maxPrice) {
-            queryString += `variants.price:<=${maxPrice} variants.price:>=${minPrice}`;
-          }
+          if (maxPrice) queryString += ` variants.price:<=${maxPrice}`;
+          if (minPrice) queryString += ` variants.price:>=${minPrice}`;
 
           if (searchValue) {
             queryString += ` ${searchValue}`;
@@ -109,6 +111,7 @@ const ProductListView = ({ searchParams }: { searchParams: any }) => {
             });
           }
 
+          queryRef.current = queryString;
           const query = {
             sortKey,
             reverse,
@@ -128,6 +131,7 @@ const ProductListView = ({ searchParams }: { searchParams: any }) => {
                 })
               : await getProducts({ ...query, cursor });
         } else {
+          queryRef.current = "";
           // Fetch all products
           productsData = await getProducts({ sortKey, reverse, cursor });
         }
@@ -158,7 +162,7 @@ const ProductListView = ({ searchParams }: { searchParams: any }) => {
 
   const { products, pageInfo } = data;
   const endCursor = pageInfo?.endCursor || "";
-  const hasNextPage = pageInfo?.hasNextPage || false;
+  const hasNextPage = (!category || category === "all") && !!pageInfo?.hasNextPage;
 
   useLoadMore(targetElementRef as React.RefObject<HTMLElement>, () => {
     if (hasNextPage && !isLoading) {
@@ -167,24 +171,24 @@ const ProductListView = ({ searchParams }: { searchParams: any }) => {
   });
 
   const fetchDataWithNewCursor = async (newCursor: string) => {
-    // setIsLoading(true);
+    if (loadingMore.current || !newCursor) return;
+    loadingMore.current=true;
+    setLoadingMore(true);
 
     try {
       const res = await getProducts({
         sortKey,
         reverse,
-        query: searchValue,
+        query: queryRef.current,
         cursor: newCursor,
       });
 
-      setData({
-        products: [...products, ...res.products],
-        pageInfo: res.pageInfo,
-      });
+      setData(prev=>({products:[...prev.products,...res.products.filter(item=>!prev.products.some(existing=>existing.id===item.id))],pageInfo:res.pageInfo}));
     } catch (error) {
       console.error("Error fetching more products:", error);
     } finally {
-      setIsLoading(false);
+      loadingMore.current=false;
+      setLoadingMore(false);
     }
   };
 
@@ -291,15 +295,7 @@ const ProductListView = ({ searchParams }: { searchParams: any }) => {
           })}
         </div>
 
-        <p
-          className={
-            hasNextPage || isLoading
-              ? "opacity-100 flex justify-center"
-              : "opacity-0 hidden"
-          }
-        >
-          <BiLoaderAlt className={`animate-spin`} size={30} />
-        </p>
+        {hasNextPage && <div className="flex justify-center py-8"><button type="button" className="btn btn-outline-primary rounded-full" disabled={isLoadingMore} onClick={()=>fetchDataWithNewCursor(endCursor)}>{isLoadingMore?"Laddar…":"Visa fler produkter"}</button></div>}
       </div>
     </section>
   );

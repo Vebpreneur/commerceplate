@@ -53,7 +53,7 @@ const Footer = () => {
 
         <div className="border-t border-neutral-800 py-5">
           <div className="flex flex-col md:flex-row gap-y-2 justify-between items-center text-neutral-300">
-            <ul className="flex gap-x-4">
+            <ul className="flex flex-wrap justify-center md:justify-start gap-x-4 gap-y-2">
               {menu.footerCopyright.map((menu) => (
                 <li className="footer-link" key={menu.name}>
                   <Link href={menu.url}>{menu.name}</Link>

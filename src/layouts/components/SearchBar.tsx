@@ -9,20 +9,12 @@ const SearchBar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [isInputEditing, setInputEditing] = useState(false);
+
   const [inputValue, setInputValue] = useState(searchParams.get("q") || "");
 
-  useEffect(() => {
-    const inputField = document.getElementById(
-      "searchInput",
-    ) as HTMLInputElement;
-    if (isInputEditing || searchParams.get("q")) {
-      inputField?.focus();
-    }
-  }, [searchParams, isInputEditing]);
+  useEffect(() => { setInputValue(searchParams.get("q") || ""); }, [searchParams]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputEditing(true);
     setInputValue(e.target.value);
 
     // Search when submitted, not on every keystroke.
@@ -30,7 +22,6 @@ const SearchBar = () => {
 
   const handleClear = () => {
     setInputValue("");
-    setInputEditing(false);
 
     const newParams = new URLSearchParams(pathname === "/products" ? searchParams.toString() : "");
     newParams.delete("q");
@@ -42,7 +33,7 @@ const SearchBar = () => {
     e.preventDefault();
 
     const search = inputValue.trim();
-    const newParams = new URLSearchParams(searchParams.toString());
+    const newParams = new URLSearchParams();
 
     if (search) {
       newParams.set("q", search);
