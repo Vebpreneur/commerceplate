@@ -44,11 +44,9 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="border-b border-border py-8">
-        <div className="container flex flex-wrap justify-center gap-6 md:gap-16 text-sm font-medium">
-          <Link href="/products">Upptäck våra produkter</Link>
-          <Link href="/about">Om Pawlira</Link>
-          <Link href="/contact">Kontakta oss</Link>
+      <section className="pawlira-marquee" aria-label="Smart teknik. Genomtänkt design. Ett enklare liv tillsammans.">
+        <div className="pawlira-marquee-track" aria-hidden="true">
+          {[0,1].map((copy) => <div key={copy} className="pawlira-marquee-group">{["Smart teknik","Genomtänkt design","Ett enklare liv tillsammans","Pawlira"].map(text => <span key={text}>{text}<span className="pawlira-marquee-dot">·</span></span>)}</div>)}
         </div>
       </section>
       {/* category section  */}
