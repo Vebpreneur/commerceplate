@@ -86,8 +86,8 @@ const SearchBar = () => {
           <IoClose size={20} />
         </button>
       )}
-      <button className="search-icon p-2 m-1 rounded-full">
-        <IoSearch size={20} />
+      <button type="submit" aria-label="Sök" className="search-icon !bg-black !text-white p-2 m-1 rounded-full shrink-0 flex items-center justify-center">
+        <IoSearch size={20} style={{color:"#fff",fill:"#fff"}} />
       </button>
     </form>
   );
