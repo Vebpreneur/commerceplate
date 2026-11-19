@@ -771,3 +771,21 @@
  .pawlira-list-actions .pawlira-merch-cta{min-width:0;width:100%}
  .pawlira-list-actions .pawlira-card-compare-link{width:100%}
 }
+
+/* Uniform product card information order: title, price, stock exception, action. */
+.pawlira-merch-info{padding:18px 20px 17px;gap:14px}
+.pawlira-merch-heading h3{font-size:clamp(1.02rem,1.45vw,1.2rem);line-height:1.4;min-height:2.8em}
+.pawlira-merch-info>.pawlira-merch-bottom{padding-top:0;gap:14px}
+.pawlira-merch-bottom .pawlira-catalog-price-value{font-size:clamp(1.18rem,2vw,1.55rem)}
+.pawlira-merch-bottom .pawlira-card-compare-link{font-size:.8rem;min-height:26px}
+.pawlira-merch-bottom .pawlira-merch-cta{min-height:51px}
+.pawlira-merch-bottom .pawlira-catalog-stock{margin-top:5px}
+.pawlira-list-copy .pawlira-catalog-price{margin-top:6px}
+@media(max-width:767px){
+ .pawlira-merch-info,.pawlira-merch-compact .pawlira-merch-info{padding:12px;gap:12px}
+ .pawlira-merch-heading h3,.pawlira-merch-compact .pawlira-merch-heading h3{font-size:.95rem;min-height:2.8em}
+ .pawlira-merch-info>.pawlira-merch-bottom{gap:10px}
+ .pawlira-merch-bottom .pawlira-catalog-price-value{font-size:1.13rem}
+ .pawlira-merch-bottom .pawlira-merch-cta{min-height:48px}
+ .pawlira-merch-bottom .pawlira-card-compare-link{font-size:.73rem}
+}

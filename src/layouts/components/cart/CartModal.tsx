@@ -1,5 +1,6 @@
 "use client";
 import {DEFAULT_OPTION} from "@/lib/constants";
+import {customerOptions} from "@/lib/utils/customerProduct";
 import type {Cart} from "@/lib/shopify/types";
 import {createUrl} from "@/lib/utils";
 import Image from "next/image";
@@ -38,12 +39,12 @@ export default function CartModal({cart}:{cart:Cart|undefined}){
     {!cart?.lines.length ? <div className="flex-1 flex flex-col items-center justify-center gap-5 px-8 text-center"><BsBag size={54}/><h3 className="text-xl">Din varukorg är tom</h3><p>Upptäck smart teknik för livet med katt.</p><Link onClick={close} href="/products" className="btn btn-primary rounded-full w-full py-3">Utforska sortimentet</Link></div>:
     <><ul className="flex-1 min-h-0 overflow-y-auto px-6 divide-y divide-neutral-200">
      {cart.lines.map(item=>{
-      const params=new URLSearchParams();item.merchandise.selectedOptions.forEach(({name,value})=>{if(value!==DEFAULT_OPTION)params.set(name.toLowerCase(),value);});
+      const visibleOptions=customerOptions(item.merchandise.selectedOptions).filter(o=>o.value!==DEFAULT_OPTION);const params=new URLSearchParams();visibleOptions.forEach(({name,value})=>{if(value!==DEFAULT_OPTION)params.set(name.toLowerCase(),value);});
       const url=createUrl(`/products/${item.merchandise.product.handle}`,params);
       const image=item.merchandise.image||item.merchandise.product.featuredImage;
       return <li key={item.id} className="py-5 flex gap-4">
        <Link href={url} onClick={close} className="shrink-0 w-24 h-24 border border-border rounded-lg overflow-hidden">{image?.url?<Image src={image.url} alt={item.merchandise.product.title} width={96} height={96} className="w-full h-full object-contain"/>:<div className="h-full flex items-center justify-center text-xs text-neutral-600">Bild saknas</div>}</Link>
-       <div className="flex-1 min-w-0"><div className="flex justify-between gap-2"><Link href={url} onClick={close} className="font-medium text-sm leading-snug hover:underline">{item.merchandise.product.title}</Link><DeleteItemButton item={item}/></div>{item.merchandise.title!==DEFAULT_OPTION&&<p className="text-xs text-neutral-600 mt-1">{item.merchandise.title}</p>}
+       <div className="flex-1 min-w-0"><div className="flex justify-between gap-2"><Link href={url} onClick={close} className="font-medium text-sm leading-snug hover:underline">{item.merchandise.product.title}</Link><DeleteItemButton item={item}/></div>{visibleOptions.length>0&&<p className="text-xs text-neutral-600 mt-1">{visibleOptions.map(o=>o.value).join(" / ")}</p>}
        <Price amount={item.cost.totalAmount.amount} currencyCode={item.cost.totalAmount.currencyCode} className="font-semibold mt-2"/>
        <div className="inline-flex items-center border rounded-full border-border mt-3"><EditItemQuantityButton item={item} type="minus"/><span className="text-sm px-2" aria-label="Antal">{item.quantity}</span><EditItemQuantityButton item={item} type="plus"/></div></div>
       </li>;

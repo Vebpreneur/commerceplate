@@ -8,6 +8,7 @@ import LatestProducts from "@/partials/FeaturedProducts";
 import Link from "next/link";
 import ProductSectionNav from "@/components/product/ProductSectionNav";
 import {productFields} from "@/lib/utils/productFields";
+import {customerOptions,customerText,customerHtml,customerVariants} from "@/lib/utils/customerProduct";
 import ProductStory from "@/components/product/ProductStory";
 import {FiPackage,FiRefreshCcw,FiHelpCircle,FiArrowUpRight} from "react-icons/fi";
 import { notFound } from "next/navigation";
@@ -48,20 +49,20 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
   const {
     id,
     title,
-    description,
-    descriptionHtml,
     images,
     options,
     variants,
   } = product;
 
+  const description=customerText(product.description);
+  const descriptionHtml=customerHtml(product.descriptionHtml);
   const relatedProducts = await getProductRecommendations(id).catch(()=>[]);
   const fields=productFields(product);
 
   const defaultVariantId = variants.length > 0 ? variants[0].id : undefined;
   const url=new URL("/products/"+encodeURIComponent(product.handle),config.site.base_url).toString();
-  const offers=variants.filter(v=>Number.isFinite(Number(v.price.amount))&&Number(v.price.amount)>=0).map(v=>{
-    const target=new URL(url);v.selectedOptions.forEach(o=>{if(o.value!=="Default Title")target.searchParams.set(o.name.toLowerCase(),o.value);});
+  const offers=customerVariants(variants).filter(v=>Number.isFinite(Number(v.price.amount))&&Number(v.price.amount)>=0).map(v=>{
+    const target=new URL(url);customerOptions(v.selectedOptions).forEach(o=>{if(o.value!=="Default Title")target.searchParams.set(o.name.toLowerCase(),o.value);});
     return {"@type":"Offer",url:target.toString(),price:v.price.amount,priceCurrency:v.price.currencyCode,availability:v.availableForSale?"https://schema.org/InStock":"https://schema.org/OutOfStock"};
   });
   const structuredData={"@context":"https://schema.org","@type":"Product",name:title,description,image:images.map(i=>i.url),url,...(product.vendor?{brand:{"@type":"Brand",name:product.vendor}}:{}),...(offers.length?{offers}:{})};
@@ -107,7 +108,7 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
       </section>
 
       <ProductSectionNav hasDetails={fields.some(f=>f.title!=="Vanliga frågor"&&f.value.trim())} hasGallery={images.length>2} hasRelated={relatedProducts.length>0}/>
-      <ProductStory product={product} fields={fields}/>
+      <ProductStory product={{...product,description,descriptionHtml}} fields={fields}/>
       {/* Recommended Products section  */}
       {relatedProducts?.length > 0 && <section id="relaterade" className="container pawlira-home-section scroll-mt-48">
           {relatedProducts?.length > 0 && (

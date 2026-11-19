@@ -2,6 +2,7 @@ import Link from "next/link";
 import {getStoreNavigation} from "@/lib/shopify/navigation";
 import {getProduct} from "@/lib/shopify";
 import {productFields} from "@/lib/utils/productFields";
+import {customerOptions,customerText,customerVariants} from "@/lib/utils/customerProduct";
 import FullComparison from "@/components/product/FullComparison";
 import {FiArrowUpRight,FiChevronRight} from "react-icons/fi";
 import type {Product} from "@/lib/shopify/types";
@@ -19,7 +20,7 @@ export default async function Compare({searchParams}:{searchParams:Promise<Param
  const clean=Array.from(new Set(requested.filter(p=>category?.products.some(item=>item.handle===p)))).slice(0,3);
  const handles=category?[...clean,...category.products.map(p=>p.handle).filter(p=>!clean.includes(p))].slice(0,Math.min(3,Math.max(2,clean.length),category.products.length)):[];
  const loaded=await Promise.all(handles.map(handle=>getProduct(handle).catch(()=>undefined)));
- const products=loaded.filter((p):p is Product=>!!p).map(p=>({id:p.id,handle:p.handle,title:p.title,description:p.description,featuredImage:p.featuredImage||null,availableForSale:p.availableForSale,options:p.options,priceRange:p.priceRange,variants:p.variants.map(v=>({availableForSale:v.availableForSale,price:v.price})),fields:productFields(p).filter(f=>f.key!=="faq")}));
+ const products=loaded.filter((p):p is Product=>!!p).map(p=>({id:p.id,handle:p.handle,title:p.title,description:customerText(p.description),featuredImage:p.featuredImage||null,availableForSale:p.availableForSale,options:customerOptions(p.options),priceRange:p.priceRange,variants:customerVariants(p.variants).map(v=>({availableForSale:v.availableForSale,price:v.price})),fields:productFields(p).filter(f=>f.key!=="faq")}));
  return <>
  <section className="container pt-8 lg:pt-12"><nav className="pawlira-catalog-breadcrumb" aria-label="Brödsmulor"><Link href="/">Hem</Link><FiChevronRight/><span aria-current="page">Jämför produkter</span></nav><div className="pawlira-compare-page-intro"><p className="pawlira-eyebrow">Pawlira · Modelljämförelse</p><h1>Hitta modellen som passar dig.</h1><p>Jämför upp till tre produkter inom samma kategori. Se priser, tillgänglighet, alternativ och de produktuppgifter som finns tillgängliga för varje modell.</p><Link href="/products" className="pawlira-white-link">Utforska hela sortimentet<FiArrowUpRight size={19}/></Link></div></section>
  {unmatched&&<div className="container pt-6"><p className="pawlira-compare-unmatched">Den valda produkten eller kategorin har för närvarande inte tillräckligt med jämförbara modeller. Du kan välja en annan kategori nedan.</p></div>}

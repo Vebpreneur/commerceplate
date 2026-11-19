@@ -5,7 +5,6 @@ import Link from "next/link";
 import {FiArrowUpRight,FiBarChart2,FiChevronLeft,FiChevronRight,FiImage} from "react-icons/fi";
 import type {Product} from "@/lib/shopify/types";
 import CatalogPrice from "./CatalogPrice";
-import {catalogDescription,catalogOptions} from "@/lib/utils/catalogPresentation";
 
 export default function MerchandiseCard({product,compact=false}:{product:Product;compact?:boolean}){
  const photos=Array.from(new Map([product.featuredImage,...product.images].filter(i=>i?.url).map(i=>[i.url,i])).values()).slice(0,5);
@@ -15,8 +14,6 @@ export default function MerchandiseCard({product,compact=false}:{product:Product
  const current=usable[index%Math.max(usable.length,1)];
  const next=usable[(index+1)%Math.max(usable.length,1)];
  const href="/products/"+encodeURIComponent(product.handle);
- const description=catalogDescription(product);
- const options=catalogOptions(product);
  const move=(n:number)=>{if(usable.length>1)setIndex(i=>(i+n+usable.length)%usable.length)};
  return <article className={`pawlira-merch-card ${compact?"pawlira-merch-compact":""}`}>
  <div className="pawlira-merch-media">
@@ -30,9 +27,7 @@ export default function MerchandiseCard({product,compact=false}:{product:Product
  <div className="pawlira-merch-info">
   <div className="pawlira-merch-heading">
    <h3><Link href={href} title={product.title}>{product.title}</Link></h3>
-   {description&&<p className="pawlira-merch-description">{description}</p>}
   </div>
-  {options.length>0&&<dl className="pawlira-merch-details">{options.map(({label,value})=><div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>}
   <div className="pawlira-merch-bottom">
    <CatalogPrice product={product}/>
    <Link href={href} className="pawlira-merch-cta" aria-label={"Visa produkt: "+product.title}><span>Visa produkt</span><FiArrowUpRight size={21} aria-hidden="true"/></Link>
