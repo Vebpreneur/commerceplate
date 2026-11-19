@@ -1,7 +1,7 @@
 "use client";
 
 import { ProductVariant } from "@/lib/shopify/types";
-import { addItem } from "@/lib/utils/cartActions";
+import { addSelectedItem } from "@/lib/utils/cartActions";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import React, { useActionState } from "react";
@@ -23,7 +23,6 @@ function SubmitButton({
   const buttonClasses = stylesClass;
   const disabledClasses = "cursor-not-allowed flex";
 
-  const DynamicTag = handle === null ? "button" : Link;
 
   if (!availableForSale) {
     return (
@@ -38,18 +37,7 @@ function SubmitButton({
   }
 
   if (!selectedVariantId) {
-    return (
-      <DynamicTag
-        href={`/products/${handle}`}
-        aria-label="Välj en variant"
-        aria-disabled
-        className={`${buttonClasses} ${
-          DynamicTag === "button" && disabledClasses
-        }`}
-      >
-        Välj variant
-      </DynamicTag>
-    );
+    return handle ? <Link href={`/products/${handle}`} className={buttonClasses}>Välj variant</Link> : <button type="button" disabled className={`${buttonClasses} ${disabledClasses}`}>Välj variant</button>;
   }
 
   return (
@@ -57,6 +45,8 @@ function SubmitButton({
       onClick={(e: React.FormEvent<HTMLButtonElement>) => {
         if (pending) e.preventDefault();
       }}
+      type="submit"
+      disabled={pending}
       aria-label="Lägg i varukorg"
       aria-disabled={pending ? "true" : "false"}
       className={`${buttonClasses}`}
@@ -86,7 +76,7 @@ export function AddToCart({
   handle: string | null;
   defaultVariantId: string | undefined;
 }) {
-  const [message, formAction] = useActionState(addItem, null);
+  const [message, formAction] = useActionState(addSelectedItem, null);
   const searchParams = useSearchParams();
 
   // Find the variant based on selected options
@@ -104,17 +94,17 @@ export function AddToCart({
   // Use the default variant ID if no variant is found
   const selectedVariantId = variant?.id || (selectedOptions.length === 0 ? defaultVariantId : undefined);
 
-  const actionWithVariant = formAction.bind(null, selectedVariantId);
 
   return (
-    <form action={actionWithVariant} className={handle === null ? "w-full" : undefined}>
+    <form action={formAction} className={handle === null ? "w-full" : undefined}>
+      <input type="hidden" name="variantId" value={selectedVariantId || ""} />
       <SubmitButton
         availableForSale={availableForSale && (variant?.availableForSale ?? true)}
         selectedVariantId={selectedVariantId}
         stylesClass={stylesClass}
         handle={handle}
       />
-      <p aria-live="polite" className="sr-only" role="status">
+      <p aria-live="polite" className={message ? "mt-3 text-sm text-black" : "sr-only"} role="status">
         {message}
       </p>
     </form>

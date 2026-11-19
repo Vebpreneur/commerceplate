@@ -9,3 +9,12 @@
 .btn-outline-primary {
   @apply border-dark bg-transparent text-text-dark hover:bg-dark hover:text-white dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-text-dark;
 }
+
+.btn { transition: background-color .2s ease, color .2s ease, border-color .2s ease, box-shadow .2s ease, transform .2s ease; }
+@media (hover: hover) and (pointer: fine) {
+  .btn-primary:not(:disabled):hover { background: #292929; border-color: #292929; box-shadow: 0 5px 13px #00000012; }
+  .btn:not(:disabled):active { transform: translateY(1px); }
+}
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+:where(.btn, .accordion-header, .pawlira-card a, .pawlira-detail-nav a):focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+@media (prefers-reduced-motion: reduce) { .btn { transition: none; transform: none !important; } }

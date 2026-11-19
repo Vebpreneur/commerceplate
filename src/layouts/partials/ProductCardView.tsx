@@ -1,6 +1,5 @@
 "use client";
 
-import { AddToCart } from "@/components/cart/AddToCart";
 import SkeletonCards from "@/components/loadings/skeleton/SkeletonCards";
 import ImageFallback from "@/helpers/ImageFallback";
 import useLoadMore from "@/hooks/useLoadMore";
@@ -223,47 +222,34 @@ const ProductCardView = ({ searchParams }: { searchParams: any }) => {
       )}
 
       <div className="row gap-y-8 md:gap-y-14">
-        {products.map((product, index) => {
-          const defaultVariantId =
-            product?.variants.length > 0 ? product?.variants[0].id : undefined;
+        {products.map((product) => {
           return (
             <div
-              key={index}
-              className="text-center col-6 group relative"
+              key={product.id}
+              className="col-6"
             >
-              <div className="md:relative overflow-hidden">
+              <div className="pawlira-card"><Link href={`/products/${product.handle}`} className="pawlira-card-image" aria-label={product.title}>
                 <ImageFallback
                   src={
                     product.featuredImage?.url || "/images/product_image404.jpg"
                   }
                   width={312}
                   height={269}
-                  alt={product.featuredImage?.altText || "fallback image"}
+                  alt={product.featuredImage?.altText || product.title}
                   className="w-full aspect-square object-contain bg-white rounded-lg mx-auto"
                 />
 
-                <Suspense>
-                  <AddToCart
-                    variants={product?.variants}
-                    availableForSale={product?.availableForSale}
-                    handle={product?.handle}
-                    defaultVariantId={defaultVariantId}
-                    stylesClass={
-                      "btn btn-primary max-md:btn-sm z-10 absolute bottom-24 md:bottom-0 left-1/2 transform -translate-x-1/2 md:translate-y-full md:group-hover:-translate-y-6 duration-300 ease-in-out whitespace-nowrap drop-shadow-md"
-                    }
-                  />
-                </Suspense>
-              </div>
-              <div className="py-2 md:py-4 text-center z-20">
+              </Link>
+              <div className="pawlira-card-body">
                 <h2 className="font-medium text-base md:text-xl">
                   <Link
-                    className="after:absolute after:inset-0"
+                    className="pawlira-card-title"
                     href={`/products/${product?.handle}`}
                   >
                     {product?.title}
                   </Link>
                 </h2>
-                <div className="flex flex-wrap justify-center items-center gap-x-2 mt-2 md:mt-4">
+                <div className="flex flex-wrap items-center gap-x-2">
                   <span className="text-base md:text-xl font-bold text-text-dark dark:text-darkmode-text-dark">
                     {new Intl.NumberFormat("sv-SE",{style:"currency",currency:product.priceRange.minVariantPrice.currencyCode}).format(Number(product.priceRange.minVariantPrice.amount))}
                   </span>
@@ -275,7 +261,8 @@ const ProductCardView = ({ searchParams }: { searchParams: any }) => {
                     ""
                   )}
                 </div>
-              </div>
+                <Link href={`/products/${product.handle}`} className="btn btn-outline-primary pawlira-card-action">Visa produkt</Link>
+              </div></div>
             </div>
           );
         })}

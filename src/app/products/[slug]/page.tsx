@@ -64,14 +64,14 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
 
   return (
     <>
-      <section className="py-8 lg:py-16 bg-white">
+      <section id="kop" className="py-8 lg:py-16 bg-white scroll-mt-32">
         <div className="container">
           <div className="row justify-center">
             {/* right side contents  */}
-            <div className="col-12 lg:col-7">
+            <div className="col-12 lg:col-7"><div className="lg:sticky lg:top-28">
               <Suspense>
                 <ProductGallery images={images} />
-              </Suspense>
+              </Suspense></div>
             </div>
 
             {/* left side contents  */}
@@ -122,9 +122,9 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
         </div>
       </section>
 
-      <div className="bg-black text-white py-4"><div className="container flex flex-wrap justify-center gap-8 text-sm"><a href="#produktinformation" className="!text-white">Produktöversikt</a>{fields.length > 0 && <a href="#specifikationer" className="!text-white">Produktdetaljer</a>}<a href="#kundinformation" className="!text-white">Kundinformation</a></div></div>
+      <nav aria-label="Produktnavigation" className="pawlira-detail-nav bg-black text-white py-3"><div className="container flex overflow-x-auto gap-6 md:justify-center md:gap-10 text-sm"><a href="#kop" className="!text-white">Köp</a><a href="#produktinformation" className="!text-white">Produktöversikt</a>{fields.length > 0 && <a href="#specifikationer" className="!text-white">Produktdetaljer</a>}<a href="#kundinformation" className="!text-white">Kundinformation</a></div></nav>
       {/* Description of a product  */}
-      <section id="produktinformation" className="section border-t border-border">
+      <section id="produktinformation" className="section border-t border-border scroll-mt-32">
         <div className="container"><h2 className="text-center mb-8">Upptäck {title}</h2>
         <div className="grid md:grid-cols-2 items-center gap-10 my-10">{images[0] && <img src={images[0].url} alt={images[0].altText || title} className="w-full max-h-[540px] object-contain" />}<div>{description && <p className="text-lg leading-relaxed whitespace-pre-line">{description.split("--- split content ---")[0]}</p>}</div></div>
         {fields.length > 0 && <div id="specifikationer" className="max-w-4xl mx-auto scroll-mt-32"><h2 className="mb-6">Produktdetaljer</h2><Tabs descriptionHtml="" fields={fields} /></div>}

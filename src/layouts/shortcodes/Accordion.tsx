@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useId } from "react";
 
 const Accordion = ({
   title,
@@ -12,13 +12,14 @@ const Accordion = ({
   className?: string;
 }) => {
   const [show, setShow] = useState(false);
+  const panelId = useId();
 
   return (
-    <div className={`accordion ${show && "active"} ${className}`}>
-      <button className="accordion-header" type="button" aria-expanded={show} onClick={() => setShow(!show)}>
+    <div className={`accordion pawlira-accordion ${show ? "active" : ""} ${className || ""}`}>
+      <button className="accordion-header" type="button" aria-expanded={show} aria-controls={panelId} onClick={() => setShow(!show)}>
         {title}
         <svg
-          className="accordion-icon"
+          className="accordion-icon" aria-hidden="true"
           x="0px"
           y="0px"
           viewBox="0 0 512 512"
@@ -30,7 +31,7 @@ const Accordion = ({
           ></path>
         </svg>
       </button>
-      <div className="accordion-content">{children}</div>
+      <div id={panelId} className="accordion-content" inert={!show}><div className="accordion-inner"><div>{children}</div></div></div>
     </div>
   );
 };

@@ -11,6 +11,12 @@ import {
 import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 
+export async function addSelectedItem(prevState: any, formData: FormData) {
+  const variant = formData.get("variantId");
+  if (typeof variant !== "string" || !variant.startsWith("gid://shopify/ProductVariant/")) return "Välj en giltig produktvariant.";
+  return addItem(prevState, variant);
+}
+
 export async function addItem(
   prevState: any,
   selectedVariantId: string | undefined,
@@ -38,7 +44,8 @@ export async function addItem(
     ]);
     revalidateTag(TAGS.cart, "max");
   } catch (e) {
-    return `Error adding item to cart: ${e}`;
+    console.error("Cart add failed", e);
+    return "Produkten kunde inte läggas i varukorgen. Försök igen.";
   }
 }
 
