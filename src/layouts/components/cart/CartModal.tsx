@@ -6,7 +6,9 @@ import {createUrl} from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import {useEffect,useRef,useState} from "react";
-import {BsBag} from "react-icons/bs";
+import {LuShoppingBag as BsBag,LuTruck,LuCheck} from "react-icons/lu";
+import CartAccessories from "./CartAccessories";
+import type {AccessoryOffer} from "@/lib/shopify/accessories";
 import Price from "../Price";
 import CloseCart from "./CloseCart";
 import OpenCart from "./OpenCart";
@@ -14,7 +16,7 @@ import Logo from "@/components/Logo";
 import {DeleteItemButton} from "./DeleteItemButton";
 import {EditItemQuantityButton} from "./EditItemQuantityButton";
 
-export default function CartModal({cart}:{cart:Cart|undefined}){
+export default function CartModal({cart,accessories=[]}:{cart:Cart|undefined;accessories?:AccessoryOffer[]}){
  const [isOpen,setOpen]=useState(false);
  const quantity=cart?.totalQuantity||0;
  const quantityRef=useRef(quantity);
@@ -36,7 +38,8 @@ export default function CartModal({cart}:{cart:Cart|undefined}){
   <dialog ref={dialog} aria-labelledby="cart-heading" className="pawlira-cart-dialog" onClose={()=>{close();trigger.current?.focus();}} onClick={e=>{if(e.target===e.currentTarget)close();}}>
    <section className="flex flex-col h-full bg-white text-black" onClick={e=>e.stopPropagation()}>
     <div className="border-b border-border p-6 flex justify-between items-start"><div><Logo variant="black" width={132} onClick={close} className="mb-4"/><h2 id="cart-heading" className="text-2xl">Din varukorg</h2><p className="text-sm mt-1">{quantity} {quantity===1?"produkt":"produkter"}</p></div><button type="button" className="rounded-full border border-border p-3 cursor-pointer hover:border-black" onClick={close} aria-label="Stäng varukorg" autoFocus><CloseCart/></button></div>
-    {!cart?.lines.length ? <div className="flex-1 flex flex-col items-center justify-center gap-5 px-8 text-center"><BsBag size={54}/><h3 className="text-xl">Din varukorg är tom</h3><p>Upptäck smart teknik för livet med katt.</p><Link onClick={close} href="/products" className="btn btn-primary rounded-full w-full py-3">Utforska sortimentet</Link></div>:
+    <div className="pawlira-cart-shipping"><div><LuTruck size={20} strokeWidth={1.5}/><span>Fri frakt inom Sverige</span>{quantity>0&&<LuCheck size={18} strokeWidth={1.5}/>}</div><div className="pawlira-cart-progress" role="progressbar" aria-label="Fri frakt inom Sverige" aria-valuemin={0} aria-valuemax={100} aria-valuenow={quantity>0?100:0}><span style={{width:quantity>0?"100%":"0%"}}/></div></div>
+    {!cart?.lines.length ? <div className="flex-1 flex flex-col items-center justify-center gap-5 px-8 text-center"><BsBag size={54} strokeWidth={1.5}/><h3 className="text-xl">Din varukorg är tom</h3><p>Upptäck smart teknik för livet med katt.</p><Link onClick={close} href="/products" className="btn btn-primary rounded-full w-full py-3">Utforska sortimentet</Link></div>:
     <><ul className="flex-1 min-h-0 overflow-y-auto px-6 divide-y divide-neutral-200">
      {cart.lines.map(item=>{
       const visibleOptions=customerOptions(item.merchandise.selectedOptions).filter(o=>o.value!==DEFAULT_OPTION);const params=new URLSearchParams();visibleOptions.forEach(({name,value})=>{if(value!==DEFAULT_OPTION)params.set(name.toLowerCase(),value);});
@@ -49,13 +52,13 @@ export default function CartModal({cart}:{cart:Cart|undefined}){
        <div className="inline-flex items-center border rounded-full border-border mt-3"><EditItemQuantityButton item={item} type="minus"/><span className="text-sm px-2" aria-label="Antal">{item.quantity}</span><EditItemQuantityButton item={item} type="plus"/></div></div>
       </li>;
      })}
-    </ul><div className="border-t border-border p-6 space-y-4">
+    <li className="list-none"><CartAccessories items={accessories.filter(a=>!cart.lines.some(l=>l.merchandise.product.handle===a.handle))}/></li></ul><div className="border-t border-border p-6 space-y-4">
      <div className="flex justify-between items-center text-sm"><span>Delsumma</span><Price amount={cart.cost.subtotalAmount.amount} currencyCode={cart.cost.subtotalAmount.currencyCode}/></div>
-     <div className="flex justify-between text-sm"><span>Frakt</span><span>Beräknas i kassan</span></div>
+     <div className="flex justify-between text-sm"><span>Frakt</span><span>0 kr inom Sverige</span></div>
      <div className="flex justify-between items-center text-lg font-semibold border-t border-border pt-4"><span>Beräknat totalbelopp</span><Price amount={cart.cost.totalAmount.amount} currencyCode={cart.cost.totalAmount.currencyCode}/></div>
      <p className="text-xs text-neutral-600">Slutligt belopp, leverans och eventuella skatter visas i kassan.</p>
      <a href={cart.checkoutUrl} className="btn btn-primary rounded-full w-full py-4">Till kassan</a>
-     <button type="button" onClick={close} className="text-sm underline underline-offset-4 w-full cursor-pointer">Fortsätt handla</button>
+     <button type="button" onClick={close} className="pawlira-text-link w-full cursor-pointer justify-center">Fortsätt handla</button>
     </div></>}
    </section>
   </dialog>
