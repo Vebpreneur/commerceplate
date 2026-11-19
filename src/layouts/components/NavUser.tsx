@@ -68,11 +68,11 @@ const NavUser = () => {
             </div>
             <div className="leading-none max-md:hidden">
               <div className="flex items-center">
-                <p className="block text-text-dark dark:text-darkmode-text-dark text-base truncate">
+                <p className="block text-white dark:text-darkmode-text-dark text-base truncate">
                   {user?.firstName?.split(" ")[0]}
                 </p>
                 <svg
-                  className={`w-5 text-text-dark dark:text-darkmode-text-dark dark:hover:text-darkmode-text-primary`}
+                  className={`w-5 text-white dark:text-darkmode-text-dark dark:hover:text-darkmode-text-primary`}
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   aria-hidden="true"
@@ -89,7 +89,7 @@ const NavUser = () => {
         </button>
       ) : (
         <Link
-          className="text-xl text-text-dark hover:text-text-primary dark:border-darkmode-border dark:text-white flex items-center"
+          className="text-xl text-white hover:text-neutral-300 dark:border-darkmode-border dark:text-white flex items-center"
           href="/login"
           aria-label="login"
         >
