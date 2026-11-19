@@ -24,7 +24,7 @@ const ShowFeaturedProducts = async () => {
     collection: collections.featured_products,
     reverse: false,
   });
-  const featured = products.length ? products : (await getProducts({})).products.slice(0, 8);
+  const featured = products.length ? products : (await getProducts({})).products.slice(0, 6);
   return <FeaturedProducts products={featured} />;
 };
 
@@ -33,7 +33,7 @@ const Home = () => {
   return (
     <>
       <SeoMeta />
-      <section className="relative bg-black text-white min-h-[420px] lg:min-h-[650px] flex items-center bg-cover bg-center" style={{backgroundImage:"linear-gradient(90deg,rgba(0,0,0,.65),transparent),url('/images/hero.webp')"}}>
+      <section className="relative bg-black text-white min-h-[420px] lg:min-h-[650px] flex items-center bg-cover bg-[position:65%_center] md:bg-center" style={{backgroundImage:"linear-gradient(90deg,rgba(0,0,0,.72) 0%,rgba(0,0,0,.28) 40%,transparent 72%),url('/images/hero.png')"}}>
         <div className="container py-20">
           <div className="max-w-xl">
             <p className="text-white uppercase tracking-[.24em] text-sm mb-5">Pawlira</p>
@@ -63,6 +63,7 @@ const Home = () => {
         </div>
       </section>
 
+      <section className="container py-8 lg:py-12"><div className="grid md:grid-cols-2 gap-4"><Link href="/products" className="relative min-h-[320px] overflow-hidden rounded-xl bg-black text-white flex items-end p-8 bg-cover bg-center" style={{backgroundImage:"linear-gradient(0deg,rgba(0,0,0,.8),transparent),url('/images/hero.png')"}}><div><h2 className="!text-white mb-3">Teknik för livet med katt.</h2><span className="underline">Utforska sortimentet</span></div></Link><Link href="/about" className="rounded-xl border border-border bg-white p-8 lg:p-12 flex flex-col justify-center"><h2 className="mb-4">Mer tid tillsammans.</h2><p className="mb-5">Upptäck Pawliras syn på en enklare vardag med katt.</p><span className="underline font-medium">Om Pawlira</span></Link></div></section>
       {/* Featured Products section  */}
       <section className="py-12 lg:py-20">
         <div className="container">
