@@ -9,6 +9,8 @@ import Link from "next/link";
 import ProductSectionNav from "@/components/product/ProductSectionNav";
 import {productFields} from "@/lib/utils/productFields";
 import {customerOptions,customerText,customerHtml,customerVariants} from "@/lib/utils/customerProduct";
+import DimensionsGuide from "@/components/product/DimensionsGuide";
+import {compatibleAccessories} from "@/lib/shopify/accessories";
 import ProductStory from "@/components/product/ProductStory";
 import {LuPackage as FiPackage,LuRefreshCcw as FiRefreshCcw,LuCircleHelp as FiHelpCircle,LuArrowUpRight as FiArrowUpRight} from "react-icons/lu";
 import { notFound } from "next/navigation";
@@ -58,6 +60,7 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
   const descriptionHtml=customerHtml(product.descriptionHtml);
   const relatedProducts = await getProductRecommendations(id).catch(()=>[]);
   const fields=productFields(product);
+  const accessories=await compatibleAccessories([product.handle],product.priceRange.minVariantPrice.currencyCode);
 
   const defaultVariantId = variants.length > 0 ? variants[0].id : undefined;
   const url=new URL("/products/"+encodeURIComponent(product.handle),config.site.base_url).toString();
@@ -95,6 +98,8 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
                     stylesClass={"btn btn-primary pawlira-purchase-cta w-full rounded-full py-4"}
                     handle={null}
                     defaultVariantId={defaultVariantId}
+                    productInfo={{title,handle:product.handle,image:product.featuredImage?.url}}
+                    accessory={accessories[0]}
                   />
                 </Suspense>
               </div>
@@ -108,6 +113,7 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
       </section>
 
       <ProductSectionNav hasDetails={fields.some(f=>f.title!=="Vanliga frågor"&&f.value.trim())} hasGallery={images.length>2} hasRelated={relatedProducts.length>0}/>
+      <DimensionsGuide fields={fields}/>
       <ProductStory product={{...product,description,descriptionHtml}} fields={fields}/>
       {/* Recommended Products section  */}
       {relatedProducts?.length > 0 && <section id="relaterade" className="container pawlira-home-section scroll-mt-48">

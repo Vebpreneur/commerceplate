@@ -1,5 +1,6 @@
 "use server";
-import {addToCart,createCart,getCart,removeFromCart,updateCart} from "@/lib/shopify";
+import {compatibleAccessories} from "@/lib/shopify/accessories";
+import {addToCart,createCart,getCart,getProduct,removeFromCart,updateCart} from "@/lib/shopify";
 import {refresh} from "next/cache";
 import {cookies} from "next/headers";
 
@@ -13,7 +14,19 @@ export async function addSelectedItem(_state:string|null,formData:FormData):Prom
    const existing=store.get("cartId")?.value;
    let cart=existing?await getCart(existing):undefined;
    if(!cart)cart=await createCart();
-   const result=await addToCart(cart.id,[{merchandiseId:variant,quantity}]);
+   const lines=[{merchandiseId:variant,quantity}];
+   const extra=formData.get("accessoryId");
+   if(extra){
+    const handle=formData.get("primaryHandle");
+    if(!validVariant(extra)||typeof handle!=="string"||!handle)return "Tillbehöret kunde inte verifieras.";
+    const product=await getProduct(handle);
+    const selected=product?.variants.find(v=>v.id===variant&&v.availableForSale);
+    if(!selected)return "Välj en tillgänglig produktvariant.";
+    const allowed=await compatibleAccessories([handle],selected.price.currencyCode);
+    if(!allowed.some(a=>a.variantId===extra)||extra===variant)return "Tillbehöret är inte tillgängligt för vald produkt.";
+    lines.push({merchandiseId:extra,quantity:1});
+   }
+   const result=await addToCart(cart.id,lines);
    store.set("cartId",result.id,{httpOnly:true,sameSite:"lax",secure:process.env.NODE_ENV==="production",path:"/",maxAge:60*60*24*30});
    refresh();
    return null;
