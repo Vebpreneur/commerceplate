@@ -283,7 +283,7 @@ const ProductGalleryInner = ({
         >
           {filteredImages.map((item: ImageItem) => (
             <SwiperSlide key={item.url}>
-              <div className="mb-4 bg-[#f5f5f5] rounded-xl aspect-square overflow-hidden">
+              <div className="mb-4 bg-white rounded-xl aspect-square overflow-hidden">
                 <CustomZoomImage
                   src={item.url}
                   alt={item.altText}
