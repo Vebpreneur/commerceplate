@@ -12,6 +12,7 @@ export default function DimensionsGuide({fields}:{fields:ProductField[]}){
  const items=definitions.map(d=>({...d,value:specs.find(s=>d.match.test(s.key))?.value}));
  const included=fields.filter(f=>f.key==="included").flatMap(f=>f.value.split(/\r?\n/)).map(s=>s.replace(/^[-•]\s*/,"").trim()).filter(Boolean);
  const icon=(s:string)=>/adapter|ström|power/i.test(s)?LuPlug:/filter|påse|påsar|bag/i.test(s)?LuFilter:/guide|manual|instruktion/i.test(s)?LuBookOpen:LuPackage;
+ if(!items.some(i=>i.value)&&!included.length)return null;
  return <section className="container pawlira-home-section"><FadeInSection>
  <div className="pawlira-section-heading"><div><p className="pawlira-eyebrow">Produktinformation</p><h2>Mått och kapacitet</h2><p className="pawlira-section-description">Kontrollera modellens mått och användningsgränser innan du beställer.</p></div><Link href="/contact#kontakt" className="pawlira-text-link">Fråga om produkten</Link></div>
  <div className="pawlira-dimension-grid">{items.map(({title,Icon,value})=><article key={title}><Icon size={24} strokeWidth={1.5}/><h3>{title}</h3><p>{value||"Ej angivet"}</p></article>)}</div>

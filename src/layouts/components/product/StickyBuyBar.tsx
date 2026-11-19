@@ -13,7 +13,7 @@ export default function StickyBuyBar({title,image,variant,pending,buttonId,avail
   const ro=new ResizeObserver(measure);if(header)ro.observe(header);ro.observe(button);
   window.addEventListener("scroll",measure,{passive:true});window.addEventListener("resize",measure);measure();
   return()=>{io.disconnect();ro.disconnect();window.removeEventListener("scroll",measure);window.removeEventListener("resize",measure)};
- },[buttonId]);
+ },[buttonId,variant?.id,variant?.availableForSale,available]);
  if(!visible||!available||!variant?.availableForSale)return null;
  const price=new Intl.NumberFormat("sv-SE",{style:"currency",currency:variant.price.currencyCode}).format(Number(variant.price.amount));
  const photo=variant.image?.url||image;

@@ -9,8 +9,8 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import React, { useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
-import { BiLoaderAlt } from "react-icons/bi";
-import {LuMinus as FiMinus,LuPlus as FiPlus,LuShoppingBag as FiShoppingBag} from "react-icons/lu";
+
+import {LuMinus as FiMinus,LuPlus as FiPlus,LuShoppingBag as FiShoppingBag,LuLoaderCircle} from "react-icons/lu";
 
 function SubmitButton({
   availableForSale,
@@ -59,7 +59,7 @@ function SubmitButton({
       className={`${buttonClasses}`}
     >
       {pending ? (
-        <BiLoaderAlt
+        <LuLoaderCircle strokeWidth={1.5}
           className={`animate-spin w-[70px] md:w-[85px]`}
           size={26}
         />
