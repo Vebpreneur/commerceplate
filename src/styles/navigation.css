@@ -105,3 +105,6 @@
 .header .navbar > div:last-child > button { color: white; }
 .header .navbar > div:last-child a { color: white; }
 .header .navbar .bg-white .navbar-brand, .header .navbar .bg-white a, .header .navbar .bg-white button { color: #111; }
+
+.header .search-icon { background: #000 !important; color: #fff !important; }
+.header .search-icon svg { color: #fff !important; fill: #fff !important; }
