@@ -4,7 +4,7 @@ import ImageFallback from "@/helpers/ImageFallback";
 import { Product } from "@/lib/shopify/types";
 import Link from "next/link";
 
-const FeaturedProducts = ({ products }: { products: Product[] }) => {
+const FeaturedProducts = ({ products, showAllLink = true }: { products: Product[]; showAllLink?: boolean }) => {
 
   return (
     <>
@@ -49,14 +49,14 @@ const FeaturedProducts = ({ products }: { products: Product[] }) => {
         })}
       </div>
 
-      <div className="flex justify-center">
+      {showAllLink && <div className="flex justify-center">
         <Link
-          className="btn btn-sm md:btn-lg btn-primary font-medium"
+          className="btn btn-sm md:btn-lg btn-primary font-medium rounded-full"
           href={"/products"}
         >
           Visa alla produkter
         </Link>
-      </div>
+      </div>}
     </>
   );
 };
