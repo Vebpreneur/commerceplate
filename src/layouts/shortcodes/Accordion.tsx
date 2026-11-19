@@ -6,12 +6,14 @@ const Accordion = ({
   title,
   children,
   className,
+  defaultOpen = false,
 }: {
   title: string;
   children: React.ReactNode;
   className?: string;
+  defaultOpen?: boolean;
 }) => {
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(defaultOpen);
   const panelId = useId();
 
   return (

@@ -12,7 +12,7 @@ export default function Footer({categories=[]}:{categories?:NavigationCategory[]
  <div className="pawlira-footer-intro"><div><Logo variant="white" width={246}/><p>Smart teknik. Genomtänkt design.<br/>Ett enklare liv tillsammans.</p></div><Link href="/products" className="pawlira-footer-cta">Hitta din nästa favorit<FiArrowUpRight size={24}/></Link></div>
  <div className="pawlira-footer-grid">
  <FooterLinks title="Sortiment" items={[...categories.map(c=>({title:c.title,url:"/products?c="+encodeURIComponent(c.handle)})),{title:"Visa alla produkter",url:"/products"}]}/>
- <FooterLinks title="Upptäck" items={discover.filter(x=>x.url!=="/products")}/>
+ <FooterLinks title="Upptäck" items={[...discover,...(categories.length?[{title:"Handla efter kategori",url:"/#kategorier"}]:[])]}/>
  <FooterLinks title="Kundservice" items={[{title:"Kontakta oss",url:"/contact"},{title:"Vanliga frågor",url:"/#faq"},...information.slice(0,2)]}/>
  <FooterLinks title="Information" items={information.slice(2)}/>
  </div>

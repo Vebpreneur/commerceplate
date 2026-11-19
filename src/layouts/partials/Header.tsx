@@ -7,7 +7,7 @@ import config from "@/config/config.json";
 import type {NavigationCategory} from "@/lib/shopify/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import {usePathname,useSearchParams} from "next/navigation";
+import {usePathname} from "next/navigation";
 import {Suspense,useEffect,useRef,useState} from "react";
 import {FiMenu,FiX,FiChevronDown,FiArrowUpRight,FiArrowRight,FiBox,FiHelpCircle} from "react-icons/fi";
 
