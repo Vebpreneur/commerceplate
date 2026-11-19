@@ -14,7 +14,7 @@ export default function Home(){
             <p className="text-white uppercase tracking-[.24em] text-sm mb-5">Pawlira</p>
             <h1 className="!text-white text-5xl md:text-7xl tracking-tight leading-tight mb-6">En ny standard för livet med katt.</h1>
             <p className="text-white text-lg mb-8">Smart teknik. Genomtänkt design.</p>
-            <Link href="/products" className="btn !bg-white !text-black !rounded-full">Upptäck sortimentet</Link>
+            <Link href="/products" className="btn btn-inverse !rounded-full">Upptäck sortimentet</Link>
           </div>
         </div>
       </section>
