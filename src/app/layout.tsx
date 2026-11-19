@@ -55,7 +55,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         />
         <link
           href={`https://fonts.googleapis.com/css2?family=${pf}${
-            sf ? "&family=" + sf : ""
+            sf && sf !== pf ? "&family=" + sf : ""
           }&display=swap`}
           rel="stylesheet"
         />
