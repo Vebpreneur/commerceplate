@@ -1,58 +1,43 @@
 {
   "main": [
     {
-      "name": "Home",
+      "name": "Hem",
       "url": "/"
     },
     {
-      "name": "Products",
+      "name": "Produkter",
       "url": "/products"
     },
     {
-      "name": "Pages",
-      "url": "",
-      "hasChildren": true,
-      "children": [
-        {
-          "name": "About",
-          "url": "/about"
-        },
-        {
-          "name": "Contact",
-          "url": "/contact"
-        },
-        {
-          "name": "404 Page",
-          "url": "/404"
-        }
-      ]
+      "name": "Om Pawlira",
+      "url": "/about"
     },
     {
-      "name": "Contact",
+      "name": "Kontakt",
       "url": "/contact"
     }
   ],
   "footer": [
     {
-      "name": "About",
+      "name": "Om Pawlira",
       "url": "/about"
     },
     {
-      "name": "Products",
+      "name": "Produkter",
       "url": "/products"
     },
     {
-      "name": "Contact",
+      "name": "Kontakt",
       "url": "/contact"
     }
   ],
   "footerCopyright": [
     {
-      "name": "Privacy & Policy",
+      "name": "Integritetspolicy",
       "url": "/privacy-policy"
     },
     {
-      "name": "Terms of Service",
+      "name": "Villkor",
       "url": "/terms-services"
     }
   ]
