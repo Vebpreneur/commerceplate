@@ -56,7 +56,7 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
 
   const relatedProducts = await getProductRecommendations(id).catch(()=>[]);
   const labels: Record<string,string> = {specifications:"Tekniska specifikationer", spec:"Specifikationer", technical_specifications:"Tekniska specifikationer", details:"Produktdetaljer", detaljer:"Produktdetaljer", included:"Vad ingår?", ingar:"Vad ingår?", features:"Funktioner och egenskaper", faq:"Vanliga frågor"};
-  const fields = (product.metafields || []).flatMap(field => {
+  const rawFields = (product.metafields || []).flatMap(field => {
     if (!field?.value || field.type.includes("reference")) return [];
     let value = field.value;
     if (field.type === "rich_text_field") {
@@ -65,6 +65,7 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
     return [{title: labels[field.key] || field.key, value}];
   });
 
+  const fields=rawFields.filter((field,index,all)=>field.value.trim()&&all.findIndex(other=>other.value.trim()===field.value.trim())===index);
   const defaultVariantId = variants.length > 0 ? variants[0].id : undefined;
   const url=new URL("/products/"+encodeURIComponent(product.handle),config.site.base_url).toString();
   const offers=variants.filter(v=>Number.isFinite(Number(v.price.amount))&&Number(v.price.amount)>=0).map(v=>{

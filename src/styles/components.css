@@ -583,3 +583,13 @@
 @media(hover:hover) and (pointer:fine){.pawlira-compare-category-buttons button:hover,.pawlira-guide-choice-grid>button:hover{border-color:#111}.pawlira-comparison-image:hover img{transform:scale(1.04)}}
 @media(max-width:767px){.pawlira-comparison-table{min-width:720px}.pawlira-comparison-table th,.pawlira-comparison-table td{padding:12px}.pawlira-comparison-table th[scope=row],.pawlira-comparison-label{width:112px;position:sticky;left:0;z-index:1;box-shadow:2px 0 4px #00000008}.pawlira-guide-detail{grid-template-columns:1fr}.pawlira-guide-choice-grid{grid-template-columns:1fr}.pawlira-guide-choice-grid>button{min-height:65px;padding:8px 12px}.pawlira-guide-choice-image{width:47px;height:47px}}
 @media(prefers-reduced-motion:reduce){.pawlira-guide-detail{animation:none}.pawlira-comparison-image img,.pawlira-guide-choice-grid>button,.pawlira-compare-category-buttons button{transition:none;transform:none!important}}
+
+.pawlira-detail-values{display:grid;gap:0;width:100%;margin:0}
+.pawlira-detail-values>div{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:12px;border-bottom:1px solid #e6e6e6;padding:11px 0;font-size:.9rem;line-height:1.5}
+.pawlira-detail-values>div:first-child{padding-top:0}.pawlira-detail-values>div:last-child{border-bottom:0;padding-bottom:0}
+.pawlira-detail-values dt{font-weight:600;overflow-wrap:anywhere}
+.pawlira-detail-values dd{overflow-wrap:anywhere;margin:0}
+.pawlira-detail-list{list-style:disc;padding-left:20px;display:grid;gap:8px;font-size:.92rem;line-height:1.6}
+.pawlira-detail-paragraphs{font-size:.95rem;overflow-wrap:anywhere}
+.pawlira-spec-row .pawlira-detail-values{gap:0}
+@media(max-width:480px){.pawlira-detail-values>div{grid-template-columns:minmax(0,1fr);gap:3px}}
