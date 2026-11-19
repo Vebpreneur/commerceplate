@@ -11,6 +11,8 @@ const Providers = ({ children }: { children: ReactNode }) => {
     <ThemeProvider
       attribute="class"
       defaultTheme={default_theme}
+      forcedTheme="light"
+      enableSystem={false}
       enableColorScheme={false}
     >
       {children}
