@@ -7,5 +7,5 @@ export default function CatalogPrice({product}:{product:Product}){
  const price=sorted[0]?.price||product.priceRange.minVariantPrice;
  const variable=sorted.some(v=>Number(v.price.amount)!==Number(price.amount));
  const format=(value:{amount:string;currencyCode:string})=>new Intl.NumberFormat("sv-SE",{style:"currency",currency:value.currencyCode}).format(Number(value.amount));
- return <div className="space-y-1"><div className="flex flex-wrap gap-x-2 items-baseline"><span className="text-base md:text-xl font-semibold text-black">{variable&&<span className="text-xs font-normal mr-1">Från</span>}{format(price)}</span></div><p className="text-xs text-neutral-600">{product.availableForSale?"Tillgänglig att beställa":"Slut i lager"}</p></div>;
+ return <div className="pawlira-catalog-price space-y-1"><div className="flex flex-wrap gap-x-2 items-baseline"><span className="pawlira-catalog-price-value text-base md:text-xl font-semibold text-black">{variable&&<span className="text-xs font-normal mr-1">Från</span>}{format(price)}</span></div><p className="pawlira-catalog-stock"><span aria-hidden="true" className={product.availableForSale?"is-available":""}/>{product.availableForSale?"Tillgänglig att beställa":"Slut i lager"}</p></div>;
 }

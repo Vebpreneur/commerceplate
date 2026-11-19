@@ -37,7 +37,7 @@ function CategoryCard({group}:{group:Group}){
  </Link>;
 }
 function ProductRail({group}:{group:Group}){
- return <section className="container pawlira-home-section"><Heading eyebrow="Utforska sortimentet" title={group.category.title} description={group.category.description?short(group.category.description,160):undefined} href={collectionPath(group.category)} label="Se hela kategorin"/>
+ return <section className="container pawlira-home-section"><Heading eyebrow="Utforska sortimentet" title={group.category.title} description={group.category.description?short(group.category.description,160):categoryEditorial(group.category.title,group.category.handle).description} href={collectionPath(group.category)} label="Se hela kategorin"/>
   <MerchandiseRail products={group.products.slice(0,6)} label={group.category.title}/>
  </section>;
 }
@@ -58,7 +58,8 @@ export default async function HomeSections(){
  const groups:Group[]=await Promise.all(categories.map(async category=>{const result=await getCollectionProducts({collection:category.handle,first:6}).catch(()=>({products:[]}));return {category,products:result.products};}));
  const available=groups.filter(g=>g.products.length||g.category.image?.url);
  const catalog=unique([...featured.products,...all.products,...groups.flatMap(g=>g.products)]);
- const featuredProducts=unique([...featured.products,...catalog]).slice(0,6);
+ const categoryPicks=available.flatMap(g=>[...g.products].sort((a,b)=>Number(b.availableForSale)-Number(a.availableForSale)).slice(0,2));
+ const featuredProducts=unique([...featured.products,...categoryPicks,...catalog]).slice(0,6);
  const used=new Set(featuredProducts.map(p=>p.id));
  const spotlightProducts=unique([...available.flatMap(g=>g.products.filter(p=>p.availableForSale&&picture(p)).slice(0,1)),...catalog.filter(p=>!used.has(p.id)&&p.availableForSale&&picture(p)),...catalog.filter(p=>p.availableForSale&&picture(p))]).slice(0,4);
  const shelves=available.filter(g=>g.products.length>=2).slice(0,3);
