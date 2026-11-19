@@ -5,7 +5,7 @@ import {getCollections,getCollectionProducts,getProducts} from "@/lib/shopify";
 import type {Collection,Product} from "@/lib/shopify/types";
 import FeaturedProducts from "@/partials/FeaturedProducts";
 import CatalogPrice from "@/components/product/CatalogPrice";
-import MerchandiseCard from "@/components/product/MerchandiseCard";
+import MerchandiseRail from "@/components/product/ProductRail";
 import FaqSection from "@/partials/FaqSection";
 import {Suspense} from "react";
 import config from "@/config/config.json";
@@ -40,7 +40,7 @@ function ProductSpotlight({product}:{product:Product}){
 }
 function ProductRail({group}:{group:Group}){
  return <section className="container pawlira-home-section"><Heading eyebrow="Utforska sortimentet" title={group.category.title} description={group.category.description?short(group.category.description,160):undefined} href={collectionPath(group.category)} label="Se hela kategorin"/>
-  <div className="pawlira-product-rail" aria-label={group.category.title}>{group.products.slice(0,4).map(product=><MerchandiseCard key={product.id} product={product} compact/>)}</div>
+  <MerchandiseRail products={group.products.slice(0,6)} label={group.category.title}/>
  </section>;
 }
 function ProductComparison({group}:{group:Group}){
@@ -64,7 +64,7 @@ function DailyLife({groups}:{groups:Group[]}){
 export default async function HomeSections(){
  const [allCollections,all,featured]=await Promise.all([getCollections().catch(()=>[]),getProducts({}).catch(()=>({products:[]})),getCollectionProducts({collection:config.shopify.collections.featured_products,first:8}).catch(()=>({products:[]}))]);
  const categories=(allCollections as Category[]).filter(c=>!["frontpage","home-page","homepage","featured-products","all"].includes(c.handle)&&!c.handle.startsWith("hidden")&&c.title.toLowerCase()!=="home page").slice(0,6);
- const groups:Group[]=await Promise.all(categories.map(async category=>{const result=await getCollectionProducts({collection:category.handle,first:4}).catch(()=>({products:[]}));return {category,products:result.products};}));
+ const groups:Group[]=await Promise.all(categories.map(async category=>{const result=await getCollectionProducts({collection:category.handle,first:6}).catch(()=>({products:[]}));return {category,products:result.products};}));
  const available=groups.filter(g=>g.products.length||g.category.image?.url);
  const catalog=unique([...featured.products,...all.products,...groups.flatMap(g=>g.products)]);
  const featuredProducts=unique([...featured.products,...catalog]).slice(0,6);

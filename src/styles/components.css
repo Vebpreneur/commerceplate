@@ -532,3 +532,11 @@
 @media(hover:hover) and (pointer:fine){.pawlira-gallery-photo:hover img{transform:scale(1.025)}}
 @media(max-width:767px){.pawlira-gallery-arrow,.pawlira-gallery-expand{width:36px;height:36px}.pawlira-gallery-thumbs button{min-width:60px}.pawlira-lightbox-head{padding:12px}.pawlira-lightbox-head p{font-size:.8rem}.pawlira-lightbox-foot{padding:10px}.pawlira-product-sticky-inner a{padding:15px 0;font-size:.79rem}.pawlira-product-sticky-inner .pawlira-product-nav-buy{display:none}}
 @media(prefers-reduced-motion:reduce){.pawlira-gallery-photo img{animation:none;transition:none;transform:none}.pawlira-gallery-arrow,.pawlira-gallery-expand,.pawlira-product-sticky-inner a{transition:none}}
+
+.pawlira-rail-navigation{display:flex;justify-content:flex-end;gap:8px;margin-top:9px}
+.pawlira-rail-navigation button{width:43px;height:43px;display:grid;place-items:center;border:1px solid #ddd;background:#fff;color:#111;border-radius:50%;cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+.pawlira-rail-navigation button:not(:disabled):hover{background:#000;color:#fff;border-color:#000}
+.pawlira-rail-navigation button:disabled{opacity:.35;cursor:not-allowed}
+.pawlira-product-gallery button:focus-visible,.pawlira-lightbox button:focus-visible,.pawlira-rail-navigation button:focus-visible{outline:2px solid #111;outline-offset:2px}
+.pawlira-product-sticky-nav a:focus-visible{outline:2px solid #fff;outline-offset:-3px}
+@media(prefers-reduced-motion:reduce){.pawlira-rail-navigation button{transition:none}}
