@@ -7,6 +7,9 @@ import {getCollections,getCollectionProducts,getProducts} from "@/lib/shopify";
 import type {Collection,Product} from "@/lib/shopify/types";
 import FeaturedProducts from "@/partials/FeaturedProducts";
 import Spotlight from "@/components/product/Spotlight";
+import FeatureHotspots from "@/components/FeatureHotspots";
+import ComparisonSection from "@/components/ComparisonSection";
+import CustomerStories from "@/components/CustomerStories";
 import MerchandiseRail from "@/components/product/ProductRail";
 import FaqSection from "@/partials/FaqSection";
 import CompareModels from "@/components/product/CompareModels";
@@ -64,12 +67,16 @@ export default async function HomeSections(){
  const featuredProducts=unique([...featured.products,...categoryPicks,...catalog]).slice(0,6);
  const used=new Set(featuredProducts.map(p=>p.id));
  const spotlightProducts=unique([...available.flatMap(g=>g.products.filter(p=>p.availableForSale&&picture(p)).slice(0,1)),...catalog.filter(p=>!used.has(p.id)&&p.availableForSale&&picture(p)),...catalog.filter(p=>p.availableForSale&&picture(p))]).slice(0,4);
+ const litter=available.find(g=>/kattlå|kattla|litter|toalett/i.test(g.category.title+" "+g.category.handle));
  const shelves=available.filter(g=>g.products.length>=2).slice(0,3);
  const compareGroups=available.filter(g=>g.products.length>=2).map(g=>({title:g.category.title,handle:g.category.handle,products:g.products}));
  return <>
  {available.length>0&&<section id="kategorier" className="container pawlira-home-section scroll-mt-36"><Heading eyebrow="Handla efter kategori" title="Handla efter kategori" description="Välj bland kattlådor, foderautomater och vattenfontäner." href="/products" label="Hela sortimentet"/><div className="pawlira-home-categories">{available.map(group=><CategoryCard key={group.category.handle} group={group}/>)}</div></section>}
  {featuredProducts.length>0&&<section className="container pawlira-home-section"><Heading eyebrow="Utvalt för dig" title="Utvalda produkter" description="Modeller med olika funktioner, kapacitet och utföranden." href="/products"/><FeaturedProducts products={featuredProducts} showAllLink={false}/></section>}
  {spotlightProducts.length>0&&<Spotlight products={spotlightProducts}/>}
+ {litter&&<FeatureHotspots image={litter.category.image?.url?litter.category.image:litter.products.map(picture).find(Boolean)} href={collectionPath(litter.category)}/>}
+ {litter&&<ComparisonSection href={"/compare?c="+encodeURIComponent(litter.category.handle)}/>}
+ <CustomerStories/>
  <section className="pawlira-home-black"><div className="container"><div className="pawlira-brand-statement"><p className="pawlira-eyebrow">Pawlira · Livet med katt</p><h2>Mindre arbete med vardagsrutinerna</h2><p>En automatisk kattlåda kan minska den dagliga städningen. En foderautomat hjälper dig hålla måltiderna regelbundna. En vattenfontän ger tillgång till cirkulerande vatten.</p><Link href="/about" className="pawlira-white-link">Lär känna Pawlira<FiArrowUpRight size={20} strokeWidth={1.5}/></Link></div><div className="pawlira-brand-points">{[{Icon:FiHeart,title:"Anpassat efter din katt",text:"Välj storlek och funktion efter kattens vanor och behov."},{Icon:FiSliders,title:"Automatiserade rutiner",text:"Jämför timer, appstyrning och övriga funktioner för varje modell."},{Icon:FiGrid,title:"Praktiskt i hemmet",text:"Se mått, material och krav på placering innan du beställer."}].map(({Icon,title,text})=><div key={title}><Icon size={29} strokeWidth={1.5}/><h3>{title}</h3><p>{text}</p></div>)}</div></div></section>
  {shelves[0]&&<ProductRail group={shelves[0]}/>}
  <DailyLife groups={available}/>
