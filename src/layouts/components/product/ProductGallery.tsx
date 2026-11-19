@@ -293,8 +293,8 @@ const ProductGalleryInner = ({
               </div>
             </SwiperSlide>
           ))}
-          <div
-            className={`hidden lg:block w-full absolute top-1/2 -translate-y-1/2 z-10 px-6 text-text-dark ${
+          {filteredImages.length > 1 && <div
+            className={`w-full absolute top-1/2 -translate-y-1/2 z-10 px-6 text-text-dark pointer-events-none ${
               isHovered
                 ? "opacity-100 transition-opacity duration-300 ease-in-out"
                 : "opacity-100 lg:opacity-60 transition-opacity duration-300 ease-in-out"
