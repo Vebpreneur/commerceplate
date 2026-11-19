@@ -4,7 +4,7 @@ import { ProductVariant } from "@/lib/shopify/types";
 import { addSelectedItem } from "@/lib/utils/cartActions";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import React, { useActionState } from "react";
+import React, { useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { BiLoaderAlt } from "react-icons/bi";
 
@@ -77,6 +77,7 @@ export function AddToCart({
   defaultVariantId: string | undefined;
 }) {
   const [message, formAction] = useActionState(addSelectedItem, null);
+  const [quantity,setQuantity]=useState(1);
   const searchParams = useSearchParams();
 
   // Find the variant based on selected options
@@ -98,6 +99,7 @@ export function AddToCart({
   return (
     <form action={formAction} className={handle === null ? "w-full" : undefined}>
       <input type="hidden" name="variantId" value={selectedVariantId || ""} />
+      {handle===null&&<div className="flex items-center justify-between gap-3 mb-4"><label htmlFor="product-quantity" className="font-medium text-sm">Antal</label><select id="product-quantity" name="quantity" value={quantity} onChange={e=>setQuantity(Number(e.target.value))} className="rounded-lg border border-border bg-white text-black py-2 pl-3 pr-10">{Array.from({length:10},(_,i)=><option key={i+1} value={i+1}>{i+1}</option>)}</select></div>}
       <SubmitButton
         availableForSale={availableForSale && (variant?.availableForSale ?? true)}
         selectedVariantId={selectedVariantId}

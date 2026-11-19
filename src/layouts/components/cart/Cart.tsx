@@ -8,7 +8,7 @@ export default async function Cart() {
   let cart;
 
   if (cartId) {
-    cart = await getCart(cartId);
+    try { cart = await getCart(cartId); } catch { /* Keep navigation available during a temporary Shopify error. */ }
   }
 
   return <CartModal cart={cart} />;

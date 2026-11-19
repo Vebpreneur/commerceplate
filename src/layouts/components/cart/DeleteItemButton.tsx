@@ -16,15 +16,16 @@ function SubmitButton() {
       onClick={(e: React.FormEvent<HTMLButtonElement>) => {
         if (pending) e.preventDefault();
       }}
-      aria-label="Remove cart item"
+      aria-label="Ta bort produkt"
       aria-disabled={pending}
-      className={`ease flex h-[17px] w-[17px] items-center justify-center rounded-full bg-neutral-500 transition-all duration-200 ${pending ? "cursor-not-allowed px-0" : ""
+      disabled={pending}
+      className={`ease flex h-8 w-8 items-center justify-center rounded-full bg-black transition-all duration-200 ${pending ? "cursor-not-allowed px-0" : ""
         }`}
     >
       {pending ? (
         <LoadingDots className="bg-white" />
       ) : (
-        <FaXmark className="hover:text-accent-3 mx-[1px] h-4 w-4 text-white dark:text-black" />
+        <FaXmark className=" mx-[1px] h-4 w-4 text-white dark:text-black" />
       )}
     </button>
   );
@@ -38,7 +39,7 @@ export function DeleteItemButton({ item }: { item: CartItem }) {
   return (
     <form action={actionWithVariant}>
       <SubmitButton />
-      <p aria-live="polite" className="sr-only" role="status">
+      <p aria-live="polite" className={message ? "text-xs text-black mt-1 max-w-[160px]" : "sr-only"} role="status">
         {message}
       </p>
     </form>

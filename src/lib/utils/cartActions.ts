@@ -1,93 +1,45 @@
 "use server";
+import {addToCart,createCart,getCart,removeFromCart,updateCart} from "@/lib/shopify";
+import {refresh} from "next/cache";
+import {cookies} from "next/headers";
 
-import { TAGS } from "@/lib/constants";
-import {
-  addToCart,
-  createCart,
-  getCart,
-  removeFromCart,
-  updateCart,
-} from "@/lib/shopify";
-import { revalidateTag } from "next/cache";
-import { cookies } from "next/headers";
-
-export async function addSelectedItem(prevState: any, formData: FormData) {
-  const variant = formData.get("variantId");
-  if (typeof variant !== "string" || !variant.startsWith("gid://shopify/ProductVariant/")) return "Välj en giltig produktvariant.";
-  return addItem(prevState, variant);
+const validVariant=(id:unknown):id is string=>typeof id==="string"&&/^gid:\/\/shopify\/ProductVariant\/\d+$/.test(id);
+export async function addSelectedItem(_state:string|null,formData:FormData):Promise<string|null>{
+ const variant=formData.get("variantId");
+ const quantity=Number(formData.get("quantity")||1);
+ if(!validVariant(variant)||!Number.isInteger(quantity)||quantity<1||quantity>99)return "Välj en giltig variant och antal.";
+ try{
+   const store=await cookies();
+   const existing=store.get("cartId")?.value;
+   let cart=existing?await getCart(existing):undefined;
+   if(!cart)cart=await createCart();
+   const result=await addToCart(cart.id,[{merchandiseId:variant,quantity}]);
+   store.set("cartId",result.id,{httpOnly:true,sameSite:"lax",secure:process.env.NODE_ENV==="production",path:"/",maxAge:60*60*24*30});
+   refresh();
+   return null;
+ }catch{return "Produkten kunde inte läggas i varukorgen. Kontrollera lagerstatus och försök igen.";}
 }
-
-export async function addItem(
-  prevState: any,
-  selectedVariantId: string | undefined,
-) {
-  let cartId = (await cookies()).get("cartId")?.value;
-  let cart;
-
-  if (cartId) {
-    cart = await getCart(cartId);
-  }
-
-  if (!cartId || !cart) {
-    cart = await createCart();
-    cartId = cart.id;
-    (await cookies()).set("cartId", cartId);
-  }
-
-  if (!selectedVariantId) {
-    return "Missing product variant ID";
-  }
-
-  try {
-    await addToCart(cartId, [
-      { merchandiseId: selectedVariantId, quantity: 1 },
-    ]);
-    revalidateTag(TAGS.cart, "max");
-  } catch (e) {
-    console.error("Cart add failed", e);
-    return "Produkten kunde inte läggas i varukorgen. Försök igen.";
-  }
+export async function addItem(state:string|null,selectedVariantId:string|undefined){
+ const form=new FormData();if(selectedVariantId)form.set("variantId",selectedVariantId);return addSelectedItem(state,form);
 }
-
-export async function removeItem(prevState: any, lineId: string) {
-  const cartId = (await cookies()).get("cartId")?.value;
-
-  if (!cartId) {
-    return "Missing cart ID";
-  }
-
-  try {
-    await removeFromCart(cartId, [lineId]);
-    revalidateTag(TAGS.cart, "max");
-  } catch (e) {
-    return `Error removing item from cart: ${e}`;
-  }
+export async function removeItem(_state:string|null,lineId:string):Promise<string|null>{
+ try{
+  const cartId=(await cookies()).get("cartId")?.value;
+  if(!cartId)return "Varukorgen har gått ut. Ladda om sidan.";
+  const cart=await getCart(cartId);
+  if(!cart?.lines.some(line=>line.id===lineId))return "Produkten finns inte kvar i varukorgen.";
+  await removeFromCart(cartId,[lineId]);refresh();return null;
+ }catch{return "Kunde inte ta bort produkten. Försök igen.";}
 }
-
-export async function updateItemQuantity(
-  prevState: any,
-  payload: { lineId: string; variantId: string; quantity: number },
-) {
-  const cartId = (await cookies()).get("cartId")?.value;
-
-  if (!cartId) {
-    return "Missing cart ID";
-  }
-
-  const { lineId, variantId, quantity } = payload;
-
-  try {
-    if (quantity === 0) {
-      await removeFromCart(cartId, [lineId]);
-      revalidateTag(TAGS.cart, "max");
-      return;
-    }
-
-    await updateCart(cartId, [
-      { id: lineId, merchandiseId: variantId, quantity },
-    ]);
-    revalidateTag(TAGS.cart, "max");
-  } catch (e) {
-    return `Error updating item quantity: ${e}`;
-  }
+export async function updateItemQuantity(_state:string|null,payload:{lineId:string;variantId:string;quantity:number}):Promise<string|null>{
+ const {lineId,variantId,quantity}=payload;
+ if(!validVariant(variantId)||!Number.isInteger(quantity)||quantity<0||quantity>99)return "Ange ett giltigt antal.";
+ try{
+  const cartId=(await cookies()).get("cartId")?.value;
+  if(!cartId)return "Varukorgen har gått ut. Ladda om sidan.";
+  const cart=await getCart(cartId);
+  if(!cart?.lines.some(line=>line.id===lineId&&line.merchandise.id===variantId))return "Produkten finns inte kvar i varukorgen.";
+  if(!quantity)await removeFromCart(cartId,[lineId]);else await updateCart(cartId,[{id:lineId,merchandiseId:variantId,quantity}]);
+  refresh();return null;
+ }catch{return "Antalet kunde inte ändras. Kontrollera lagerstatus och försök igen.";}
 }

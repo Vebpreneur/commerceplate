@@ -17,16 +17,17 @@ function SubmitButton({ type }: { type: "plus" | "minus" }) {
         if (pending) e.preventDefault();
       }}
       aria-label={
-        type === "plus" ? "Increase item quantity" : "Reduce item quantity"
+        type === "plus" ? "Öka antal" : "Minska antal"
       }
       aria-disabled={pending}
-      className={`ease flex h-full min-w-[36px] max-w-[36px] flex-none items-center justify-center rounded-full px-2 transition-all duration-200 hover:border-neutral-800 hover:opacity-80 ${pending ? "cursor-not-allowed" : ""
+      disabled={pending}
+      className={`ease flex h-9 min-w-[36px] max-w-[36px] flex-none items-center justify-center rounded-full px-2 transition-all duration-200 hover:border-neutral-800 hover:opacity-80 ${pending ? "cursor-not-allowed" : ""
         } ${type === "minus" ? "ml-auto" : ""}`}
     >
       {pending ? (
         <LoadingDots className="bg-black dark:bg-white" />
       ) : type === "plus" ? (
-        <FaPlus className="h-4 w-4 dark:text-neutral-500" />
+        <FaPlus className="h-3 w-3 text-black" />
       ) : (
         <FaMinus className="h-4 w-4 dark:text-neutral-500" />
       )}
@@ -52,7 +53,7 @@ export function EditItemQuantityButton({
   return (
     <form action={actionWithVariant}>
       <SubmitButton type={type} />
-      <p aria-live="polite" className="sr-only" role="status">
+      <p aria-live="polite" className={message ? "text-xs text-black mt-1 max-w-[160px]" : "sr-only"} role="status">
         {message}
       </p>
     </form>

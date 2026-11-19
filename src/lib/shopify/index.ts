@@ -149,13 +149,12 @@ const removeEdgesAndNodes = (array: Connection<any>) => {
   return array.edges.map((edge) => edge?.node);
 };
 
-const reshapeCart = (cart: ShopifyCart): Cart => {
-  if (!cart.cost?.totalTaxAmount) {
-    cart.cost.totalTaxAmount = { amount: "0.0", currencyCode: cart.cost.totalAmount.currencyCode };
-  }
+const reshapeCart = (cart: ShopifyCart): Cart => ({ ...cart, lines: removeEdgesAndNodes(cart.lines) });
 
-  return { ...cart, lines: removeEdgesAndNodes(cart.lines) };
-};
+function checkedCart(result: {cart: ShopifyCart | null;userErrors?: {message:string}[]}): Cart {
+  if (!result.cart || result.userErrors?.length) throw new Error("Shopify rejected the cart operation");
+  return reshapeCart(result.cart);
+}
 
 const reshapeCollection = (
   collection: ShopifyCollection,
@@ -237,7 +236,7 @@ export async function createCart(): Promise<Cart> {
     cache: "no-store",
   });
 
-  return reshapeCart(res.body.data.cartCreate.cart);
+  return checkedCart(res.body.data.cartCreate);
 }
 
 export async function addToCart(
@@ -249,7 +248,7 @@ export async function addToCart(
     variables: { cartId, lines },
     cache: "no-store",
   });
-  return reshapeCart(res.body.data.cartLinesAdd.cart);
+  return checkedCart(res.body.data.cartLinesAdd);
 }
 
 export async function removeFromCart(
@@ -262,7 +261,7 @@ export async function removeFromCart(
     cache: "no-store",
   });
 
-  return reshapeCart(res.body.data.cartLinesRemove.cart);
+  return checkedCart(res.body.data.cartLinesRemove);
 }
 
 export async function updateCart(
@@ -275,7 +274,7 @@ export async function updateCart(
     cache: "no-store",
   });
 
-  return reshapeCart(res.body.data.cartLinesUpdate.cart);
+  return checkedCart(res.body.data.cartLinesUpdate);
 }
 
 export async function getCart(cartId: string): Promise<Cart | undefined> {

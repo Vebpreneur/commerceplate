@@ -273,3 +273,9 @@
 .pawlira-filter-choice[aria-pressed=true] .pawlira-filter-check{background:#111;color:#fff;border-color:#111;}
 @media(hover:hover){.pawlira-filter-choice:hover{box-shadow:inset 0 0 0 1px #999;}}
 .pawlira-filter-choice:focus-visible{outline:2px solid #111;outline-offset:2px;}
+
+.pawlira-cart-dialog{position:fixed;inset:0 0 0 auto;margin:0;width:min(100%,480px);max-width:100%;height:100dvh;max-height:100dvh;padding:0;border:0;background:#fff;color:#111;overflow:hidden;box-shadow:-12px 0 50px #0002;}
+.pawlira-cart-dialog::backdrop{background:#0008;}
+.pawlira-cart-dialog[open]{animation:pawlira-cart-in .28s cubic-bezier(.2,.75,.25,1);}
+@keyframes pawlira-cart-in{from{transform:translateX(100%)}to{transform:translateX(0)}}
+@media(prefers-reduced-motion:reduce){.pawlira-cart-dialog[open]{animation:none}}

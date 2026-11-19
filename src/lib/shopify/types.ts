@@ -88,7 +88,8 @@ export type CartItem = {
       name: string;
       value: string;
     }[];
-    product: Product;
+    image?: Image | null;
+    product: Pick<Product, "id" | "title" | "handle" | "featuredImage">;
   };
 };
 
@@ -158,7 +159,7 @@ export type ShopifyCart = {
   cost: {
     subtotalAmount: Money;
     totalAmount: Money;
-    totalTaxAmount: Money;
+    totalTaxAmount: Money | null;
   };
   lines: Connection<CartItem>;
   totalQuantity: number;
@@ -211,15 +212,15 @@ export type ShopifyCartOperation = {
   };
 };
 
+type CartMutationResult = { cart: ShopifyCart | null; userErrors: { field?: string[]; message: string }[] };
+
 export type ShopifyCreateCartOperation = {
-  data: { cartCreate: { cart: ShopifyCart } };
+  data: { cartCreate: CartMutationResult };
 };
 
 export type ShopifyAddToCartOperation = {
   data: {
-    cartLinesAdd: {
-      cart: ShopifyCart;
-    };
+    cartLinesAdd: CartMutationResult;
   };
   variables: {
     cartId: string;
@@ -232,9 +233,7 @@ export type ShopifyAddToCartOperation = {
 
 export type ShopifyRemoveFromCartOperation = {
   data: {
-    cartLinesRemove: {
-      cart: ShopifyCart;
-    };
+    cartLinesRemove: CartMutationResult;
   };
   variables: {
     cartId: string;
@@ -244,9 +243,7 @@ export type ShopifyRemoveFromCartOperation = {
 
 export type ShopifyUpdateCartOperation = {
   data: {
-    cartLinesUpdate: {
-      cart: ShopifyCart;
-    };
+    cartLinesUpdate: CartMutationResult;
   };
   variables: {
     cartId: string;

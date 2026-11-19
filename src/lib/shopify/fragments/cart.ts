@@ -1,45 +1,26 @@
-import productFragment from "./product";
-
+import imageFragment from "./image";
 const cartFragment = /* GraphQL */ `
   fragment cart on Cart {
     id
     checkoutUrl
     cost {
-      subtotalAmount {
-        amount
-        currencyCode
-      }
-      totalAmount {
-        amount
-        currencyCode
-      }
-      totalTaxAmount {
-        amount
-        currencyCode
-      }
+      subtotalAmount { amount currencyCode }
+      totalAmount { amount currencyCode }
+      totalTaxAmount { amount currencyCode }
     }
     lines(first: 100) {
       edges {
         node {
           id
           quantity
-          cost {
-            totalAmount {
-              amount
-              currencyCode
-            }
-          }
+          cost { totalAmount { amount currencyCode } }
           merchandise {
             ... on ProductVariant {
               id
               title
-              selectedOptions {
-                name
-                value
-              }
-              product {
-                ...product
-              }
+              image { ...image }
+              selectedOptions { name value }
+              product { id title handle featuredImage { ...image } }
             }
           }
         }
@@ -47,7 +28,6 @@ const cartFragment = /* GraphQL */ `
     }
     totalQuantity
   }
-  ${productFragment}
+  ${imageFragment}
 `;
-
 export default cartFragment;
