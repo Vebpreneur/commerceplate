@@ -2,7 +2,6 @@
 
 import { AddToCart } from "@/components/cart/AddToCart";
 import SkeletonCards from "@/components/loadings/skeleton/SkeletonCards";
-import config from "@/config/config.json";
 import ImageFallback from "@/helpers/ImageFallback";
 import useLoadMore from "@/hooks/useLoadMore";
 import { defaultSort, sorting } from "@/lib/constants";
@@ -14,7 +13,6 @@ import { Suspense, useEffect, useRef, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 
 const ProductListView = ({ searchParams }: { searchParams: any }) => {
-  const { currencySymbol } = config.shopify;
   const [isLoading, setIsLoading] = useState(true);
   const targetElementRef = useRef<HTMLDivElement>(null);
   const [data, setData] = useState<{
@@ -194,7 +192,7 @@ const ProductListView = ({ searchParams }: { searchParams: any }) => {
     return <SkeletonCards />;
   }
 
-  const resultsText = products.length > 1 ? "results" : "result";
+  const resultsText = "resultat";
 
   return (
     <section>
@@ -202,8 +200,8 @@ const ProductListView = ({ searchParams }: { searchParams: any }) => {
         {searchValue ? (
           <p className="mb-4">
             {products.length === 0
-              ? "There are no products that match "
-              : `Showing ${products.length} ${resultsText} for `}
+              ? "Inga produkter matchar "
+              : `Visar ${products.length} ${resultsText} för `}
             <span className="font-bold">&quot;{searchValue}&quot;</span>
           </p>
         ) : null}
@@ -217,9 +215,9 @@ const ProductListView = ({ searchParams }: { searchParams: any }) => {
               width={211}
               height={184}
             />
-            <h1 className="h2 mb-4">No Product Found!</h1>
+            <h1 className="h2 mb-4">Inga produkter hittades</h1>
             <p>
-              We couldn&apos;t find what you filtered for. Try filtering again.
+              Prova en annan sökning eller ändra filtren.
             </p>
           </div>
         )}
@@ -250,7 +248,7 @@ const ProductListView = ({ searchParams }: { searchParams: any }) => {
                       width={312}
                       height={269}
                       alt={featuredImage?.altText || "fallback image"}
-                      className="w-[312px] h-[150px] md:h-[269px] object-cover border border-border dark:border-darkmode-border rounded-md"
+                      className="w-full aspect-square object-contain bg-white rounded-lg"
                     />
                   </div>
 
@@ -261,16 +259,11 @@ const ProductListView = ({ searchParams }: { searchParams: any }) => {
 
                     <div className="flex items-center gap-x-2 mt-2">
                       <span className="text-text-light dark:text-darkmode-text-light text-xs md:text-lg font-bold">
-                        ৳ {priceRange?.minVariantPrice?.amount}{" "}
-                        {priceRange?.minVariantPrice?.currencyCode}
+                        {new Intl.NumberFormat("sv-SE",{style:"currency",currency:priceRange.minVariantPrice.currencyCode}).format(Number(priceRange.minVariantPrice.amount))}
                       </span>
-                      {parseFloat(
-                        compareAtPriceRange?.maxVariantPrice?.amount,
-                      ) > 0 ? (
+                      {Number(compareAtPriceRange?.maxVariantPrice?.amount) > Number(priceRange.minVariantPrice.amount) ? (
                         <s className="text-text-light dark:text-darkmode-text-light text-xs md:text-base font-medium">
-                          {currencySymbol}{" "}
-                          {compareAtPriceRange?.maxVariantPrice?.amount}{" "}
-                          {compareAtPriceRange?.maxVariantPrice?.currencyCode}
+                          {new Intl.NumberFormat("sv-SE",{style:"currency",currency:compareAtPriceRange.maxVariantPrice.currencyCode}).format(Number(compareAtPriceRange.maxVariantPrice.amount))}
                         </s>
                       ) : (
                         ""

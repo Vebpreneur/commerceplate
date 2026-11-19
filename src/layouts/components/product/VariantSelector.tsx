@@ -102,7 +102,7 @@ export function VariantSelector({
   return (
     <div>
       {options.map((option) => (
-        <div className="" key={option.id}>
+        <div className="mb-5" key={option.id}>
           <h5 className="mb-2 max-md:text-base">
             {option.name === "Size" ? "" : option.name}
           </h5>
@@ -149,7 +149,7 @@ export function VariantSelector({
                     onClick={() => {
                       router.replace(optionUrl, { scroll: false });
                     }}
-                    title={`${option.name} ${value}${!isAvailableForSale ? " (Out of Stock)" : ""
+                    title={`${option.name} ${value}${!isAvailableForSale ? " (Slut i lager)" : ""
                       }`}
                     className={`flex min-w-[48px] items-center justify-center rounded-md border border-border text-sm cursor-pointer ${isActive && option.name !== "Color"
                       ? "cursor-default ring-2 ring-dark dark:ring-darkmode-dark"
@@ -163,7 +163,7 @@ export function VariantSelector({
                       }`}
                   >
                     {/* Render the color image for the current value */}
-                    {option.name === "Color" ? (
+                    {option.name === "Color" && imageMap[value] ? (
                       <div
                         key={value}
                         className={`relative rounded-md overflow-hidden ${isActive &&

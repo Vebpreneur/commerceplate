@@ -27,7 +27,7 @@ const Contact = async () => {
               contact_meta?.map((contact: ContactUsItem) => (
                 <div
                   key={contact.name}
-                  className="p-10 bg-light dark:bg-darkmode-light rounded-md text-center"
+                  className="p-8 bg-white border border-border rounded-xl text-center"
                 >
                   <p
                     dangerouslySetInnerHTML={markdownify(contact.name)}
@@ -44,10 +44,10 @@ const Contact = async () => {
         <div className="container">
           <div className="mx-auto lg:col-10">
             <h2 className="mb-14 text-center">
-              We would love to hear from you!
+              Hur kan vi hjälpa dig?
             </h2>
 
-            <form
+            {contact_form_action && contact_form_action !== "#" ? <form
               className="border border-border dark:border-darkmode-border rounded-md p-10"
               action={contact_form_action}
               method="POST"
@@ -55,13 +55,13 @@ const Contact = async () => {
               <div className="mb-6 md:grid grid-cols-2 gap-x-8 max-md:space-y-6">
                 <div>
                   <label htmlFor="name" className="form-label">
-                    First Name <span className="text-red-500">*</span>
+                    Förnamn <span className="text-red-500">*</span>
                   </label>
                   <input
                     id="name"
                     name="name"
                     className="form-input"
-                    placeholder="John"
+                    placeholder="Förnamn"
                     type="text"
                     required
                   />
@@ -69,13 +69,13 @@ const Contact = async () => {
 
                 <div>
                   <label htmlFor="name" className="form-label">
-                    Last Name
+                    Efternamn
                   </label>
                   <input
                     id="name"
                     name="name"
                     className="form-input"
-                    placeholder="Doe"
+                    placeholder="Efternamn"
                     type="text"
                   />
                 </div>
@@ -84,13 +84,13 @@ const Contact = async () => {
               <div className="mb-6 md:grid grid-cols-2 gap-x-8 max-md:space-y-6">
                 <div>
                   <label htmlFor="email" className="form-label">
-                    Email Address <span className="text-red-500">*</span>
+                    E-postadress <span className="text-red-500">*</span>
                   </label>
                   <input
                     id="email"
                     name="email"
                     className="form-input"
-                    placeholder="john.doe@email.com"
+                    placeholder="din@email.se"
                     type="email"
                     required
                   />
@@ -98,13 +98,13 @@ const Contact = async () => {
 
                 <div>
                   <label htmlFor="name" className="form-label">
-                    Subject <span className="text-red-500">*</span>
+                    Ämne <span className="text-red-500">*</span>
                   </label>
                   <input
                     id="name"
                     name="name"
                     className="form-input"
-                    placeholder="Enquiry About"
+                    placeholder="Vad gäller din fråga?"
                     type="text"
                     required
                   />
@@ -113,13 +113,13 @@ const Contact = async () => {
 
               <div className="mb-6">
                 <label htmlFor="message" className="form-label">
-                  Message <span className="text-red-500">*</span>
+                  Meddelande <span className="text-red-500">*</span>
                 </label>
                 <textarea
                   id="message"
                   name="message"
                   className="form-input"
-                  placeholder="Type your message..."
+                  placeholder="Skriv ditt meddelande..."
                   rows={8}
                   required
                 ></textarea>
@@ -127,10 +127,10 @@ const Contact = async () => {
 
               <div className="flex justify-end">
                 <button type="submit" className="btn btn-primary">
-                  Send Message
+                  Skicka meddelande
                 </button>
               </div>
-            </form>
+            </form> : <p className="text-center text-text-light">Kontaktformuläret är för närvarande inte tillgängligt.</p>}
           </div>
         </div>
       </section>

@@ -32,7 +32,7 @@ function SubmitButton({
         aria-disabled
         className={`${buttonClasses} ${disabledClasses}`}
       >
-        Out Of Stock
+        Slut i lager
       </button>
     );
   }
@@ -41,13 +41,13 @@ function SubmitButton({
     return (
       <DynamicTag
         href={`/products/${handle}`}
-        aria-label="Please select an option"
+        aria-label="Välj en variant"
         aria-disabled
         className={`${buttonClasses} ${
           DynamicTag === "button" && disabledClasses
         }`}
       >
-        Select Variant
+        Välj variant
       </DynamicTag>
     );
   }
@@ -57,7 +57,7 @@ function SubmitButton({
       onClick={(e: React.FormEvent<HTMLButtonElement>) => {
         if (pending) e.preventDefault();
       }}
-      aria-label="Add to cart"
+      aria-label="Lägg i varukorg"
       aria-disabled={pending ? "true" : "false"}
       className={`${buttonClasses}`}
     >
@@ -67,7 +67,7 @@ function SubmitButton({
           size={26}
         />
       ) : (
-        "Add To Cart"
+        "Lägg i varukorg"
       )}
     </button>
   );
@@ -90,7 +90,8 @@ export function AddToCart({
   const searchParams = useSearchParams();
 
   // Find the variant based on selected options
-  const selectedOptions = Array.from(searchParams.entries());
+  const optionNames = new Set(variants.flatMap(v => v.selectedOptions.map(o => o.name.toLowerCase())));
+  const selectedOptions = Array.from(searchParams.entries()).filter(([key]) => optionNames.has(key));
   const variant = variants.find((variant: ProductVariant) =>
     selectedOptions.every(([key, value]) =>
       variant.selectedOptions.some(
@@ -100,14 +101,14 @@ export function AddToCart({
   );
 
   // Use the default variant ID if no variant is found
-  const selectedVariantId = variant?.id || defaultVariantId;
+  const selectedVariantId = variant?.id || (selectedOptions.length === 0 ? defaultVariantId : undefined);
 
-  const actionWithVariant = formAction.bind(null, selectedVariantId);
+  const actionWithVariant = () => formAction(selectedVariantId);
 
   return (
-    <form action={actionWithVariant}>
+    <form action={actionWithVariant} className={handle === null ? "w-full" : undefined}>
       <SubmitButton
-        availableForSale={availableForSale}
+        availableForSale={availableForSale && (variant?.availableForSale ?? true)}
         selectedVariantId={selectedVariantId}
         stylesClass={stylesClass}
         handle={handle}

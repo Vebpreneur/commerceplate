@@ -2,7 +2,6 @@
 
 import { AddToCart } from "@/components/cart/AddToCart";
 import SkeletonCards from "@/components/loadings/skeleton/SkeletonCards";
-import config from "@/config/config.json";
 import ImageFallback from "@/helpers/ImageFallback";
 import useLoadMore from "@/hooks/useLoadMore";
 import { defaultSort, sorting } from "@/lib/constants";
@@ -14,7 +13,6 @@ import { Suspense, useEffect, useRef, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 
 const ProductCardView = ({ searchParams }: { searchParams: any }) => {
-  const { currencySymbol } = config.shopify;
   const [isLoading, setIsLoading] = useState(true);
   const targetElementRef = useRef<HTMLDivElement>(null);
   const [data, setData] = useState<{
@@ -194,15 +192,15 @@ const ProductCardView = ({ searchParams }: { searchParams: any }) => {
     return <SkeletonCards />;
   }
 
-  const resultsText = products.length > 1 ? "results" : "result";
+  const resultsText = products.length === 1 ? "resultat" : "resultat";
 
   return (
     <div ref={targetElementRef} className="row">
       {searchValue ? (
         <p className="mb-4">
           {products.length === 0
-            ? "There are no products that match "
-            : `Showing ${products.length} ${resultsText} for `}
+            ? "Inga produkter matchar "
+            : `Visar ${products.length} ${resultsText} för `}
           <span className="font-bold">&quot;{searchValue}&quot;</span>
         </p>
       ) : null}
@@ -231,7 +229,7 @@ const ProductCardView = ({ searchParams }: { searchParams: any }) => {
           return (
             <div
               key={index}
-              className="text-center col-12 sm:col-6 group relative"
+              className="text-center col-6 group relative"
             >
               <div className="md:relative overflow-hidden">
                 <ImageFallback
@@ -241,7 +239,7 @@ const ProductCardView = ({ searchParams }: { searchParams: any }) => {
                   width={312}
                   height={269}
                   alt={product.featuredImage?.altText || "fallback image"}
-                  className="w-full aspect-square object-contain bg-white rounded-md border mx-auto"
+                  className="w-full aspect-square object-contain bg-white rounded-lg mx-auto"
                 />
 
                 <Suspense>
@@ -267,20 +265,11 @@ const ProductCardView = ({ searchParams }: { searchParams: any }) => {
                 </h2>
                 <div className="flex flex-wrap justify-center items-center gap-x-2 mt-2 md:mt-4">
                   <span className="text-base md:text-xl font-bold text-text-dark dark:text-darkmode-text-dark">
-                    {currencySymbol}{" "}
-                    {product?.priceRange?.minVariantPrice?.amount}{" "}
-                    {product?.priceRange?.minVariantPrice?.currencyCode}
+                    {new Intl.NumberFormat("sv-SE",{style:"currency",currency:product.priceRange.minVariantPrice.currencyCode}).format(Number(product.priceRange.minVariantPrice.amount))}
                   </span>
-                  {parseFloat(
-                    product?.compareAtPriceRange?.maxVariantPrice?.amount,
-                  ) > 0 ? (
+                  {Number(product.compareAtPriceRange?.maxVariantPrice?.amount) > Number(product.priceRange.minVariantPrice.amount) ? (
                     <s className="text-text-light dark:text-darkmode-text-light text-xs md:text-base font-medium">
-                      {currencySymbol}{" "}
-                      {product?.compareAtPriceRange?.maxVariantPrice?.amount}{" "}
-                      {
-                        product?.compareAtPriceRange?.maxVariantPrice
-                          ?.currencyCode
-                      }
+                      {new Intl.NumberFormat("sv-SE",{style:"currency",currency:product.compareAtPriceRange.maxVariantPrice.currencyCode}).format(Number(product.compareAtPriceRange.maxVariantPrice.amount))}
                     </s>
                   ) : (
                     ""

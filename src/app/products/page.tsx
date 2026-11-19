@@ -1,7 +1,7 @@
 import LoadingProducts from "@/components/loadings/skeleton/SkeletonProducts";
 import ProductLayouts from "@/components/product/ProductLayouts";
 import { defaultSort, sorting } from "@/lib/constants";
-import { getListPage } from "@/lib/contentParser";
+
 import {
   getCollectionProducts,
   getCollections,
@@ -10,7 +10,7 @@ import {
   getVendors,
 } from "@/lib/shopify";
 import { PageInfo, Product } from "@/lib/shopify/types";
-import CallToAction from "@/partials/CallToAction";
+
 import ProductCardView from "@/partials/ProductCardView";
 import ProductFilters from "@/partials/ProductFilters";
 import ProductListView from "@/partials/ProductListView";
@@ -186,16 +186,16 @@ const ProductsListPage = async (props: {
   searchParams: Promise<SearchParams>;
 }) => {
   const searchParams = await props.searchParams;
-  const callToAction = getListPage("sections/call-to-action.md");
+
 
   return (
     <>
-      {/* <PageHeader title={"Products"} /> */}
+      <section className="container pt-10 pb-8 lg:pt-16"><p className="uppercase tracking-[.18em] text-xs mb-3">Pawlira</p><h1 className="text-4xl lg:text-6xl tracking-tight mb-4">Upptäck sortimentet</h1><p className="text-base lg:text-lg max-w-2xl">Smarta produkter för livet med katt.</p></section>
       <Suspense fallback={<LoadingProducts />}>
         <ShowProducts searchParams={searchParams} />
       </Suspense>
 
-      <CallToAction data={callToAction} />
+      <div className="pb-16" />
     </>
   );
 };
