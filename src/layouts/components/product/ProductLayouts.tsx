@@ -32,7 +32,7 @@ const ProductLayouts = ({
       "searchInput",
     ) as HTMLInputElement;
     if (isInputEditing || searchParams.get("q")) {
-      inputField.focus();
+      inputField?.focus();
     }
   }, [searchParams, isInputEditing]);
 
@@ -89,14 +89,14 @@ const ProductLayouts = ({
                 </p>
                 <div className="flex gap-2">
                   <button
-                    onClick={() => layoutChange("card")}
+                    type="button" aria-label="Rutnätsvy" aria-pressed={!isListView} onClick={() => layoutChange("card")}
                     className={`btn border dark:border-darkmode-border ${isListView ? "btn-outline-primary" : "btn-primary"
                       } p-2 hover:scale-105 duration-300`}
                   >
                     <BsGridFill />
                   </button>
                   <button
-                    onClick={() => layoutChange("list")}
+                    type="button" aria-label="Listvy" aria-pressed={isListView} onClick={() => layoutChange("list")}
                     className={`btn border dark:border-darkmode-border ${isListView ? "btn-primary" : "btn-outline-primary"
                       } p-2 hover:scale-105 duration-300`}
                   >
@@ -108,7 +108,7 @@ const ProductLayouts = ({
               <div className="flex gap-x-8">
                 {/* Filter Button Trigger */}
                 <div className="filter-button-container block lg:hidden mt-1">
-                  <button onClick={() => setExpanded(!isExpanded)}>
+                  <button type="button" aria-expanded={isExpanded} onClick={() => setExpanded(!isExpanded)}>
                     {isExpanded ? (
                       <span className="font-medium text-base flex gap-x-1 items-center justify-center">
                         <TbFilterX /> Filtrera

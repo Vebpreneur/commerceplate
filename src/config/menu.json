@@ -33,12 +33,20 @@
   ],
   "footerCopyright": [
     {
-      "name": "Integritetspolicy",
-      "url": "/privacy-policy"
+      "name": "Leverans",
+      "url": "/shipping-policy"
     },
     {
-      "name": "Villkor",
+      "name": "Retur och ångerrätt",
+      "url": "/refund-policy"
+    },
+    {
+      "name": "Köpvillkor",
       "url": "/terms-services"
+    },
+    {
+      "name": "Integritetspolicy",
+      "url": "/privacy-policy"
     }
   ]
 }

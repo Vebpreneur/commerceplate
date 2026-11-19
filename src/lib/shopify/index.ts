@@ -151,7 +151,7 @@ const removeEdgesAndNodes = (array: Connection<any>) => {
 
 const reshapeCart = (cart: ShopifyCart): Cart => {
   if (!cart.cost?.totalTaxAmount) {
-    cart.cost.totalTaxAmount = { amount: "0.0", currencyCode: "USD" };
+    cart.cost.totalTaxAmount = { amount: "0.0", currencyCode: cart.cost.totalAmount.currencyCode };
   }
 
   return { ...cart, lines: removeEdgesAndNodes(cart.lines) };
@@ -187,7 +187,7 @@ const reshapeImages = (images: Connection<Image>, productTitle: string) => {
   const flattened = removeEdgesAndNodes(images);
 
   return flattened.map((image) => {
-    const filename = image.url.match(/.*\/(.*)\..*/)[1];
+    const filename = image.url.match(/.*\/(.*)\..*/)?.[1] || "produktbild";
     return {
       ...image,
       altText: image.altText || `${productTitle} - ${filename}`,
@@ -621,4 +621,13 @@ export async function revalidate(req: NextRequest): Promise<NextResponse> {
   }
 
   return NextResponse.json({ status: 200, revalidated: true, now: Date.now() });
+}
+
+export async function getShopPolicy(kind: "privacyPolicy" | "termsOfService" | "refundPolicy" | "shippingPolicy") {
+  const allowed = ["privacyPolicy", "termsOfService", "refundPolicy", "shippingPolicy"];
+  if (!allowed.includes(kind)) return null;
+  try {
+    const res = await shopifyFetch<{data:{shop:Record<string,{title:string;body:string;url:string}|null>}}>({query:`query PawliraPolicy { shop { ${kind} { title body url } } }`,cache:"no-store"});
+    return res.body.data?.shop?.[kind] || null;
+  } catch (error) { console.error("Unable to retrieve shop policy",kind); return null; }
 }

@@ -260,3 +260,9 @@
 .pawlira-option:focus-visible { outline:2px solid #111; outline-offset:3px; }
 @media (hover:hover) and (pointer:fine) { .pawlira-option:not(:disabled):hover {border-color:#111;} }
 @media(prefers-reduced-motion:reduce) { .pawlira-option {transition:none;} }
+
+.pawlira-editorial-image { position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .65s cubic-bezier(.2,.75,.25,1); }
+.pawlira-category-arrow {flex-shrink:0;display:grid;place-items:center;width:40px;height:40px;border:1px solid #dedede;border-radius:50%;transition:background .2s,color .2s,border-color .2s;}
+.pawlira-dark-link {transition:border-color .25s,transform .25s;}
+@media(hover:hover) and (pointer:fine){.pawlira-editorial:hover .pawlira-editorial-image{transform:scale(1.045)}.pawlira-category-card:hover .pawlira-category-arrow{background:#111;color:white;border-color:#111}.pawlira-dark-link:hover{border-color:#fff;transform:translateY(-3px)}}
+@media(prefers-reduced-motion:reduce){.pawlira-editorial-image,.pawlira-category-arrow,.pawlira-dark-link{transition:none;transform:none!important}}

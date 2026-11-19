@@ -1,22 +1,23 @@
 "use client";
 
 import { createUrl } from "@/lib/utils";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { IoClose, IoSearch } from "react-icons/io5";
 
 const SearchBar = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const [isInputEditing, setInputEditing] = useState(false);
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState(searchParams.get("q") || "");
 
   useEffect(() => {
     const inputField = document.getElementById(
       "searchInput",
     ) as HTMLInputElement;
     if (isInputEditing || searchParams.get("q")) {
-      inputField.focus();
+      inputField?.focus();
     }
   }, [searchParams, isInputEditing]);
 
@@ -24,22 +25,14 @@ const SearchBar = () => {
     setInputEditing(true);
     setInputValue(e.target.value);
 
-    const newParams = new URLSearchParams(searchParams.toString());
-
-    if (e.target.value) {
-      newParams.set("q", e.target.value);
-    } else {
-      newParams.delete("q");
-    }
-
-    router.push(createUrl("/products", newParams), { scroll: false });
+    // Search when submitted, not on every keystroke.
   };
 
   const handleClear = () => {
     setInputValue("");
     setInputEditing(false);
 
-    const newParams = new URLSearchParams(searchParams.toString());
+    const newParams = new URLSearchParams(pathname === "/products" ? searchParams.toString() : "");
     newParams.delete("q");
 
     router.push(createUrl("/products", newParams));
@@ -48,12 +41,11 @@ const SearchBar = () => {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const val = e.target as HTMLFormElement;
-    const search = val.search as HTMLInputElement;
+    const search = inputValue.trim();
     const newParams = new URLSearchParams(searchParams.toString());
 
-    if (search.value) {
-      newParams.set("q", search.value);
+    if (search) {
+      newParams.set("q", search);
     } else {
       newParams.delete("q");
     }
@@ -69,7 +61,7 @@ const SearchBar = () => {
       <input
         id="searchInput"
         className="bg-transparent border-none search-input focus:ring-transparent p-2 w-full"
-        key={searchParams?.get("q")}
+        aria-label="Sök produkter"
         type="search"
         name="search"
         placeholder="Sök produkter"
@@ -79,7 +71,7 @@ const SearchBar = () => {
       />
       {inputValue && (
         <button
-          type="button"
+          type="button" aria-label="Rensa sökfält"
           className="p-2 m-1 rounded-full"
           onClick={handleClear}
         >

@@ -4,7 +4,7 @@ import Link from "next/link";
 const NotFound = async () => {
   return (
     <>
-      <SeoMeta title={"Page Not Found"} />
+      <SeoMeta title={"Sidan hittades inte"} />
       <section className="section-sm text-center">
         <div className="container">
           <div className="row justify-center">
@@ -12,15 +12,14 @@ const NotFound = async () => {
               <span className="text-[8rem] block font-bold text-text-dark dark:text-darkmode-text-dark">
                 404
               </span>
-              <h1 className="h2 mb-4">Page not found</h1>
+              <h1 className="h2 mb-4">Sidan hittades inte</h1>
               <div className="content">
                 <p>
-                  The page you are looking for might have been removed, had its
-                  name changed, or is temporarily unavailable.
+                  Sidan kan ha flyttats eller är tillfälligt otillgänglig.
                 </p>
               </div>
               <Link href="/" className="btn btn-primary mt-8">
-                Back to home
+                Till startsidan
               </Link>
             </div>
           </div>

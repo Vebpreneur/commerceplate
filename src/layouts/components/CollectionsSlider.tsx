@@ -17,7 +17,7 @@ const CollectionsSlider = ({ collections }: { collections: any }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [prevEl, setPrevEl] = useState<HTMLDivElement | null>(null);
   const [nextEl, setNextEl] = useState<HTMLDivElement | null>(null);
-  const collectionsData = (collections ?? []).filter((item:any) => item.image?.url && !["frontpage","home-page","homepage"].includes(item.handle) && item.title.toLowerCase() !== "home page");
+  const collectionsData = (collections ?? []).filter((item:any) => !["frontpage","home-page","homepage","featured-products"].includes(item.handle) && !item.handle.startsWith("hidden-") && item.title.toLowerCase() !== "home page");
 
   if (!collectionsData.length) {
     return null;
@@ -32,11 +32,11 @@ const CollectionsSlider = ({ collections }: { collections: any }) => {
       <Swiper
         modules={[Pagination, Navigation]}
         // navigation={true}
-        slidesPerView={2}
+        slidesPerView={Math.min(2,collectionsData.length)}
         spaceBetween={10}
         breakpoints={{
           640: {
-            slidesPerView: 2,
+            slidesPerView: Math.min(2,collectionsData.length),
             spaceBetween: 20,
           },
           768: {
@@ -44,7 +44,7 @@ const CollectionsSlider = ({ collections }: { collections: any }) => {
             spaceBetween: 24,
           },
           1024: {
-            slidesPerView: 3,
+            slidesPerView: Math.min(3,collectionsData.length),
             spaceBetween: 24,
           },
         }}
@@ -57,28 +57,18 @@ const CollectionsSlider = ({ collections }: { collections: any }) => {
           const { title, handle, image } = item;
           return (
             <SwiperSlide key={handle}>
-              <div className="text-center relative">
-                <ImageFallback
+              <Link href={`/products?c=${encodeURIComponent(handle)}`} className="pawlira-card pawlira-category-card">
+                {image?.url && <div className="pawlira-card-image"><ImageFallback
                   src={image?.url}
                   width={424}
                   height={306}
                   alt={title}
-                  className="h-37.5 md:h-62.5 lg:h-76.5 object-cover rounded-md"
-                />
-                <div className="py-6">
-                  <h3 className="mb-2 font-medium h4">
-                    <Link
-                      className="after:absolute after:inset-0"
-                      href={`/products?c=${handle}`}
-                    >
-                      {title}
-                    </Link>
-                  </h3>
-                  <p className="text-text-light dark:text-darkmode-text-light text-xs md:text-xl">
-                    {item.products?.edges.length} produkter
-                  </p>
+                  className="w-full aspect-[4/3] object-contain bg-white rounded-lg"
+                /></div>}
+                <div className="pt-6 pb-2 flex items-center justify-between gap-3">
+                  <h3 className="font-medium text-xl">{title}</h3><span className="pawlira-category-arrow" aria-hidden="true"><HiOutlineArrowNarrowRight size={22}/></span>
                 </div>
-              </div>
+              </Link>
             </SwiperSlide>
           );
         })}

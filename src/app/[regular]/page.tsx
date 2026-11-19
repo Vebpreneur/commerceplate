@@ -1,3 +1,5 @@
+import { getShopPolicy } from "@/lib/shopify";
+import Link from "next/link";
 import MDXContent from "@/helpers/MDXContent";
 import { getSinglePage } from "@/lib/contentParser";
 import PageHeader from "@/partials/PageHeader";
@@ -6,6 +8,7 @@ import { RegularPage } from "@/types";
 import { notFound } from "next/navigation";
 
 // Generate static params
+export const dynamic = "force-dynamic";
 export const generateStaticParams = () => {
   const regularPages = getSinglePage("pages").map((page: RegularPage) => ({
     regular: page.slug,
@@ -18,6 +21,17 @@ const RegularPages = async (props: {
   params: Promise<{ regular: string }>;
 }) => {
   const params = await props.params;
+  const policies = {
+    "privacy-policy": {kind:"privacyPolicy", title:"Integritetspolicy"},
+    "terms-services": {kind:"termsOfService", title:"Köpvillkor"},
+    "refund-policy": {kind:"refundPolicy", title:"Retur och ångerrätt"},
+    "shipping-policy": {kind:"shippingPolicy", title:"Leverans"}
+  } as const;
+  if (Object.prototype.hasOwnProperty.call(policies,params.regular)) {
+    const {kind,title}=policies[params.regular as keyof typeof policies];
+    const policy=await getShopPolicy(kind);
+    return <><SeoMeta title={title}/><PageHeader title={title}/><section className="py-14"><div className="container"><div className="max-w-3xl mx-auto content">{policy?.body ? <div dangerouslySetInnerHTML={{__html:policy.body}}/> : <><p>Denna information kan för närvarande inte visas här. Läs villkoren i butikens kassa innan du genomför ett köp.</p><Link href="/contact" className="underline">Kontakta Pawlira</Link></>}</div></div></section></>;
+  }
   const regularData = getSinglePage("pages");
   const data = regularData.find(
     (page: RegularPage) => page.slug === params.regular,
