@@ -26,20 +26,20 @@ const HeroSlider = ({ products }: { products: Product[] }) => {
                 <div className="text-center py-10 lg:py-0">
                   {item?.description && (
                     <p className="mb-2 lg:mb-3 text-text-light dark:text-darkmode-text-light font-medium md:text-xl">
-                      {item.description}
+                      Smart teknik för ett enklare liv med katt.
                     </p>
                   )}
                   <div className="row">
-                    <h1 className="mb-4 lg:mb-10 col-10 sm:col-8 lg:col-12 mx-auto">
+                    <h1 className="mb-4 lg:mb-8 col-10 sm:col-8 lg:col-12 mx-auto text-3xl lg:text-5xl tracking-tight">
                       {item.title}
                     </h1>
                   </div>
                   {item.handle && (
                     <Link
                       className="btn btn-sm md:btn-lg btn-primary font-medium"
-                      href={`products/${item.handle}`}
+                      href={`/products/${item.handle}`}
                     >
-                      Shop Now
+                      Upptäck produkten
                     </Link>
                   )}
                 </div>
@@ -49,10 +49,10 @@ const HeroSlider = ({ products }: { products: Product[] }) => {
                 {item.featuredImage && (
                   <ImageFallback
                     src={item.featuredImage.url}
-                    className="mx-auto w-[388px] lg:w-full"
+                    className="mx-auto w-[388px] lg:w-full max-h-[480px] object-contain"
                     width={507}
                     height={385}
-                    alt="banner image"
+                    alt={item.featuredImage.altText || item.title}
                     priority={true}
                   />
                 )}
