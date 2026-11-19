@@ -1,0 +1,83 @@
+
+/* Pawlira: one storefront design scale. Unlayered rules take precedence over legacy template layers. */
+:root{--pawlira-content:1360px;--pawlira-gutter:24px;--pawlira-section-space:64px;--pawlira-heading-gap:40px;--pawlira-card-radius:16px;--pawlira-small-radius:12px;--pawlira-button-radius:9999px;--pawlira-ink:#0a0a0a;--pawlira-muted:#525252;--pawlira-line:#e5e5e5;--pawlira-media:#f5f5f7;--pawlira-h1:36px;--pawlira-h2:24px;--pawlira-copy:15px}
+@media(min-width:1024px){:root{--pawlira-gutter:40px;--pawlira-section-space:96px;--pawlira-h1:52px;--pawlira-h2:34px;--pawlira-copy:16px}}
+.container,.container-lg{box-sizing:border-box;width:100%;max-width:var(--pawlira-content)!important;margin-inline:auto;padding-inline:var(--pawlira-gutter)}
+main h1,main .pawlira-h1,.pawlira-about-hero-copy h1,.pawlira-support-hero h1,.pawlira-catalog-hero-copy h1,.pawlira-compare-page-intro h1{font-size:var(--pawlira-h1);font-weight:600;line-height:1.08;letter-spacing:-.025em}
+main h2,main .pawlira-large-heading,.pawlira-section-heading h2,.pawlira-brand-statement h2,.pawlira-home-final h2,.pawlira-mega-top h2{font-size:var(--pawlira-h2);font-weight:600;line-height:1.15;letter-spacing:-.02em;text-align:left}
+.pawlira-eyebrow,.pawlira-menu-label{font-size:11px;font-weight:600;line-height:1.4;letter-spacing:.1em;text-transform:uppercase;color:#737373;margin-bottom:10px}
+main .pawlira-section-description,.pawlira-about-hero-copy>p:not(.pawlira-eyebrow),.pawlira-about-prose,.pawlira-support-hero p:not(.pawlira-eyebrow),.pawlira-catalog-hero-copy>p:not(.pawlira-eyebrow),.pawlira-story-text p,.pawlira-compare-page-intro p,.pawlira-brand-statement>p:not(.pawlira-eyebrow),.pawlira-home-hero p:not(.pawlira-eyebrow){font-size:var(--pawlira-copy);line-height:1.65;color:var(--pawlira-muted);max-width:56ch}
+.pawlira-home-black .pawlira-eyebrow,.pawlira-home-final .pawlira-eyebrow,.pawlira-home-hero .pawlira-eyebrow,.pawlira-support-hero .pawlira-eyebrow,.pawlira-guide-detail-intro .pawlira-eyebrow,.pawlira-compare-page-intro .pawlira-eyebrow{color:#d4d4d4!important}
+.pawlira-home-hero p:not(.pawlira-eyebrow){color:#fff}
+.pawlira-home-section,.pawlira-help-section,.pawlira-home-black,.pawlira-home-final,.pawlira-about-intro,.pawlira-support-intro,.section{padding-block:var(--pawlira-section-space)}
+.pawlira-section-heading{margin-bottom:var(--pawlira-heading-gap);gap:16px}
+.pawlira-section-description{margin-top:12px}
+.pawlira-home-final{text-align:left}
+.pawlira-home-final h2{margin:12px 0 28px;max-width:56ch}
+.pawlira-home-category,.pawlira-merch-card,.pawlira-list-card,.pawlira-editorial-tile,.pawlira-guide-card,.pawlira-help-card,.pawlira-spotlight,.pawlira-gallery-frame,.pawlira-gallery-stage,.pawlira-story-image,.pawlira-story-gallery-image,.pawlira-about-hero-photo,.pawlira-about-values article,.pawlira-about-paths>a,.pawlira-support-hero,.pawlira-support-contact,.pawlira-faq-results,.pawlira-comparison-scroll,.pawlira-guide-detail,.pawlira-compare-page-intro,.pawlira-catalog-hero{border-radius:var(--pawlira-card-radius)}
+.pawlira-menu-search,.pawlira-faq-search{border-radius:var(--pawlira-button-radius)}
+.pawlira-guide-choice-grid>button,.pawlira-menu-category,.pawlira-mega-categories button,.pawlira-mega-product,.pawlira-compare-select select,.pawlira-option,.pawlira-faq-topics button,.pawlira-gallery-thumbs button,.form-input,.pawlira-spotlight-tabs button{border-radius:var(--pawlira-small-radius)}
+.pawlira-pdp-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:32px;align-items:start}
+@media(min-width:1024px){.pawlira-pdp-grid{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:64px}}
+.pawlira-gallery-frame{padding:16px;min-width:0}
+.pawlira-purchase-panel{min-width:0}
+.pawlira-merch-grid{align-items:stretch;gap:20px}.pawlira-product-rail{align-items:stretch;grid-auto-rows:1fr;gap:20px;scrollbar-width:thin;scrollbar-color:#c2c2c2 transparent}
+.pawlira-merch-card{display:flex;flex-direction:column;height:100%;border-color:var(--pawlira-line);box-shadow:none}
+.pawlira-merch-photos{aspect-ratio:4/5;border-radius:16px;background:var(--pawlira-media);margin:12px 12px 0}
+.pawlira-merch-main,.pawlira-merch-alt{padding:12px}
+.pawlira-merch-info,.pawlira-merch-compact .pawlira-merch-info{display:flex;flex-direction:column;flex:1;padding:16px;gap:16px}
+.pawlira-merch-info>.pawlira-merch-heading{margin:0;display:grid;grid-template-rows:auto 2.75rem 2.5rem;gap:8px}
+.pawlira-card-brand{margin:0;font-size:11px}
+.pawlira-merch-heading h3,.pawlira-merch-compact .pawlira-merch-heading h3{font-size:16px;line-height:1.375rem;min-height:2.75rem;height:2.75rem;font-weight:600;letter-spacing:-.01em}
+.pawlira-merch-heading h3 a{-webkit-line-clamp:2;overflow:hidden}
+.pawlira-merch-description{font-size:13px;line-height:1.25rem;height:2.5rem;min-height:2.5rem;-webkit-line-clamp:2;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden;color:#525252}
+.pawlira-merch-info>.pawlira-merch-bottom{margin-top:auto;display:grid;grid-template-rows:minmax(2.65rem,auto) 48px 40px;gap:10px;align-items:end;padding:0}
+.pawlira-merch-bottom .pawlira-catalog-price{align-self:start}
+.pawlira-merch-bottom .pawlira-catalog-price-value{font-size:20px;font-weight:600;line-height:1.3}
+.pawlira-merch-bottom .pawlira-merch-cta{width:100%;min-height:48px;height:48px;justify-content:center;gap:8px;padding-inline:16px;font-size:14px;font-weight:500}
+.pawlira-merch-bottom .pawlira-card-compare-link{height:40px;justify-content:center;font-size:12px}
+.pawlira-merch-slide-controls button{width:36px;height:36px;border-color:#e5e5e5}
+.pawlira-merch-dots{height:20px}
+.pawlira-home-category-caption h3{font-size:18px;font-weight:600}
+.pawlira-editorial-tile-caption h3,.pawlira-guide-card h3,.pawlira-help-card h3{font-weight:600;font-size:20px;line-height:1.3}
+.pawlira-editorial-tile-caption>p:not(.pawlira-eyebrow),.pawlira-guide-card p,.pawlira-support-checklist p,.pawlira-about-paths p,.pawlira-faq-results p{font-size:var(--pawlira-copy);line-height:1.6;color:#525252}
+.pawlira-home-black .pawlira-about-values p{font-size:var(--pawlira-copy);line-height:1.6}
+.pawlira-guide-choice-grid>button,.pawlira-spotlight-tabs button{min-height:72px}
+.pawlira-footer-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:32px}
+.pawlira-header-inner .pawlira-mega-menu{left:var(--pawlira-gutter);right:var(--pawlira-gutter);border-radius:0 0 16px 16px}
+.pawlira-footer-assurance svg,.pawlira-purchase-facts svg,.pawlira-about-values svg,.pawlira-support-grid svg,.pawlira-support-checklist svg{width:20px;height:20px;stroke-width:1.5;flex-shrink:0}
+.pawlira-support-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.pawlira-support-hero-icon svg{width:clamp(90px,13vw,175px);height:auto;stroke-width:1.5}
+@media(max-width:767px){
+ .pawlira-home-categories{grid-template-columns:1fr}
+ .pawlira-home-category-photo{aspect-ratio:4/3}
+ .pawlira-merch-grid{gap:12px}
+ .pawlira-merch-photos{margin:8px 8px 0}
+ .pawlira-merch-main,.pawlira-merch-alt{padding:5px}
+ .pawlira-merch-info,.pawlira-merch-compact .pawlira-merch-info{padding:12px;gap:12px}
+ .pawlira-merch-heading h3,.pawlira-merch-compact .pawlira-merch-heading h3{font-size:14px}
+ .pawlira-merch-description{font-size:12px}
+ .pawlira-merch-bottom .pawlira-catalog-price-value{font-size:18px}
+ .pawlira-merch-bottom .pawlira-merch-cta{font-size:12px;padding-inline:10px}
+ .pawlira-merch-bottom .pawlira-merch-cta svg{width:16px;height:16px}
+ .pawlira-merch-bottom .pawlira-card-compare-link{font-size:11px}
+ .pawlira-footer-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+ .pawlira-support-grid{grid-template-columns:1fr}
+}
+@media(max-width:359px){.pawlira-merch-grid{grid-template-columns:1fr}}
+/* Two action styles, with reverse colours on dark sections. */
+.btn-primary,.btn-inverse,.pawlira-merch-cta,.pawlira-mega-top .pawlira-mega-all,.pawlira-footer .pawlira-footer-cta,.pawlira-product-sticky-inner .pawlira-product-nav-buy,.pawlira-menu-all{--action-bg:var(--pawlira-ink);--action-fg:white;--action-hover:#262626;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;border:1px solid var(--action-bg);color:var(--action-fg)!important;background:var(--action-bg);border-radius:9999px;font-size:14px;font-weight:500;padding:0 28px;text-decoration:none;transition:background-color .2s,border-color .2s,color .2s}
+.btn-inverse,.pawlira-footer .pawlira-footer-cta,.pawlira-product-sticky-inner .pawlira-product-nav-buy{--action-bg:white;--action-fg:#0a0a0a;--action-hover:#e5e5e5}
+.btn.pawlira-purchase-cta{width:100%;height:52px;min-height:52px;font-size:16px;font-weight:600}
+.pawlira-merch-cta{padding-inline:16px}
+.btn-outline-primary,.pawlira-product-compare-link,.pawlira-card-compare-link,.pawlira-text-link,.pawlira-white-link,.pawlira-mega-more{display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:14px;font-weight:500;line-height:1.3;text-decoration:none;transition:color .2s,border-color .2s,background-color .2s}
+.btn-outline-primary,.pawlira-product-compare-link{border:1px solid #e5e5e5;border-radius:9999px;min-height:40px;padding-inline:20px;background:transparent}
+.pawlira-text-link,.pawlira-white-link,.pawlira-mega-more{min-height:40px;padding:0;border:0;width:fit-content;justify-content:flex-start}
+.pawlira-white-link{color:#fff!important}
+.pawlira-card-compare-link{min-height:40px}
+@media(hover:hover) and (pointer:fine){
+ .btn-primary:not(:disabled):hover,.btn-inverse:not(:disabled):hover,.pawlira-merch-cta:hover,.pawlira-mega-top .pawlira-mega-all:hover,.pawlira-footer .pawlira-footer-cta:hover,.pawlira-product-sticky-inner .pawlira-product-nav-buy:hover,.pawlira-menu-all:hover{background:var(--action-hover);color:var(--action-fg)!important;border-color:var(--action-hover);box-shadow:none}
+ .btn-outline-primary:not(:disabled):hover,.pawlira-product-compare-link:hover{border-color:#171717;background:transparent;color:#171717}
+ a.pawlira-text-link:hover,a.pawlira-white-link:hover,.pawlira-mega-more:hover,.pawlira-card-compare-link:hover{text-decoration:none;opacity:.75}
+}
+@media(prefers-reduced-motion:reduce){.btn,.pawlira-merch-cta,.pawlira-text-link,.pawlira-white-link,.pawlira-card-compare-link{transition:none}}

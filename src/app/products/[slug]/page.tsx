@@ -70,20 +70,20 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(structuredData).replace(/</g,"\\u003c")}} />
-      <section id="kop" className="py-8 lg:py-16 bg-white scroll-mt-32">
+      <section id="kop" className="py-16 lg:py-24 bg-white scroll-mt-32">
         <div className="container">
           <nav aria-label="Brödsmulor" className="flex flex-wrap gap-2 text-xs text-neutral-600 mb-6"><Link href="/">Hem</Link><span aria-hidden="true">/</span><Link href="/products">Produkter</Link><span aria-hidden="true">/</span><span aria-current="page">{title}</span></nav>
-          <div className="row justify-center">
+          <div className="pawlira-pdp-grid">
             {/* right side contents  */}
-            <div className="col-12 lg:col-7"><div className="lg:sticky lg:top-28 pawlira-gallery-frame">
+            <div className="min-w-0"><div className="lg:sticky lg:top-28 pawlira-gallery-frame">
               <Suspense>
                 <ProductGallery images={images} variants={variants} title={title} />
               </Suspense></div>
             </div>
 
             {/* left side contents  */}
-            <div className="col-12 lg:col-5 py-6 lg:py-0 lg:pl-10"><div className="pawlira-purchase-panel">
-              <p className="pawlira-eyebrow">Pawlira · Produktöversikt</p><h1 className="text-3xl lg:text-5xl tracking-tight leading-tight mb-5">{title}</h1>
+            <div className="min-w-0"><div className="pawlira-purchase-panel">
+              <p className="pawlira-eyebrow">Pawlira</p><h1 className="pawlira-h1 mb-5">{title}</h1>
 
               <div className="my-6"><Suspense><VariantSelector options={options} variants={variants} images={images} /></Suspense></div>
 
@@ -113,7 +113,7 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
       {relatedProducts?.length > 0 && <section id="relaterade" className="container pawlira-home-section scroll-mt-48">
           {relatedProducts?.length > 0 && (
             <>
-              <div className="pawlira-section-heading"><div><p className="pawlira-eyebrow">Fler möjligheter</p><h2>Du kanske också gillar.</h2></div><Link href="/products" className="pawlira-text-link">Hela sortimentet<FiArrowUpRight size={20}/></Link></div>
+              <div className="pawlira-section-heading"><div><p className="pawlira-eyebrow">Fler möjligheter</p><h2>Fler produkter för din katt</h2></div><Link href="/products" className="pawlira-text-link">Hela sortimentet<FiArrowUpRight size={20}/></Link></div>
               <LatestProducts products={relatedProducts.slice(0, 6)} />
             </>
           )}

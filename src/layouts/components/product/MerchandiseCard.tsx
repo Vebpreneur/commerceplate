@@ -5,6 +5,9 @@ import Link from "next/link";
 import {FiArrowUpRight,FiBarChart2,FiChevronLeft,FiChevronRight,FiImage} from "react-icons/fi";
 import type {Product} from "@/lib/shopify/types";
 import CatalogPrice from "./CatalogPrice";
+import {customerTitle} from "@/lib/utils/customerTitle";
+import {catalogDescription} from "@/lib/utils/catalogPresentation";
+import {customerText} from "@/lib/utils/customerProduct";
 
 export default function MerchandiseCard({product,compact=false}:{product:Product;compact?:boolean}){
  const photos=Array.from(new Map([product.featuredImage,...product.images].filter(i=>i?.url).map(i=>[i.url,i])).values()).slice(0,5);
@@ -14,6 +17,8 @@ export default function MerchandiseCard({product,compact=false}:{product:Product
  const current=usable[index%Math.max(usable.length,1)];
  const next=usable[(index+1)%Math.max(usable.length,1)];
  const href="/products/"+encodeURIComponent(product.handle);
+ const title=customerTitle(product.title);
+ const summary=catalogDescription({...product,description:customerText(product.description)});
  const move=(n:number)=>{if(usable.length>1)setIndex(i=>(i+n+usable.length)%usable.length)};
  return <article className={`pawlira-merch-card ${compact?"pawlira-merch-compact":""}`}>
  <div className="pawlira-merch-media">
@@ -25,8 +30,9 @@ export default function MerchandiseCard({product,compact=false}:{product:Product
   {usable.length>1?<div className="pawlira-merch-dots" aria-label="Produktbilder">{usable.map((p,i)=><button type="button" key={p.url} onClick={()=>setIndex(i)} aria-label={`Visa produktbild ${i+1}`} aria-pressed={i===index%usable.length}/>)}</div>:<div className="pawlira-merch-dots" aria-hidden="true"/>}
  </div>
  <div className="pawlira-merch-info">
-  <div className="pawlira-merch-heading">
-   <h3><Link href={href} title={product.title}>{product.title}</Link></h3>
+  <div className="pawlira-merch-heading"><p className="pawlira-eyebrow pawlira-card-brand">Pawlira</p>
+   <h3><Link href={href} title={product.title}>{title}</Link></h3>
+   <p className="pawlira-merch-description" aria-hidden={!summary}>{summary}</p>
   </div>
   <div className="pawlira-merch-bottom">
    <CatalogPrice product={product}/>
