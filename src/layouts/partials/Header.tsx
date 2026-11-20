@@ -18,19 +18,18 @@ function MenuImage({image,size=56}:{image?:{url:string;altText?:string}|null;siz
  const [failed,setFailed]=useState(false);
  return image?.url&&!failed?<Image src={image.url} alt="" width={size*2} height={size*2} sizes={size+"px"} className="w-full h-full object-contain" onError={()=>setFailed(true)}/>:<FiBox aria-hidden="true" size={22} strokeWidth={1.5}/>;
 }
-function MegaPrice({product}:{product:NavigationProduct}){const range=product.priceRange;if(!range)return null;const {minVariantPrice:min,maxVariantPrice:max}=range;const amount=Number(min.amount);if(!Number.isFinite(amount))return null;return <span className="pawlira-mega-product-price">{Number(max.amount)>amount?"Från ":""}{new Intl.NumberFormat("sv-SE",{style:"currency",currency:min.currencyCode}).format(amount)}</span>}
 function MenuModel({product,onClick,selected=false,card=false}:{product:NavigationProduct;onClick:()=>void;selected?:boolean;card?:boolean}){
- return <Link href={productHref(product.handle)} onClick={onClick} aria-current={selected?"page":undefined} title={product.title} className={card?"pawlira-mega-product":"pawlira-menu-model"}>
- <span className={card?"pawlira-mega-product-image":"pawlira-menu-thumbnail"}><MenuImage key={product.featuredImage?.url} image={product.featuredImage} size={card?240:56}/></span>
- {card?<span className="pawlira-mega-product-info"><span className="pawlira-mega-product-name"><span>{modelName(product.title)}</span></span><MegaPrice product={product}/></span>:<span className="pawlira-menu-model-name">{modelName(product.title)}</span>}<FiArrowUpRight size={17} strokeWidth={1.5}/></Link>;
+ const href=productHref(product.handle);
+ if(card)return <article className="pawlira-whisker-card"><Link href={href} onClick={onClick} className="pawlira-whisker-image" aria-label={product.title}><MenuImage key={product.featuredImage?.url} image={product.featuredImage} size={240}/></Link><Link href={href} onClick={onClick} className="pawlira-whisker-name">{modelName(product.title)}</Link><div className="pawlira-whisker-ctas"><Link href={href} onClick={onClick} className="pawlira-whisker-buy">Handla</Link><Link href={href} onClick={onClick} className="pawlira-whisker-learn">Läs mer</Link></div></article>;
+ return <Link href={href} onClick={onClick} aria-current={selected?"page":undefined} title={product.title} className="pawlira-menu-model"><span className="pawlira-menu-thumbnail"><MenuImage key={product.featuredImage?.url} image={product.featuredImage}/></span><span className="pawlira-menu-model-name">{modelName(product.title)}</span><FiArrowUpRight size={17} strokeWidth={1.5}/></Link>;
 }
 export default function Header({children,categories=[],favorites=[]}:{children:any;categories?:NavigationCategory[];favorites?:NavigationProduct[]}){
- const [open,setOpen]=useState(false),[mega,setMega]=useState(false);
+ const [open,setOpen]=useState(false),[mega,setMega]=useState<string|null>(null);
  const [query,setQuery]=useState("");
- const dialog=useRef<HTMLDialogElement>(null),trigger=useRef<HTMLButtonElement>(null),megaTrigger=useRef<HTMLButtonElement>(null),megaRegion=useRef<HTMLDivElement>(null);
+ const dialog=useRef<HTMLDialogElement>(null),trigger=useRef<HTMLButtonElement>(null),megaRegion=useRef<HTMLElement>(null);
  const pathname=usePathname();
  const close=()=>setOpen(false);
- const closeAll=()=>{setOpen(false);setMega(false)};
+ const closeAll=()=>{setOpen(false);setMega(null)};
  const needle=query.trim().toLocaleLowerCase("sv-SE");
  const matching=categories.map(c=>({...c,products:!needle||c.title.toLocaleLowerCase("sv-SE").includes(needle)?c.products:c.products.filter(p=>p.title.toLocaleLowerCase("sv-SE").includes(needle))})).filter(c=>c.products.length);
  useEffect(()=>{closeAll()},[pathname]);
@@ -41,22 +40,22 @@ export default function Header({children,categories=[],favorites=[]}:{children:a
  if(!open)return;
  const previous=document.body.style.overflow;document.body.style.overflow="hidden";return()=>{document.body.style.overflow=previous};
  },[open]);
- useEffect(()=>{if(!mega)return;const outside=(e:PointerEvent)=>{if(!megaRegion.current?.contains(e.target as Node))setMega(false)};const escape=(e:KeyboardEvent)=>{if(e.key==="Escape"){setMega(false);megaTrigger.current?.focus()}};const resize=()=>{if(window.innerWidth<1200)setMega(false)};document.addEventListener("pointerdown",outside);document.addEventListener("keydown",escape);window.addEventListener("resize",resize);return()=>{document.removeEventListener("pointerdown",outside);document.removeEventListener("keydown",escape);window.removeEventListener("resize",resize)}},[mega]);
+ useEffect(()=>{if(!mega)return;const outside=(e:PointerEvent)=>{if(!megaRegion.current?.contains(e.target as Node))setMega(null)};const escape=(e:KeyboardEvent)=>{if(e.key==="Escape"){setMega(null);megaRegion.current?.querySelector<HTMLButtonElement>('button[aria-expanded="true"]')?.focus()}};const resize=()=>{if(window.innerWidth<1200)setMega(null)};document.addEventListener("pointerdown",outside);document.addEventListener("keydown",escape);window.addEventListener("resize",resize);return()=>{document.removeEventListener("pointerdown",outside);document.removeEventListener("keydown",escape);window.removeEventListener("resize",resize)}},[mega]);
  return <header className={`header pawlira-polished-header z-30 ${config.settings.sticky_header?"sticky top-0":""}`}>
  <div className="container pawlira-header-inner">
-  <Logo variant="white" width={170} className="pawlira-header-logo"/>
-  <nav aria-label="Huvudmeny" className="pawlira-main-links">
-   <div ref={megaRegion} className="pawlira-mega-region" onBlur={e=>{if(!e.currentTarget.contains(e.relatedTarget as Node))setMega(false)}}>
-    <button ref={megaTrigger} type="button" aria-expanded={mega} aria-controls={mega?"pawlira-mega":undefined} className="pawlira-main-menu-button" onClick={()=>setMega(!mega)}>Produkter<FiChevronDown size={17} className={mega?"rotate-180":""} strokeWidth={1.5}/></button>
-    {mega&&<div id="pawlira-mega" className="pawlira-mega-menu">
-     <div className="pawlira-mega-top"><div><h2>Produkter</h2></div><Link href="/products" onClick={closeAll} className="pawlira-mega-all">Alla produkter<FiArrowUpRight size={19} strokeWidth={1.5}/></Link></div>
-     <div className="pawlira-favorites-mega-layout"><div className="pawlira-favorites-mega-main"><h3>Favoriter</h3>{favorites.length>0?<div className="pawlira-favorites-mega-products">{favorites.map(p=><MenuModel key={p.handle} product={p} card onClick={closeAll} selected={pathname===productHref(p.handle)}/>)}</div>:<div className="pawlira-favorites-empty"><h3>Upptäck sortimentet</h3><p>Hitta smarta produkter för kattens dagliga rutiner.</p><Link href="/products" className="pawlira-text-link" onClick={closeAll}>Alla produkter<FiArrowUpRight size={17} strokeWidth={1.5}/></Link></div>}</div><div className="pawlira-favorites-mega-links"><div><h3>Handla</h3>{categories.map(c=><Link key={c.handle} href={categoryHref(c.handle)} onClick={closeAll}>{c.title}<FiArrowUpRight size={15} strokeWidth={1.5}/></Link>)}<Link href="/products" onClick={closeAll}>Alla produkter<FiArrowUpRight size={15} strokeWidth={1.5}/></Link></div><div><h3>Upptäck Pawlira</h3>{[{title:"Jämför modeller",href:"/compare"},{title:"Köpguide",href:"/#kopguide"},{title:"Vanliga frågor",href:"/#faq"},{title:"Om Pawlira",href:"/about"},{title:"Kundservice",href:"/contact"}].map(item=><Link key={item.href} href={item.href} onClick={closeAll}>{item.title}<FiArrowUpRight size={15} strokeWidth={1.5}/></Link>)}</div></div></div>
-    </div>}
-   </div>
-   <Link href="/about" onClick={closeAll} aria-current={pathname==="/about"?"page":undefined}>Om Pawlira</Link><Link href="/contact" onClick={closeAll} aria-current={pathname==="/contact"?"page":undefined}>Kundservice</Link>
+  <Logo variant="black" width={158} className="pawlira-header-logo"/>
+  <nav ref={megaRegion} aria-label="Huvudmeny" className="pawlira-main-links pawlira-whisker-nav" onPointerLeave={e=>{if(e.pointerType==="mouse")setMega(null)}} onBlur={e=>{if(!e.currentTarget.contains(e.relatedTarget as Node))setMega(null)}}>
+   <button type="button" className="pawlira-whisker-tab" aria-expanded={mega==="favorites"} onPointerEnter={e=>{if(e.pointerType==="mouse")setMega("favorites")}} onClick={()=>setMega(mega==="favorites"?null:"favorites")}>Produkter</button>
+   {categories.map(c=><button key={c.handle} type="button" className="pawlira-whisker-tab" aria-expanded={mega===c.handle} onPointerEnter={e=>{if(e.pointerType==="mouse")setMega(c.handle)}} onClick={()=>setMega(mega===c.handle?null:c.handle)}>{c.title}</button>)}
+   <Link href="/products" className="pawlira-whisker-deals" onPointerEnter={()=>setMega(null)} onClick={closeAll}>Kampanjer</Link><span className="pawlira-whisker-divider" aria-hidden="true">|</span>
+   <button type="button" className="pawlira-whisker-tab" aria-expanded={mega==="about"} onPointerEnter={e=>{if(e.pointerType==="mouse")setMega("about")}} onClick={()=>setMega(mega==="about"?null:"about")}>Om oss</button>
+   {mega&&<div id="pawlira-mega" className="pawlira-mega-menu pawlira-whisker-panel">
+    {mega==="about"?<div className="pawlira-whisker-about">{[{title:"Om oss",items:[support[0]]},{title:"Upptäck Pawlira",items:[support[2],support[3]]},{title:"Kundservice",items:[support[1],support[4],support[5],support[6]]}].map(group=><div key={group.title}><h3>{group.title}</h3>{group.items.map(item=><Link key={item.href} href={item.href} onClick={closeAll}>{item.title}</Link>)}</div>)}</div>:<div className="pawlira-whisker-products">{(mega==="favorites"?(favorites.length?favorites:categories.flatMap(c=>c.products).slice(0,4)):categories.find(c=>c.handle===mega)?.products||[]).slice(0,4).map(p=><MenuModel key={p.handle} product={p} card onClick={closeAll}/>)}{mega!=="favorites"&&<Link className="pawlira-whisker-category" href={categoryHref(mega)} onClick={closeAll}>Visa hela kategorin <FiArrowUpRight size={16}/></Link>}</div>}
+   </div>}
   </nav>
+  <Link href="/products" className="pawlira-whisker-shop" onClick={closeAll}>Handla</Link>
   <div className="pawlira-header-search">{config.settings.search&&<Suspense><SearchBar categories={categories}/></Suspense>}</div>
-  <div className="pawlira-header-actions"><Suspense fallback={children[0]}>{children[1]}</Suspense>{config.settings.account&&<NavUser/>}<button ref={trigger} type="button" aria-label="Öppna meny" aria-haspopup="dialog" aria-expanded={open} className="pawlira-menu-toggle" onClick={()=>{setMega(false);setQuery("");setOpen(true)}}><FiMenu size={23} strokeWidth={1.5}/><span className="hidden xl:inline">Meny</span></button></div>
+  <div className="pawlira-header-actions"><Suspense fallback={children[0]}>{children[1]}</Suspense>{config.settings.account&&<NavUser/>}<button ref={trigger} type="button" aria-label="Öppna meny" aria-haspopup="dialog" aria-expanded={open} className="pawlira-menu-toggle" onClick={()=>{setMega(null);setQuery("");setOpen(true)}}><FiMenu size={23} strokeWidth={1.5}/><span className="hidden xl:inline">Meny</span></button></div>
  </div>
  <dialog ref={dialog} aria-label="Meny" className="pawlira-menu-dialog" onClose={()=>{close();trigger.current?.focus()}} onClick={e=>{if(e.target===e.currentTarget)close()}}>
  <div className="pawlira-menu-shell" onClick={e=>e.stopPropagation()}>
