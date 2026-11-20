@@ -213,3 +213,5 @@ header.pawlira-polished-header .pawlira-header-inner .pawlira-whisker-panel{posi
 .pawlira-whisker-side>div+div{border-top:1px solid #ccc;margin-top:12px;padding-top:12px}
 }
 @media(max-width:1199px){header.pawlira-polished-header .pawlira-header-inner{grid-template-columns:auto 1fr auto;min-height:62px}.pawlira-promo-strip{height:34px;font-size:12px}.pawlira-search-overlay .pawlira-search-field input{max-width:100%}}
+
+@media(min-width:1200px){header.pawlira-polished-header .pawlira-whisker-about{grid-template-columns:repeat(3,136px);gap:81px;max-width:570px;padding:4px 0 0;align-items:start}.pawlira-whisker-about h3{display:flex;align-items:center;gap:4px;padding-bottom:12px;margin-bottom:8px}.pawlira-whisker-about h3 svg{flex-shrink:0}.pawlira-whisker-about a{padding:0;line-height:18px!important}.pawlira-whisker-tab,.pawlira-whisker-nav>a{font-size:13px;font-weight:500}.pawlira-whisker-tab[aria-expanded=true]{font-weight:700}.pawlira-whisker-name{letter-spacing:-.025em;font-weight:600}.pawlira-whisker-about{min-height:130px}}
