@@ -57,6 +57,10 @@ body .btn.btn-inverse:hover,body .pawlira-footer .pawlira-footer-cta:hover{backg
 .pawlira-search-results svg{flex-shrink:0;color:#0a0a0a!important}
 .pawlira-menu-dialog .pawlira-menu-all{display:flex;width:100%;box-sizing:border-box;background:#f5f5f7!important;color:#0a0a0a!important;border-color:#e5e5e5!important;border-radius:10px;justify-content:flex-start;padding:12px;min-height:50px}
 .pawlira-menu-dialog .pawlira-menu-all :is(span,svg){color:#0a0a0a!important}
+.pawlira-menu-dialog .pawlira-menu-all,.pawlira-menu-dialog .pawlira-menu-model,.pawlira-menu-dialog .pawlira-menu-model-name{text-decoration:none!important}
+@media(hover:hover) and (pointer:fine){.pawlira-menu-dialog .pawlira-menu-all:hover{background:#eaeaec!important;border-color:#d7d7da!important}.pawlira-menu-dialog .pawlira-menu-model:hover{background:#f8f8f9}.pawlira-menu-dialog .pawlira-menu-model:hover .pawlira-menu-model-name{text-decoration:none!important}}
+.pawlira-menu-dialog .pawlira-menu-all:focus-visible,.pawlira-menu-dialog .pawlira-menu-model:focus-visible{outline:2px solid #555;outline-offset:2px}
+.pawlira-menu-dialog .pawlira-menu-model[aria-current=page]{background:#f5f5f7}
 .pawlira-menu-dialog .pawlira-menu-all>span{flex:1;min-width:0}
 .pawlira-menu-dialog .pawlira-menu-all>svg:last-child{margin-left:auto}
 .pawlira-menu-dialog .pawlira-menu-category summary{min-height:64px;box-sizing:border-box}
@@ -81,3 +85,8 @@ body .btn.btn-inverse:hover,body .pawlira-footer .pawlira-footer-cta:hover{backg
 .pawlira-accordion.active .accordion-inner{overflow:visible;min-height:0}
 .pawlira-accordion .accordion-header .accordion-title{flex:1;min-width:0;overflow-wrap:anywhere}
 .pawlira-faq-dark .pawlira-accordion.active .accordion-inner>div{padding-bottom:16px}
+
+/* Reuse the existing customer-service artwork; no separate hero imagery. */
+.pawlira-compare-page-intro.pawlira-compare-art{background-color:#0a0a0a;background-image:linear-gradient(90deg,#0a0a0af2 0%,#0a0a0a99 54%,transparent 100%),url('/images/support-hero.webp');background-position:center,right center;background-size:cover;background-repeat:no-repeat}
+.pawlira-search-field .search-icon svg{fill:none;stroke:currentColor}
+@media(max-width:767px){.pawlira-compare-page-intro.pawlira-compare-art{background-position:center,65% center}}
