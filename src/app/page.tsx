@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic";
 import Link from "next/link";
-import {LuArrowUpRight} from "react-icons/lu";
+import {LuArrowUpRight,LuChevronRight,LuTruck,LuLayoutGrid,LuSlidersHorizontal} from "react-icons/lu";
 import SeoMeta from "@/partials/SeoMeta";
 import HomeSections from "@/partials/HomeSections";
 import SkeletonFeaturedProducts from "@/components/loadings/skeleton/SkeletonFeaturedProducts";
@@ -21,12 +21,16 @@ export default function Home(){
       </section>
 
 
-  <section className="pawlira-marquee" aria-label="Självrengörande kattlådor, foderautomater, vattenfontäner och fri frakt inom Sverige">
-        <div className="pawlira-marquee-track" aria-hidden="true">
-          {[0,1].map((copy) => <div key={copy} className="pawlira-marquee-group">{["Självrengörande kattlådor","Foderautomater","Vattenfontäner","Fri frakt inom Sverige"].map(text => <span key={text}>{text}<span className="pawlira-marquee-dot">·</span></span>)}</div>)}
-        </div>
-      </section>
-
+  <section className="pawlira-hero-shortcuts" aria-label="Genvägar till sortiment och information">
+    <div className="container pawlira-hero-shortcut-grid">
+      {[
+        {Icon:LuTruck,kicker:"Alltid",title:"Fri frakt inom Sverige",href:"/shipping-policy"},
+        {Icon:LuLayoutGrid,kicker:"Upptäck",title:"Våra utvalda produkter",href:"/#utvalda-produkter"},
+        {Icon:LuSlidersHorizontal,kicker:"Hitta rätt för din katt",title:"Jämför modeller",href:"/compare"},
+      ].map(({Icon,kicker,title,href})=><Link key={href} href={href} className="pawlira-hero-shortcut"><span className="pawlira-shortcut-visual"><Icon size={44} strokeWidth={1.25} aria-hidden="true"/></span><span className="pawlira-shortcut-copy"><span>{kicker}</span><strong>{title}</strong></span><span className="pawlira-shortcut-arrow"><LuChevronRight size={13} strokeWidth={2.5} aria-hidden="true"/></span></Link>)}
+    </div>
+  </section>
+  
   <Suspense fallback={<section className="container py-16"><SkeletonFeaturedProducts/></section>}><HomeSections/></Suspense>
  </>;
 }
