@@ -114,7 +114,7 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
       </section>
 
       <ProductSectionNav hasDetails={fields.some(f=>f.title!=="Vanliga frågor"&&f.value.trim())} hasGallery={new Set(images.filter(i=>i.url).map(i=>i.url)).size>2} hasRelated={relatedProducts.length>0}/>
-      <DimensionsGuide fields={fields}/>
+      <div className="pawlira-band pawlira-band-warm"><DimensionsGuide fields={fields}/></div>
       <ProductStory product={{...product,description,descriptionHtml}} fields={fields}/>
       {/* Recommended Products section  */}
       {relatedProducts?.length > 0 && <section id="relaterade" className="container pawlira-home-section scroll-mt-48">
