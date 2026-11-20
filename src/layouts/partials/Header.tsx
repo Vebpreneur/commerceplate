@@ -22,7 +22,7 @@ function MegaPrice({product}:{product:NavigationProduct}){const range=product.pr
 function MenuModel({product,onClick,selected=false,card=false}:{product:NavigationProduct;onClick:()=>void;selected?:boolean;card?:boolean}){
  return <Link href={productHref(product.handle)} onClick={onClick} aria-current={selected?"page":undefined} title={product.title} className={card?"pawlira-mega-product":"pawlira-menu-model"}>
  <span className={card?"pawlira-mega-product-image":"pawlira-menu-thumbnail"}><MenuImage key={product.featuredImage?.url} image={product.featuredImage} size={card?240:56}/></span>
- {card?<span className="pawlira-mega-product-info"><span className="pawlira-mega-product-name">{modelName(product.title)}</span><MegaPrice product={product}/></span>:<span className="pawlira-menu-model-name">{modelName(product.title)}</span>}<FiArrowUpRight size={17} strokeWidth={1.5}/></Link>;
+ {card?<span className="pawlira-mega-product-info"><span className="pawlira-mega-product-name"><span>{modelName(product.title)}</span></span><MegaPrice product={product}/></span>:<span className="pawlira-menu-model-name">{modelName(product.title)}</span>}<FiArrowUpRight size={17} strokeWidth={1.5}/></Link>;
 }
 export default function Header({children,categories=[],favorites=[]}:{children:any;categories?:NavigationCategory[];favorites?:NavigationProduct[]}){
  const [open,setOpen]=useState(false),[mega,setMega]=useState(false);

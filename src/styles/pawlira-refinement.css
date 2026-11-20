@@ -106,10 +106,10 @@ body .btn.btn-inverse:hover,body .pawlira-footer .pawlira-footer-cta:hover{backg
 .pawlira-favorites-mega-main{min-width:0}
 .pawlira-favorites-mega-main>h3,.pawlira-favorites-mega-links h3{font-size:15px!important;line-height:1.4!important;margin:0 0 14px}
 .pawlira-favorites-mega-products{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
-.pawlira-favorites-mega-products .pawlira-mega-product{background:#f7f7f8;border:1px solid #efeff0;border-radius:14px;min-height:0;padding:12px;text-decoration:none!important;box-shadow:none}
-.pawlira-favorites-mega-products .pawlira-mega-product-image{background:#fff;border-radius:9px}
+.pawlira-favorites-mega-products .pawlira-mega-product{background:#fff;border:0;border-radius:16px;min-height:0;padding:0;gap:0;overflow:hidden;text-decoration:none!important;box-shadow:none;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto 1fr}
+.pawlira-favorites-mega-products .pawlira-mega-product-image{background:#fff;border-radius:16px 16px 0 0}
 .pawlira-favorites-mega-products .pawlira-mega-product-name{font-size:14px;line-height:1.4;text-decoration:none!important}
-.pawlira-favorites-mega-products .pawlira-mega-product:hover,.pawlira-favorites-mega-products .pawlira-mega-product[aria-current=page]{background:#f0f0f2;border-color:#dedee0;box-shadow:none}
+.pawlira-favorites-mega-products .pawlira-mega-product:hover,.pawlira-favorites-mega-products .pawlira-mega-product[aria-current=page]{background:#fff;border:0;box-shadow:none}
 .pawlira-favorites-mega-links{border-left:1px solid #e5e5e5;padding-left:24px;display:flex;flex-direction:column;gap:22px}
 .pawlira-favorites-mega-links>div+div{border-top:1px solid #e5e5e5;padding-top:20px}
 .pawlira-favorites-mega-links a{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 10px;margin-inline:-10px;font-size:14px;line-height:1.4;border-radius:6px;text-decoration:none}
@@ -123,3 +123,17 @@ body .btn.btn-inverse:hover,body .pawlira-footer .pawlira-footer-cta:hover{backg
 @media(prefers-reduced-motion:reduce){.pawlira-menu-dialog .pawlira-menu-category summary{transition:none}}
 
 .pawlira-support-shortcuts{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}.pawlira-support-shortcuts a{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:10px 16px;border:1px solid #ffffff80;border-radius:999px;color:#fff!important;text-decoration:none}.pawlira-support-shortcuts a:hover{background:#ffffff19}.pawlira-support-shortcuts a:focus-visible{outline:2px solid #fff;outline-offset:3px}
+
+/* Concept-inspired product surfaces. The photo stays white and the caption stays constant. */
+.pawlira-merch-card.pawlira-clean-product,.pawlira-merch-card.pawlira-clean-product:hover,.pawlira-list-card.pawlira-clean-list,.pawlira-list-card.pawlira-clean-list:hover{background:#fff;border:0;box-shadow:none;transform:none}
+.pawlira-clean-product .pawlira-card-media,.pawlira-clean-list .pawlira-card-media,.pawlira-clean-product .pawlira-card-photo,.pawlira-clean-list .pawlira-card-photo{background:#fff}
+.pawlira-clean-product .pawlira-clean-product-info,.pawlira-clean-list .pawlira-clean-list-info{background:#f8f8f8}
+.pawlira-clean-product-info .pawlira-product-title,.pawlira-clean-list-info .pawlira-product-title{display:inline;text-decoration:none!important;min-height:0;overflow:visible}
+.pawlira-product-title>span,.pawlira-mega-product-name>span{background-image:linear-gradient(currentColor,currentColor);background-position:0 100%;background-repeat:no-repeat;background-size:0% 1px;transition:background-size .22s ease-out;box-decoration-break:clone;-webkit-box-decoration-break:clone;padding-bottom:2px}
+@media(hover:hover) and (pointer:fine){.pawlira-product-title>span:hover,.pawlira-mega-product-name>span:hover{background-size:100% 1px}}
+.pawlira-product-title:focus-visible>span{background-size:100% 1px}
+.pawlira-favorites-mega-products .pawlira-mega-product-info{background:#f8f8f8;padding:13px 12px 15px;grid-column:1/-1;grid-row:2;display:flex;gap:8px;padding-right:29px}
+.pawlira-favorites-mega-products .pawlira-mega-product>svg{grid-column:2;grid-row:2;align-self:end;justify-self:end;z-index:1;margin:0 10px 15px 0;transform:none}
+.pawlira-favorites-mega-products .pawlira-mega-product:hover img{transform:none!important}
+.pawlira-favorites-mega-products .pawlira-mega-product-name{display:block;min-height:0}
+@media(prefers-reduced-motion:reduce){.pawlira-product-title>span,.pawlira-mega-product-name>span{transition:none}}

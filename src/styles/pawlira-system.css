@@ -279,9 +279,9 @@ body:has(dialog[open]) .pawlira-sticky-buy,body:has(.pawlira-mega-menu) .pawlira
 }
 
 /* Concept-inspired image-first cards. Scope to the new cards, not PDP or navigation. */
-.pawlira-merch-card.pawlira-clean-product{container-type:inline-size;display:flex;flex-direction:column;justify-content:flex-start;height:100%;min-width:0;background:#f5f5f7;border:0;border-radius:16px;overflow:hidden;box-shadow:none;transition:box-shadow .22s}
+.pawlira-merch-card.pawlira-clean-product{container-type:inline-size;display:flex;flex-direction:column;justify-content:flex-start;height:100%;min-width:0;background:#fff;border:0;border-radius:16px;overflow:hidden;box-shadow:none}
 .pawlira-card-media{position:relative;min-width:0;background:#fff;overflow:hidden}
-.pawlira-card-photo{position:relative;display:block;aspect-ratio:1;overflow:hidden;background:#f7f7f8}
+.pawlira-card-photo{position:relative;display:block;aspect-ratio:1;overflow:hidden;background:#fff}
 .pawlira-card-photo img{object-fit:contain;padding:16px;box-sizing:border-box;transform:none!important}
 .pawlira-card-image{animation:pawlira-card-image-in .24s ease-out}
 @keyframes pawlira-card-image-in{from{opacity:.55}to{opacity:1}}
@@ -292,7 +292,7 @@ body:has(dialog[open]) .pawlira-sticky-buy,body:has(.pawlira-mega-menu) .pawlira
 .pawlira-card-image-controls button{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;color:#0a0a0a;cursor:pointer}
 .pawlira-card-image-controls span{font-size:10px;color:#525252;white-space:nowrap}
 .pawlira-card-image-controls button:focus-visible,.pawlira-card-photo:focus-visible,.pawlira-clean-product-info a:focus-visible,.pawlira-clean-list-info a:focus-visible{outline:2px solid #0a0a0a;outline-offset:-3px}
-.pawlira-clean-product-info{flex:1;min-width:0;padding:16px 18px 20px;display:grid;align-content:start;grid-template-columns:minmax(0,1fr);gap:8px;color:#0a0a0a}
+.pawlira-clean-product-info{flex:1;min-width:0;padding:16px 18px 20px;display:grid;align-content:start;grid-template-columns:minmax(0,1fr);gap:8px;color:#0a0a0a;background:#f8f8f8}
 .pawlira-clean-product-info h3,.pawlira-clean-list-info h3{font-weight:500;line-height:1.4;letter-spacing:-.012em;color:#0a0a0a;overflow-wrap:anywhere;font-size:15px;margin:0}
 .pawlira-clean-product-info h3 a,.pawlira-clean-list-info h3 a{color:#0a0a0a;text-decoration:none}
 .pawlira-clean-product-info h3 a{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;min-height:4.2em}
@@ -301,8 +301,8 @@ body:has(dialog[open]) .pawlira-sticky-buy,body:has(.pawlira-mega-menu) .pawlira
 .pawlira-clean-product-info .pawlira-catalog-price-value>span,.pawlira-clean-list-info .pawlira-catalog-price-value>span{font-size:11px}
 @container (min-width:350px){.pawlira-clean-product-info{grid-template-columns:minmax(0,1fr) auto;gap:18px;padding:22px}.pawlira-clean-product-info h3{font-size:16px}.pawlira-clean-product-info .pawlira-catalog-price{text-align:right;white-space:nowrap}}
 .pawlira-home-four .pawlira-clean-product{justify-content:flex-start}
-.pawlira-clean-list{background:#f5f5f7;border:0;grid-template-columns:minmax(0,32%) minmax(0,1fr);border-radius:16px;min-width:0}
-.pawlira-clean-list-info{display:flex;flex-direction:column;align-items:flex-start;gap:12px;min-width:0;padding:20px}
+ .pawlira-clean-list{background:#fff;border:0;grid-template-columns:minmax(0,32%) minmax(0,1fr);border-radius:16px;min-width:0}
+.pawlira-clean-list-info{display:flex;flex-direction:column;align-items:flex-start;gap:12px;min-width:0;padding:20px;background:#f8f8f8}
 .pawlira-clean-list-info h3{font-size:17px}
 .pawlira-home-content .pawlira-clean-category{border:0;border-radius:16px;background:#f5f5f7;box-shadow:none;min-width:0}
 .pawlira-home-content .pawlira-clean-category .pawlira-home-category-photo{aspect-ratio:1}
@@ -320,8 +320,8 @@ body:has(dialog[open]) .pawlira-sticky-buy,body:has(.pawlira-mega-menu) .pawlira
  .pawlira-card-image-controls{opacity:0;transition:opacity .2s}
  .pawlira-card-media:hover .pawlira-card-image-controls,.pawlira-card-media:focus-within .pawlira-card-image-controls{opacity:1}
  .pawlira-card-image-controls button:hover{background:#0a0a0a;color:#fff}
- .pawlira-clean-product:hover,.pawlira-clean-category:hover{box-shadow:0 6px 22px #00000009}
- .pawlira-clean-product-info a:hover,.pawlira-clean-list-info a:hover{text-decoration:underline;text-underline-offset:3px}
+ .pawlira-clean-category:hover{box-shadow:0 6px 22px #00000009}
+
  .pawlira-clean-category:hover .pawlira-category-arrow{background:#0a0a0a;color:#fff;border-color:#0a0a0a}
  .pawlira-footer-grid li a:hover{color:#fff}
 }
@@ -352,10 +352,10 @@ body:has(dialog[open]) .pawlira-sticky-buy,body:has(.pawlira-mega-menu) .pawlira
 .pawlira-restored-home .pawlira-clean-category .pawlira-home-category-photo{aspect-ratio:1}
 .pawlira-restored-home .pawlira-home-feature-banner .pawlira-white-link{color:#fff!important}
 .pawlira-marquee{overflow:hidden;max-width:100%}
-.pawlira-restored-home .pawlira-clean-product-info{padding:20px 22px 24px;gap:12px;background:#f5f5f7}
+.pawlira-restored-home .pawlira-clean-product-info{padding:20px 22px 24px;gap:12px;background:#f8f8f8}
 .pawlira-restored-home .pawlira-clean-product-info h3{font-size:17px;line-height:1.4;letter-spacing:-.016em}
 .pawlira-restored-home .pawlira-clean-product-info .pawlira-catalog-price-value{font-size:16px}
-.pawlira-restored-home .pawlira-clean-product{border:1px solid #e5e5e5;box-shadow:0 2px 8px #00000004;transition:border-color .24s,box-shadow .24s,transform .24s}
+ .pawlira-restored-home .pawlira-clean-product{border:0;box-shadow:none;transform:none}
 .pawlira-restored-home .pawlira-card-photo{background:#fff}
 .pawlira-restored-home .pawlira-card-photo img{padding:16px}
 .pawlira-restored-home .pawlira-clean-category{border:1px solid #e5e5e5;transition:border-color .24s,box-shadow .24s,transform .24s}
@@ -363,9 +363,9 @@ body:has(dialog[open]) .pawlira-sticky-buy,body:has(.pawlira-mega-menu) .pawlira
 .pawlira-restored-home .pawlira-brand-points>div p{opacity:.82}
 .pawlira-restored-home .pawlira-home-final h2,.pawlira-restored-home .pawlira-home-final p{color:#fff}
 @media(hover:hover) and (pointer:fine){
- .pawlira-restored-home .pawlira-clean-product:hover,.pawlira-restored-home .pawlira-clean-category:hover{border-color:#aaa;box-shadow:0 10px 26px #00000012;transform:translateY(-3px)}
+ .pawlira-restored-home .pawlira-clean-category:hover{border-color:#aaa;box-shadow:0 10px 26px #00000012;transform:translateY(-3px)}
  .pawlira-clean-product:hover .pawlira-card-image-controls,.pawlira-clean-product:focus-within .pawlira-card-image-controls,.pawlira-clean-list:hover .pawlira-card-image-controls{opacity:1}
- .pawlira-restored-home .pawlira-clean-product:hover .pawlira-clean-product-info{background:#eeeef0}
+
 }
 @media(min-width:1024px){.pawlira-restored-home{--pawlira-section-space:80px;--pawlira-heading-gap:36px}}
 @media(max-width:1023px){.pawlira-restored-home .pawlira-product-rail{grid-auto-columns:calc((100% - 36px)/3);gap:18px}}

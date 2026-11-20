@@ -9,7 +9,7 @@ export default function MerchandiseCard({product,compact=false}:{product:Product
  return <article className={"pawlira-merch-card pawlira-clean-product "+(compact?"pawlira-merch-compact":"")}>
   <CardMedia product={product} href={href}/>
   <div className="pawlira-clean-product-info">
-   <h3><Link href={href}>{title}</Link></h3>
+   <h3><Link href={href} className="pawlira-product-title"><span>{title}</span></Link></h3>
    <CatalogPrice product={product} showStock={false}/>
   </div>
  </article>;
