@@ -283,8 +283,8 @@ body .pawlira-list-card.pawlira-clean-list{border:1px solid var(--pawlira-paper-
 body .pawlira-merch-card.pawlira-clean-product:hover,
 body .pawlira-list-card.pawlira-clean-list:hover{border-color:#d8cebd;box-shadow:none}
 .pawlira-rail-card,.pawlira-compare-card,.pawlira-editorial-tile{background:var(--pawlira-paper);border-color:var(--pawlira-paper-line)}
-/* Home: warm paper canvas with deliberately white functional/photo surfaces. */
-.pawlira-home-content{background:var(--pawlira-paper)}
+/* Home: white base; individual editorial bands own their background. */
+.pawlira-home-content{background:#fff}
 .pawlira-marquee{background:var(--pawlira-paper);border-color:var(--pawlira-paper-line)}
 body .pawlira-home-content .pawlira-clean-category{background:#fff;border:1px solid var(--pawlira-paper-line)}
 body .pawlira-home-content .pawlira-clean-category .pawlira-home-category-photo{background:white}
@@ -305,7 +305,7 @@ body .pawlira-home-content .pawlira-clean-category .pawlira-home-category-photo{
 .pawlira-catalog-hero{background:var(--pawlira-paper);border-color:var(--pawlira-paper-line)}
 .pawlira-category-tabs a:not([aria-current=page]){background:var(--pawlira-paper);border-color:var(--pawlira-paper-line)}
 .pawlira-catalog-sidebar{background:var(--pawlira-paper);border-color:var(--pawlira-paper-line)}
-.pawlira-product-purchase-section{background:var(--pawlira-paper)}
+.pawlira-product-purchase-section{background:#fff}
 .pawlira-pdp-grid .pawlira-gallery-frame{background:white;border-color:var(--pawlira-paper-line)}
 .pawlira-pdp-grid .pawlira-gallery-stage{background:white}
 .pawlira-pdp-grid .pawlira-gallery-thumbs button{border-color:var(--pawlira-paper-line)}
@@ -336,9 +336,28 @@ body .pawlira-footer{background:var(--pawlira-charcoal);border-radius:22px 22px 
 .pawlira-home-content .pawlira-faq-dark h2,#kundinformation .pawlira-faq-dark h2{text-align:center}
 .pawlira-product-purchase-section .pawlira-purchase-facts a{background:#fff;border-color:var(--pawlira-paper-line)}
 .pawlira-dimension-grid article,.pawlira-included-grid article{background:var(--pawlira-paper)}
-#specifikationer{background:var(--pawlira-paper);border-color:var(--pawlira-paper-line)}
+#specifikationer{background:#fff;border-color:var(--pawlira-paper-line)}
 .pawlira-story-image,.pawlira-story-gallery-image{border-color:var(--pawlira-paper-line);background:#fff}
 .pawlira-home-content .pawlira-help-card{background:var(--pawlira-paper)}
 .pawlira-home-content .pawlira-spotlight-content{background:var(--pawlira-paper)}
 .pawlira-home-content .pawlira-spotlight{border-radius:18px}
 @media(prefers-reduced-motion:reduce){.pawlira-whisker-card,.pawlira-whisker-panel .pawlira-whisker-buy{transition:none}}
+
+/* Full-width section rhythm; never tint an entire page or its photo surfaces. */
+.pawlira-band{width:100%;display:flow-root}
+.pawlira-band-white{background:#fff}
+.pawlira-band-warm{background:var(--pawlira-paper)}
+.pawlira-band-warm>.container,.pawlira-band-white>.container{background:transparent}
+.pawlira-home-content>.pawlira-home-section{background:#fff}
+.pawlira-home-content .pawlira-spotlight-content{background:#fff}
+.pawlira-home-content .pawlira-faq-dark,#kundinformation .pawlira-faq-dark{background:transparent;border:0;border-radius:0}
+.pawlira-home-content .pawlira-faq-main,#kundinformation .pawlira-faq-main{max-width:900px;margin-inline:auto;padding-inline:0}
+.pawlira-band-warm .pawlira-stories-grid article{background:#fff}
+.pawlira-band-warm .pawlira-comparison-scroll{background:#fff}
+.pawlira-band-warm .pawlira-editorial-tile-caption{background:#fff}
+.pawlira-band-warm .pawlira-guide-choice-grid>button{background:#fff}
+.pawlira-product-purchase-section .pawlira-purchase-facts a{background:var(--pawlira-paper)}
+.pawlira-product-purchase-section .pawlira-gallery-frame{background:#fff}
+.pawlira-band-warm .pawlira-dimension-grid article,.pawlira-band-warm .pawlira-included-grid article{background:white}
+.pawlira-band-warm .pawlira-story-text{color:var(--pawlira-charcoal)}
+#relaterade{background:#fff}
