@@ -12,6 +12,8 @@ import {customerOptions,customerText,customerHtml,customerVariants} from "@/lib/
 import DimensionsGuide from "@/components/product/DimensionsGuide";
 import {compatibleAccessories} from "@/lib/shopify/accessories";
 import ProductStory from "@/components/product/ProductStory";
+import {getStoreNavigation} from "@/lib/shopify/navigation";
+import {LuBookOpen} from "react-icons/lu";
 import {LuPackage as FiPackage,LuRefreshCcw as FiRefreshCcw,LuCircleHelp as FiHelpCircle,LuArrowUpRight as FiArrowUpRight} from "react-icons/lu";
 import { notFound } from "next/navigation";
 import { Suspense, cache } from "react";
@@ -58,7 +60,9 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
 
   const description=customerText(product.description);
   const descriptionHtml=customerHtml(product.descriptionHtml);
-  const [recommended,accessories]=await Promise.all([getProductRecommendations(id).catch(()=>[]),compatibleAccessories([product.handle],product.priceRange.minVariantPrice.currencyCode)]);
+  const [recommended,accessories,navigation]=await Promise.all([getProductRecommendations(id).catch(()=>[]),compatibleAccessories([product.handle],product.priceRange.minVariantPrice.currencyCode),getStoreNavigation()]);
+  const guideCategory=navigation.find(c=>c.products.some(p=>p.handle===product.handle));
+  const guideHref=guideCategory?"/kopguide?c="+encodeURIComponent(guideCategory.handle):"/kopguide";
   const relatedProducts=Array.from(new Map(recommended.filter(p=>p.id!==id&&p.availableForSale).map(p=>[p.id,p])).values()).slice(0,3);
   const fields=productFields(product);
   const galleryImages=Array.from(new Map([...(product.featuredImage?.url?[product.featuredImage]:[]),...images].filter(i=>i.url).map(i=>[i.url.split("?")[0],i])).values());
@@ -116,6 +120,7 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
       <ProductSectionNav hasDetails={fields.some(f=>f.title!=="Vanliga frågor"&&f.value.trim())} hasGallery={new Set(images.filter(i=>i.url).map(i=>i.url)).size>2} hasRelated={relatedProducts.length>0}/>
       <div className="pawlira-band pawlira-band-warm"><DimensionsGuide fields={fields}/></div>
       <ProductStory product={{...product,description,descriptionHtml}} fields={fields}/>
+      <section className="container pawlira-home-section pawlira-pdp-guide-section"><div className="pawlira-pdp-guide-card"><div className="pawlira-pdp-guide-icon"><LuBookOpen size={30} strokeWidth={1.5} aria-hidden="true"/></div><div className="pawlira-pdp-guide-copy"><h2>Hitta rätt produkt för din katt</h2><p>Vår köpguide hjälper dig att jämföra egenskaper, mått och funktioner utifrån din katts behov.</p></div><Link href={guideHref} className="btn btn-primary">Öppna köpguiden <FiArrowUpRight size={18} strokeWidth={1.5}/></Link></div></section>
       {/* Recommended Products section  */}
       {relatedProducts?.length > 0 && <section id="relaterade" className="container pawlira-home-section scroll-mt-48">
           {relatedProducts?.length > 0 && (
