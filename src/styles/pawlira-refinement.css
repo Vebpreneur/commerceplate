@@ -137,3 +137,41 @@ body .btn.btn-inverse:hover,body .pawlira-footer .pawlira-footer-cta:hover{backg
 .pawlira-favorites-mega-products .pawlira-mega-product:hover img{transform:none!important}
 .pawlira-favorites-mega-products .pawlira-mega-product-name{display:block;min-height:0}
 @media(prefers-reduced-motion:reduce){.pawlira-product-title>span,.pawlira-mega-product-name>span{transition:none}}
+
+
+/* Pawlira desktop navigation: warm, compact editorial header */
+header.pawlira-polished-header{background:#faf8f3!important;color:#222!important;padding-block:0;border-bottom:1px solid #eeeae2}
+header.pawlira-polished-header .pawlira-header-inner{min-height:70px;gap:14px}
+header.pawlira-polished-header .pawlira-header-actions,header.pawlira-polished-header .pawlira-header-actions a,header.pawlira-polished-header .pawlira-header-actions button,header.pawlira-polished-header .pawlira-menu-toggle{color:#222!important}
+header.pawlira-polished-header .pawlira-header-actions .pawlira-menu-toggle{border-color:transparent}
+.pawlira-whisker-shop{display:none}
+.pawlira-hotspot-inline .pawlira-hotspot-stage{background:#fff!important}
+@media(min-width:1200px){
+header.pawlira-polished-header .pawlira-header-inner{grid-template-columns:auto minmax(0,1fr) auto minmax(120px,180px) auto;gap:12px}
+.pawlira-whisker-nav{gap:4px;align-self:stretch;white-space:normal}
+.pawlira-whisker-tab,.pawlira-whisker-nav>a{display:flex;align-items:center;justify-content:center;text-align:center;padding:0 9px!important;min-height:70px;line-height:1.25;font-size:13px;font-weight:500;color:#222!important;cursor:pointer;border:1px solid transparent;border-radius:12px 12px 0 0;background:none}
+.pawlira-whisker-tab[aria-expanded=true]{background:white;border-color:#eeeae2;border-bottom-color:white}
+.pawlira-whisker-nav>a.pawlira-whisker-deals{color:#b32319!important;font-weight:600}
+.pawlira-whisker-divider{color:#555;align-self:center;padding:0 4px}
+.pawlira-whisker-shop{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;background:#222;color:#fff!important;padding:8px 22px;font-size:13px;white-space:nowrap}
+.pawlira-whisker-shop:hover{background:#444}
+header.pawlira-polished-header .pawlira-header-inner .pawlira-whisker-panel{top:100%;left:0;right:0;border:1px solid #eeeae2;border-top:0;background:white;box-shadow:0 16px 28px #0000000c;padding:24px;max-height:70vh}
+.pawlira-whisker-products{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.pawlira-whisker-card{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;background:#faf8f3;border:1px solid #f0ede6;border-radius:14px;padding:18px 12px 22px;min-width:0;transition:background .18s,border-color .18s}
+.pawlira-whisker-card:hover,.pawlira-whisker-card:focus-within{background:#faf5e9;border-color:#e9dfcb}
+.pawlira-whisker-image{display:grid;place-items:center;width:100%;aspect-ratio:1.3;overflow:hidden}
+.pawlira-whisker-image img{object-fit:contain;width:100%;height:100%;mix-blend-mode:multiply}
+.pawlira-whisker-name{font-size:16px;font-weight:600;line-height:1.3;text-decoration:none!important}
+.pawlira-whisker-ctas{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:auto}
+.pawlira-whisker-panel .pawlira-whisker-buy{border:1px solid #222;border-radius:999px;background:white;color:#222!important;padding:6px 24px;font-size:12px;transition:background .18s,color .18s;text-decoration:none!important}
+.pawlira-whisker-panel .pawlira-whisker-card:hover .pawlira-whisker-buy,.pawlira-whisker-panel .pawlira-whisker-card:focus-within .pawlira-whisker-buy{background:#222;color:white!important}
+.pawlira-whisker-learn{font-size:12px;text-decoration:underline!important;text-underline-offset:3px}
+.pawlira-whisker-category{grid-column:1/-1;justify-self:end;display:flex;align-items:center;gap:6px;font-size:13px}
+.pawlira-whisker-about{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:55px;max-width:800px;margin:auto;padding:8px 0 22px}
+.pawlira-whisker-about h3{font-size:15px;font-weight:600;border-bottom:1px solid #e5e5e5;padding-bottom:12px;margin-bottom:10px}
+.pawlira-whisker-about a{display:block;font-size:14px;padding:4px 0}
+.pawlira-whisker-about a:hover{text-decoration:underline}
+header.pawlira-polished-header .pawlira-menu-toggle{display:none}
+}
+@media(max-width:1199px){header.pawlira-polished-header{padding-block:12px}}
+header.pawlira-polished-header :focus-visible{outline:2px solid #222;outline-offset:3px}
