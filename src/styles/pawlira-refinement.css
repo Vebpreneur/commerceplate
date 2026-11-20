@@ -460,3 +460,60 @@ body .pawlira-clean-list .pawlira-clean-list-info{background:var(--pawlira-produ
 .pawlira-pdp-guide-copy h2{font-size:clamp(22px,2vw,30px);line-height:1.2;margin:0 0 8px}
 .pawlira-pdp-guide-copy p{font-size:16px;line-height:1.6;color:#525252;margin:0}
 @media(max-width:767px){.pawlira-pdp-guide-card{grid-template-columns:48px minmax(0,1fr);gap:14px;padding:20px}.pawlira-pdp-guide-icon{width:48px;height:48px}.pawlira-pdp-guide-card>.btn{grid-column:1/-1;justify-self:start}.pawlira-pdp-guide-copy p{font-size:14px}}
+
+/* Catalog: editorial, compact Whisker-inspired collection layout.
+   Keep regular homepage cards unchanged. */
+body .pawlira-catalog-page{--catalog-paper:#faf8f3;--catalog-tile:#f2efe5;background:var(--catalog-paper);color:#242222}
+body .pawlira-catalog-page .pawlira-catalog-width{max-width:1240px!important;width:100%;padding-inline:24px;margin-inline:auto}
+.pawlira-catalog-intro{min-height:clamp(240px,24vw,420px);display:flex;align-items:center;border-bottom:1px solid #dedbd4}
+body main .pawlira-catalog-intro h1{font-size:clamp(36px,4vw,60px);line-height:1.03;letter-spacing:-.048em;font-weight:500;margin:0 0 10px}
+body main .pawlira-catalog-intro p{max-width:38ch;font-size:18px;line-height:1.4;margin:0;color:#242222}
+.pawlira-catalog-whisker-layout{display:grid;grid-template-columns:minmax(200px,25%) minmax(0,1fr);gap:32px;padding-block:48px 72px}
+.pawlira-catalog-category-menu{align-self:start;min-width:0}
+body main .pawlira-catalog-category-menu h2{font-size:26px;line-height:1.2;letter-spacing:-.035em;font-weight:500;margin:0 0 24px}
+.pawlira-catalog-category-menu nav{display:flex;flex-direction:column;gap:8px}
+.pawlira-catalog-category-menu :is(summary,.pawlira-catalog-all){display:flex;min-height:48px;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-radius:6px;color:#242222;font-size:16px;font-weight:500;cursor:pointer;text-decoration:none}
+.pawlira-catalog-category-menu summary{list-style:none}
+.pawlira-catalog-category-menu summary::-webkit-details-marker{display:none}
+.pawlira-catalog-category-menu details[open]>summary,.pawlira-catalog-category-menu .pawlira-catalog-all[aria-current=page]{background:#eeebe2}
+.pawlira-catalog-category-menu details:not([open]) summary svg{transform:rotate(-90deg)}
+.pawlira-catalog-subcategories{display:grid;gap:2px;padding:8px 14px 12px}
+.pawlira-catalog-subcategories a{font-size:15px;line-height:1.45;padding:5px 0;color:#242222;text-decoration:none}
+.pawlira-catalog-subcategories a[aria-current=page]{font-weight:700;text-decoration:underline;text-underline-offset:4px}
+.pawlira-catalog-category-menu :is(summary,a):hover{background:#eeebe2}
+.pawlira-catalog-category-menu :is(summary,a):focus-visible{outline:2px solid #242222;outline-offset:3px}
+.pawlira-catalog-page .pawlira-catalog-toolbar-wrap{padding:0;margin:0 0 24px;width:100%;background:transparent;border:0}
+.pawlira-catalog-page .pawlira-catalog-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:0;border:0;background:transparent}
+.pawlira-catalog-page .pawlira-sort-control{min-height:42px;background:#fff;border:1px solid #e5e5e5;border-radius:6px;font-size:14px}
+.pawlira-catalog-page .pawlira-catalog-count{font-size:13px;color:#626262;margin:0 0 15px}
+body .pawlira-catalog-page .pawlira-catalog-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px 24px;align-items:stretch}
+body .pawlira-catalog-page article.pawlira-catalog-product{background:transparent!important;border-radius:0;overflow:visible;min-width:0}
+body .pawlira-catalog-page .pawlira-catalog-product .pawlira-card-media{background:var(--catalog-tile)!important;overflow:hidden;border-radius:14px;aspect-ratio:5/6}
+body .pawlira-catalog-page .pawlira-catalog-product .pawlira-card-photo{background:var(--catalog-tile)!important;aspect-ratio:auto;height:100%;width:100%}
+body .pawlira-catalog-page .pawlira-catalog-product .pawlira-card-photo img{mix-blend-mode:multiply;object-fit:contain;padding:12px}
+body .pawlira-catalog-page .pawlira-catalog-product .pawlira-clean-product-info{background:transparent!important;padding:12px 0 0;display:flex;flex-direction:column;gap:4px;flex:1}
+body .pawlira-catalog-page .pawlira-catalog-product .pawlira-clean-product-info h3{font-size:18px;line-height:1.22!important;letter-spacing:-.03em;font-weight:600;min-height:2.44em;overflow-wrap:anywhere}
+body .pawlira-catalog-page .pawlira-catalog-product-description{font-size:13px;line-height:1.38;color:#404040;margin:0;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;min-height:3em}
+body .pawlira-catalog-page .pawlira-catalog-product .pawlira-catalog-price{margin-top:auto;text-align:left;white-space:normal;padding-top:3px}
+body .pawlira-catalog-page .pawlira-catalog-product .pawlira-catalog-price-value{font-size:15px;font-weight:500;line-height:1.4}
+.pawlira-catalog-faq{padding-block:24px 64px}
+body main .pawlira-catalog-faq h2{text-align:center;font-size:clamp(32px,3.5vw,52px);line-height:1.15;letter-spacing:-.045em;font-weight:500;margin:0 0 40px}
+.pawlira-catalog-faq .pawlira-accordion{background:transparent;border:0;border-bottom:1px solid #a6a29a;box-shadow:none;border-radius:0;padding:0;margin:0}
+.pawlira-catalog-faq .accordion-header{background:transparent;border:0;color:#242222;font-size:18px;line-height:1.5;display:flex;align-items:center;justify-content:space-between;text-align:left;width:100%;padding:20px 0;gap:16px}
+.pawlira-catalog-faq .accordion-inner{width:100%;max-width:none;color:#404040;font-size:16px;line-height:1.6;padding:0 0 20px}
+.pawlira-catalog-editorial{display:grid;grid-template-columns:1fr 2fr;gap:48px;padding-block:12px 90px}
+body main .pawlira-catalog-editorial h2{font-size:30px;font-weight:500;line-height:1.16;letter-spacing:-.035em;margin:0}
+.pawlira-catalog-editorial p{font-size:16px;line-height:1.65;color:#242222;margin:0 0 16px}
+.pawlira-catalog-editorial h3{font-size:17px;font-weight:600;margin:22px 0 8px}
+.pawlira-catalog-editorial a{text-decoration:underline;text-underline-offset:3px}
+@media(max-width:900px){.pawlira-catalog-whisker-layout{grid-template-columns:180px minmax(0,1fr);gap:24px}body .pawlira-catalog-page .pawlira-catalog-grid{gap:24px 16px}body .pawlira-catalog-page .pawlira-catalog-product .pawlira-clean-product-info h3{font-size:16px}}
+@media(max-width:767px){body .pawlira-catalog-page .pawlira-catalog-width{padding-inline:16px}.pawlira-catalog-intro{min-height:200px}.pawlira-catalog-whisker-layout{grid-template-columns:1fr;padding-block:24px 40px;gap:24px}.pawlira-catalog-category-menu nav{gap:2px}.pawlira-catalog-category-menu h2{margin-bottom:12px!important}.pawlira-catalog-subcategories{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.pawlira-catalog-category-menu :is(summary,.pawlira-catalog-all){min-height:42px}.pawlira-catalog-editorial{grid-template-columns:1fr;gap:20px;padding-bottom:48px}.pawlira-catalog-faq{padding-block:24px 36px}body .pawlira-catalog-page .pawlira-catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 12px}body .pawlira-catalog-page .pawlira-catalog-product .pawlira-clean-product-info h3{font-size:15px}body .pawlira-catalog-page .pawlira-catalog-product-description{font-size:12px}}
+/* Reversible button colors, no geometry changes on hover or keyboard focus. */
+header.pawlira-polished-header .pawlira-whisker-shop{border:1px solid #242222;transition:background-color .2s,color .2s,border-color .2s}
+header.pawlira-polished-header .pawlira-whisker-shop:is(:hover,:focus-visible){background:#fff!important;color:#242222!important;border-color:#242222}
+body .btn.btn-primary:not(:disabled){border:1px solid #242222}
+body .btn.btn-primary:not(:disabled):is(:hover,:focus-visible){background:#fff!important;color:#242222!important;border-color:#242222!important;box-shadow:none}
+body .btn.btn-primary:not(:disabled):is(:hover,:focus-visible) svg{color:currentColor!important}
+body .btn.btn-inverse:not(:disabled):is(:hover,:focus-visible),body .pawlira-footer .pawlira-footer-cta:is(:hover,:focus-visible){background:#242222!important;color:#fff!important;border-color:#fff!important;box-shadow:none}
+body .btn.btn-inverse:not(:disabled):is(:hover,:focus-visible) svg,body .pawlira-footer .pawlira-footer-cta:is(:hover,:focus-visible) svg{color:#fff!important}
+@media(prefers-reduced-motion:reduce){header.pawlira-polished-header .pawlira-whisker-shop{transition:none}}
