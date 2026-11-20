@@ -6,14 +6,14 @@
 
 @theme {
   /* === Colors === */
-  --color-primary: #121212;
-  --color-body: #fff;
-  --color-border: #eaeaea;
-  --color-light: #f2f2f2;
-  --color-dark: #000;
-  --color-text: #444;
-  --color-text-dark: #000;
-  --color-text-light: #666;
+  --color-primary: #0A0A0A;
+  --color-body: #ffffff;
+  --color-border: #e6e6e6;
+  --color-light: #ffffff;
+  --color-dark: #000000;
+  --color-text: #525252;
+  --color-text-dark: #0A0A0A;
+  --color-text-light: #525252;
 
   /* === Darkmode Colors === */
   --color-darkmode-primary: #fff;
@@ -26,8 +26,8 @@
   --color-darkmode-text-light: #DDD;
 
   /* === Font Families === */
-  --font-primary: Karla, sans-serif;
-  --font-secondary: , sans-serif;
+  --font-primary: DM Sans, sans-serif;
+  --font-secondary: DM Sans, sans-serif;
 
   /* === Font Sizes === */
   --text-base: 16px;

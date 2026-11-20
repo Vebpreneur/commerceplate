@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import EditorialPhoto from "@/components/EditorialPhoto";
 import {editorialImages} from "@/config/editorialImages";
-import {LuArrowUpRight as FiArrowUpRight,LuPackage as FiPackage,LuRefreshCcw as FiRefreshCcw,LuMessageCircle as FiMessageCircle,LuLayoutGrid as FiGrid} from "react-icons/lu";
+import {LuArrowUpRight as FiArrowUpRight,LuLayoutGrid as FiGrid} from "react-icons/lu";
 import {getCollections,getCollectionProducts,getProducts,getProduct} from "@/lib/shopify";
 import type {Collection,Product} from "@/lib/shopify/types";
 import FeaturedProducts from "@/partials/FeaturedProducts";
@@ -65,7 +65,6 @@ export default async function HomeSections(){
  {litter&&<div className="pawlira-band pawlira-band-white"><FeatureHotspots showHeadingLink={false} image={engineeringModel?picture(engineeringModel):featuredLitter?picture(featuredLitter):litter.category.image} href={collectionPath(litter.category)} model={engineeringModel?{title:engineeringModel.title,href:path(engineeringModel),specs:tech}:undefined}/></div>}
  <section className="pawlira-home-brand"><div className="container pawlira-home-section"><div className="pawlira-home-brand-grid"><div className="pawlira-home-brand-photo"><EditorialPhoto src={editorialImages.home.url} alt={editorialImages.home.alt}/></div><div className="pawlira-home-brand-copy"><p className="pawlira-eyebrow">Om Pawlira</p><h2>Smart kattvård för ett enklare hem</h2><p>Mer tid tillsammans, mindre tid åt vardagens måsten. Upptäck smarta lösningar för kattens mat, vatten och toalett – med plats för både dig och din katt.</p><Link href="/about" className="btn btn-primary">Lär känna Pawlira<FiArrowUpRight size={18} strokeWidth={1.5}/></Link></div></div></div></section>
  {litter&&litter.products.length>0&&<ProductRail group={litter}/>}
- <section className="pawlira-help-section"><div className="container"><Heading eyebrow="" title="Handla tryggt hos Pawlira"/><div className="grid sm:grid-cols-3 gap-4">{[{Icon:FiPackage,title:"Fri frakt inom Sverige",text:"Läs mer om leverans och spårning.",href:"/shipping-policy"},{Icon:FiRefreshCcw,title:"Retur och ångerrätt",text:"Läs om ångerrätt och reklamation.",href:"/refund-policy"},{Icon:FiMessageCircle,title:"Kundservice",text:"Få svar på produkt- och orderfrågor.",href:"/contact"}].map(({Icon,title,text,href})=><Link key={title} href={href} className="pawlira-help-card"><Icon size={28} strokeWidth={1.5}/><div><h3>{title}</h3><p>{text}</p></div><FiArrowUpRight size={20} strokeWidth={1.5}/></Link>)}</div></div></section>
  <div className="pawlira-band pawlira-band-warm"><Suspense fallback={<section id="faq" className="container pawlira-home-section"><h2 className="pawlira-large-heading">Vanliga frågor</h2></section>}><FaqSection/></Suspense></div>
  
  </div>;

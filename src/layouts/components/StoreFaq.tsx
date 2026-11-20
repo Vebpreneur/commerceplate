@@ -4,7 +4,7 @@ import {usePathname} from "next/navigation";
 import type {ReactNode} from "react";
 import Link from "next/link";
 import Accordion from "@/shortcodes/Accordion";
-import {LuBox as FiBox,LuTruck as FiTruck,LuRefreshCcw as FiRefreshCcw,LuMessageCircle as FiMessageCircle,LuArrowUpRight as FiArrowUpRight,LuSearch as FiSearch} from "react-icons/lu";
+import {LuBox as FiBox,LuTruck as FiTruck,LuRefreshCcw as FiRefreshCcw,LuArrowUpRight as FiArrowUpRight,LuSearch as FiSearch} from "react-icons/lu";
 
 type Policy={title:string;body:string;url:string}|null;
 type Question={title:string;answer:ReactNode;keywords?:string};

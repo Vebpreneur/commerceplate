@@ -20,7 +20,7 @@ function MenuImage({image,size=56}:{image?:{url:string;altText?:string}|null;siz
 }
 function MenuModel({product,onClick,selected=false,card=false}:{product:NavigationProduct;onClick:()=>void;selected?:boolean;card?:boolean}){
  const href=productHref(product.handle);
- if(card)return <article className="pawlira-whisker-card"><Link href={href} onClick={onClick} className="pawlira-whisker-image" aria-label={product.title}><MenuImage key={product.featuredImage?.url} image={product.featuredImage} size={240}/></Link><Link href={href} onClick={onClick} className="pawlira-whisker-name">{modelName(product.title)}</Link><div className="pawlira-whisker-ctas"><Link href={href+"#kop"} onClick={onClick} className="pawlira-whisker-buy">Handla</Link><Link href={href+"#produktinformation"} onClick={onClick} className="pawlira-whisker-learn">Läs mer</Link></div></article>;
+ if(card)return <article className="pawlira-whisker-card"><Link href={href} onClick={onClick} className="pawlira-whisker-image" aria-label={product.title}><MenuImage key={product.featuredImage?.url} image={product.featuredImage} size={240}/></Link><Link href={href} onClick={onClick} className="pawlira-whisker-name pawlira-product-title"><span>{modelName(product.title)}</span></Link><div className="pawlira-whisker-ctas"><Link href={href+"#kop"} onClick={onClick} className="pawlira-whisker-buy">Handla</Link><Link href={href+"#produktinformation"} onClick={onClick} className="pawlira-whisker-learn">Läs mer</Link></div></article>;
  return <Link href={href} onClick={onClick} aria-current={selected?"page":undefined} title={product.title} className="pawlira-menu-model"><span className="pawlira-menu-thumbnail"><MenuImage key={product.featuredImage?.url} image={product.featuredImage}/></span><span className="pawlira-menu-model-name">{modelName(product.title)}</span><FiArrowUpRight size={17} strokeWidth={1.5}/></Link>;
 }
 export default function Header({children,categories=[],favorites=[]}:{children:any;categories?:NavigationCategory[];favorites?:NavigationProduct[]}){
@@ -38,7 +38,7 @@ export default function Header({children,categories=[],favorites=[]}:{children:a
  const closeAll=()=>{setOpen(false);setMega(null);setSearchOpen(false)};
  const needle=query.trim().toLocaleLowerCase("sv-SE");
  const matching=categories.map(c=>({...c,products:!needle||c.title.toLocaleLowerCase("sv-SE").includes(needle)?c.products:c.products.filter(p=>p.title.toLocaleLowerCase("sv-SE").includes(needle))})).filter(c=>c.products.length);
- useEffect(()=>{closeAll()},[pathname]);
+ useEffect(()=>{const id=window.setTimeout(closeAll,0);return()=>window.clearTimeout(id)},[pathname]);
  useEffect(()=>{
  const el=dialog.current;if(!el)return;
  if(open&&!el.open)el.showModal();

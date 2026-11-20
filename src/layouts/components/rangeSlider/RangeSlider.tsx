@@ -7,7 +7,7 @@ export default function RangeSlider({maxPriceData}:{maxPriceData:{amount:string;
  const limit=Math.max(1,Math.ceil(Number(maxPriceData.amount)||1));
  const minParam=params.get("minPrice")||"0",maxParam=params.get("maxPrice")||String(limit);
  const [min,setMin]=useState(minParam),[max,setMax]=useState(maxParam);
- useEffect(()=>{setMin(minParam);setMax(maxParam)},[minParam,maxParam]);
+ useEffect(()=>{const id=window.setTimeout(()=>{setMin(minParam);setMax(maxParam)},0);return()=>window.clearTimeout(id)},[minParam,maxParam]);
  const low=Number(min),high=Number(max);
  const valid=min!==""&&max!==""&&Number.isFinite(low)&&Number.isFinite(high)&&low>=0&&low<=high;
  return <form className="pt-3 space-y-3" onSubmit={e=>{e.preventDefault();if(!valid)return;const next=new URLSearchParams(params.toString());next.delete("cursor");if(low===0)next.delete("minPrice");else next.set("minPrice",String(low));if(high>=limit)next.delete("maxPrice");else next.set("maxPrice",String(high));router.push(createUrl("/products",next),{scroll:false});}}>

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useId } from "react";
-import {LuPlus,LuMinus} from "react-icons/lu";
+import { LuChevronDown } from "react-icons/lu";
 
 const Accordion = ({
   title,
@@ -21,7 +21,7 @@ const Accordion = ({
     <div className={`accordion pawlira-accordion ${show ? "active" : ""} ${className || ""}`}>
       <button className="accordion-header" type="button" aria-expanded={show} aria-controls={panelId} onClick={() => setShow(previous => !previous)}>
         <span className="accordion-title">{title}</span>
-        {show?<LuMinus className="accordion-icon" size={19} strokeWidth={1.5}/>:<LuPlus className="accordion-icon" size={19} strokeWidth={1.5}/> }
+        <LuChevronDown className="accordion-icon pawlira-accordion-chevron" size={20} strokeWidth={1.75} aria-hidden="true" />
       </button>
       <div id={panelId} className="accordion-content" hidden={!show}><div className="accordion-inner"><div>{children}</div></div></div>
     </div>

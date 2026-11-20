@@ -636,7 +636,7 @@ export async function getShopPolicy(kind: "privacyPolicy" | "termsOfService" | "
   try {
     const res = await shopifyFetch<{data:{shop:Record<string,{title:string;body:string;url:string}|null>}}>({query:`query PawliraPolicy { shop { ${kind} { title body url } } }`,cache:"no-store"});
     return res.body.data?.shop?.[kind] || null;
-  } catch (error) { console.error("Unable to retrieve shop policy",kind); return null; }
+  } catch { console.error("Unable to retrieve shop policy",kind); return null; }
 }
 
 export async function getSitemapProducts():Promise<{handle:string;updatedAt:string}[]>{

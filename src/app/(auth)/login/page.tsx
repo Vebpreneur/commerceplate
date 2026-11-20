@@ -60,32 +60,34 @@ const Login = () => {
     <section className="section">
       <div className="container">
         <div className="row">
-          <div className="col-11 sm:col-9 md:col-7 mx-auto">
-            <div className="mb-14 text-center">
-              <h2 className="max-md:h1 md:mb-2">Login</h2>
-              <p className="md:text-lg">
-                Please fill your email and password to login
+          <div className="col-11 sm:col-9 md:col-7 lg:col-5 mx-auto">
+            <div className="mb-10 text-center">
+              <h1 className="mb-3">Logga in</h1>
+              <p className="text-neutral-600">
+                Ange din e-postadress och ditt lösenord för att logga in.
               </p>
             </div>
 
-            <form onSubmit={handleLogin}>
+            <form onSubmit={handleLogin} className="space-y-6">
               <div>
-                <label className="form-label">Email Address</label>
+                <label className="block text-sm font-medium mb-2">E-postadress</label>
                 <input
-                  className="form-input"
-                  placeholder="Type your email"
+                  className="form-input border border-neutral-300 rounded-xl bg-white px-4 py-3.5"
+                  placeholder="namn@exempel.se"
                   type="email"
+                  required
                   onChange={handleChange}
                   name="email"
                 />
               </div>
 
               <div>
-                <label className="form-label mt-8">Password</label>
+                <label className="block text-sm font-medium mb-2">Lösenord</label>
                 <input
-                  className="form-input"
-                  placeholder="********"
+                  className="form-input border border-neutral-300 rounded-xl bg-white px-4 py-3.5"
+                  placeholder="••••••••"
                   type="password"
+                  required
                   onChange={handleChange}
                   name="password"
                 />
@@ -94,36 +96,36 @@ const Login = () => {
               {errorMessages.map((error: CustomerError) => (
                 <p
                   key={error.code}
-                  className="font-medium text-red-500 truncate mt-2"
+                  className="font-medium text-red-600 text-sm mt-2"
                 >
                   *
                   {error.code === "UNIDENTIFIED_CUSTOMER"
-                    ? `${error.message}`
-                    : "Invalid Email or Password"}
+                    ? "Felaktig e-postadress eller lösenord."
+                    : error.message || "Felaktig e-postadress eller lösenord."}
                 </p>
               ))}
 
               <button
                 type="submit"
-                className="btn btn-primary md:text-lg md:font-medium w-full mt-10"
+                className="btn btn-primary rounded-full w-full mt-4"
               >
                 {loading ? (
-                  <BiLoaderAlt className={`animate-spin mx-auto`} size={26} />
+                  <BiLoaderAlt className="animate-spin mx-auto" size={22} />
                 ) : (
-                  "Log In"
+                  "Logga in"
                 )}
               </button>
             </form>
 
-            <div className="flex gap-x-2 text-sm md:text-base mt-4">
-              <p className="text-text-light dark:text-darkmode-text-light">
-                Don&apos;t have an account?
+            <div className="flex justify-center gap-x-2 text-sm mt-6">
+              <p className="text-neutral-600">
+                Har du inget konto?
               </p>
               <Link
-                className="underline font-medium text-text-dark dark:text-darkmode-text-dark"
-                href={"/sign-up"}
+                className="underline font-medium text-black"
+                href="/sign-up"
               >
-                Register
+                Skapa konto
               </Link>
             </div>
           </div>

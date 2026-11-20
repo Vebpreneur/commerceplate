@@ -1,14 +1,18 @@
-import Breadcrumbs from "@/components/Breadcrumbs";
+import Link from "next/link";
 import { humanize } from "@/lib/utils/textConverter";
+import { LuChevronRight } from "react-icons/lu";
 
 const PageHeader = ({ title }: { title: string }) => {
+  const cleanTitle = humanize(title);
   return (
-    <section>
-      <div className="text-center">
-        <div className="bg-gradient-to-b from-body to-light px-8 py-14 dark:from-darkmode-body dark:to-darkmode-light">
-          <h1>{humanize(title)}</h1>
-          <Breadcrumbs className="mt-6" />
-        </div>
+    <section className="pawlira-catalog-intro" style={{ background: "#faf8f3" }}>
+      <div className="container">
+        <nav aria-label="Brödsmulor" className="pawlira-catalog-breadcrumb">
+          <Link href="/">Hem</Link>
+          <LuChevronRight strokeWidth={1.5} />
+          <span aria-current="page">{cleanTitle}</span>
+        </nav>
+        <h1>{cleanTitle}</h1>
       </div>
     </section>
   );

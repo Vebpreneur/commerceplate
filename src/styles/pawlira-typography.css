@@ -1,10 +1,10 @@
-/* Single storefront type scale. Layout, images and interactions remain in pawlira-system.css. */
+/* Unified storefront typography system: DM Sans (400, 500, 600, 700) calibrated to Whisker's editorial & commerce scale. */
 :root {
- --pawlira-font:"DM Sans",Arial,sans-serif;
- --pawlira-type-h1:36px;
- --pawlira-type-h2:26px;
- --pawlira-type-h3:16px;
- --pawlira-type-h4:15px;
+ --pawlira-font:"DM Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+ --pawlira-type-h1:38px;
+ --pawlira-type-h2:28px;
+ --pawlira-type-h3:17px;
+ --pawlira-type-h4:16px;
  --pawlira-type-h5:14px;
  --pawlira-type-h6:13px;
  --pawlira-type-body:15px;
@@ -12,24 +12,38 @@
  --pawlira-type-small:12px;
  --pawlira-type-label:11px;
  --pawlira-type-gap:24px;
- --pawlira-type-grid-gap:12px;
+ --pawlira-type-grid-gap:14px;
 }
 @media(min-width:1024px){
- :root{--pawlira-type-h1:52px;--pawlira-type-h2:34px;--pawlira-type-h3:18px;--pawlira-type-h4:16px;--pawlira-type-h5:14px;--pawlira-type-h6:13px;--pawlira-type-body:16px;--pawlira-type-gap:36px;--pawlira-type-grid-gap:24px}
+ :root{
+  --pawlira-type-h1:56px;
+  --pawlira-type-h2:38px;
+  --pawlira-type-h3:18px;
+  --pawlira-type-h4:16px;
+  --pawlira-type-h5:14px;
+  --pawlira-type-h6:13px;
+  --pawlira-type-body:16px;
+  --pawlira-type-gap:36px;
+  --pawlira-type-grid-gap:24px;
+ }
 }
-html,body,body button,body input,body select,body textarea {font-family:var(--pawlira-font)!important}
-body{font-size:var(--pawlira-type-body);line-height:1.65;font-weight:400}
-body :is(h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6){font-family:var(--pawlira-font)!important;font-weight:600!important;overflow-wrap:break-word}
-body :is(h1,.h1,.pawlira-h1){font-size:var(--pawlira-type-h1)!important;line-height:1.12!important;letter-spacing:-.025em!important}
-body :is(h2,.h2,.pawlira-large-heading){font-size:var(--pawlira-type-h2)!important;line-height:1.2!important;letter-spacing:-.02em!important}
-body :is(h3,.h3){font-size:var(--pawlira-type-h3)!important;line-height:1.4!important;letter-spacing:-.012em!important}
-body :is(h4,.h4){font-size:var(--pawlira-type-h4)!important;line-height:1.45!important;letter-spacing:-.008em!important}
-body :is(h5,.h5){font-size:var(--pawlira-type-h5)!important;line-height:1.45!important;letter-spacing:0!important}
-body :is(h6,.h6){font-size:var(--pawlira-type-h6)!important;line-height:1.5!important;letter-spacing:0!important}
+html,body,body :is(a,button,input,select,textarea,p,li,label,th,td,dt,dd,summary,blockquote,span){
+ font-family:var(--pawlira-font)!important;
+ -webkit-font-smoothing:antialiased;
+ -moz-osx-font-smoothing:grayscale;
+}
+body{font-size:var(--pawlira-type-body);line-height:1.6;font-weight:400;color:#242222}
+body :is(h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6){font-family:var(--pawlira-font)!important;overflow-wrap:break-word}
+body :is(h1,.h1,.pawlira-h1){font-size:var(--pawlira-type-h1)!important;font-weight:500!important;line-height:1.05!important;letter-spacing:-.042em!important}
+body :is(h2,.h2,.pawlira-large-heading){font-size:var(--pawlira-type-h2)!important;font-weight:500!important;line-height:1.14!important;letter-spacing:-.035em!important}
+body :is(h3,.h3){font-size:var(--pawlira-type-h3)!important;font-weight:600!important;line-height:1.32!important;letter-spacing:-.02em!important}
+body :is(h4,.h4){font-size:var(--pawlira-type-h4)!important;font-weight:600!important;line-height:1.4!important;letter-spacing:-.012em!important}
+body :is(h5,.h5){font-size:var(--pawlira-type-h5)!important;font-weight:600!important;line-height:1.45!important;letter-spacing:0!important}
+body :is(h6,.h6){font-size:var(--pawlira-type-h6)!important;font-weight:600!important;line-height:1.5!important;letter-spacing:0!important}
 body :is(.pawlira-eyebrow,.pawlira-menu-label){font-family:var(--pawlira-font);font-size:var(--pawlira-type-label)!important;font-weight:600;line-height:1.4;letter-spacing:.08em}
-body :is(.pawlira-section-description,.pawlira-brand-statement>p:not(.pawlira-eyebrow),.pawlira-editorial-tile-caption>p:not(.pawlira-eyebrow),.pawlira-guide-card p,.pawlira-help-card p,.pawlira-spotlight-content>p:not(.pawlira-eyebrow),.pawlira-care-grid p,.pawlira-hotspot-popover p:not(.pawlira-eyebrow),.pawlira-story-text p,.pawlira-about-prose,.pawlira-support-checklist p,.pawlira-faq-results p){font-size:var(--pawlira-type-body)!important;line-height:1.65!important}
+body :is(.pawlira-section-description,.pawlira-brand-statement>p:not(.pawlira-eyebrow),.pawlira-editorial-tile-caption>p:not(.pawlira-eyebrow),.pawlira-guide-card p,.pawlira-help-card p,.pawlira-spotlight-content>p:not(.pawlira-eyebrow),.pawlira-care-grid p,.pawlira-hotspot-popover p:not(.pawlira-eyebrow),.pawlira-story-text p,.pawlira-about-prose,.pawlira-support-checklist p,.pawlira-faq-results p){font-size:var(--pawlira-type-body)!important;line-height:1.62!important}
 body :is(.btn,.pawlira-text-link,.pawlira-white-link,.pawlira-footer-cta){font-size:var(--pawlira-type-ui);font-weight:500}
-body :is(.pawlira-clean-product-info,.pawlira-clean-list-info) .pawlira-catalog-price-value{font-size:var(--pawlira-type-body)!important;line-height:1.4;font-weight:500;letter-spacing:0}
+body :is(.pawlira-clean-product-info,.pawlira-clean-list-info) .pawlira-catalog-price-value{font-size:15px!important;line-height:1.4;font-weight:500;letter-spacing:-.01em}
 body :is(.pawlira-card-soldout,.pawlira-catalog-stock,.pawlira-clean-product-info .pawlira-catalog-price-value>span){font-size:var(--pawlira-type-small)}
 /* Consistent leading edges and heading-to-content distance without changing section order. */
 .pawlira-home-content .pawlira-section-heading{margin-bottom:var(--pawlira-type-gap);align-items:flex-end;gap:16px}
@@ -42,7 +56,7 @@ body :is(.pawlira-card-soldout,.pawlira-catalog-stock,.pawlira-clean-product-inf
 .pawlira-home-content .pawlira-editorial-tile-caption .pawlira-text-link{margin-top:auto}
 .pawlira-home-content .pawlira-brand-points>div{min-width:0}
 .pawlira-home-content .pawlira-clean-product-info h3 a{min-height:4.2em}
-.pawlira-marquee-group>span{font-family:var(--pawlira-font);font-size:var(--pawlira-type-h2);font-weight:600;letter-spacing:-.02em;line-height:1.2}
+.pawlira-marquee-group>span{font-family:var(--pawlira-font);font-size:var(--pawlira-type-h2);font-weight:500;letter-spacing:-.03em;line-height:1.2}
 .pawlira-marquee{padding-block:24px}
 .pawlira-footer-grid h3{margin-bottom:16px}
 .pawlira-footer-grid li a{font-size:var(--pawlira-type-ui);line-height:1.6}
@@ -51,7 +65,5 @@ body :is(.pawlira-card-soldout,.pawlira-catalog-stock,.pawlira-clean-product-inf
  .pawlira-marquee{padding-block:18px}
  .pawlira-home-content .pawlira-clean-product-info h3 a{min-height:4.2em}
 }
-
-body :is(a,button,input,select,textarea,p,li,label,th,td){font-family:var(--pawlira-font)}
 header.pawlira-polished-header .pawlira-whisker-about h3,header.pawlira-polished-header .pawlira-whisker-side h3{font-size:13px!important;line-height:1.4!important;letter-spacing:0!important;font-weight:600!important}
 header.pawlira-polished-header .pawlira-whisker-about a,header.pawlira-polished-header .pawlira-whisker-side a{font-size:12px;line-height:1.5;font-weight:400}

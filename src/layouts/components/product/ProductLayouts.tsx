@@ -2,15 +2,43 @@
 import {sorting,type SortFilterItem} from "@/lib/constants";
 import {createUrl} from "@/lib/utils";
 import {useRouter,useSearchParams} from "next/navigation";
-import {LuLayoutGrid as FiGrid,LuList as FiList,LuChevronDown as FiChevronDown} from "react-icons/lu";
+import {useEffect,useRef,useState} from "react";
+import {LuChevronDown} from "react-icons/lu";
 export type PathFilterItem={title:string;path:string};
 export type ListItem=SortFilterItem|PathFilterItem;
 export default function ProductLayouts(){
  const params=useSearchParams(),router=useRouter();
- const list=params.get("layout")==="list";
- const update=(fn:(p:URLSearchParams)=>void)=>{const next=new URLSearchParams(params.toString());["b","t","minPrice","maxPrice"].forEach(k=>next.delete(k));fn(next);router.push(createUrl("/products",next),{scroll:false})};
- return <section className="pawlira-catalog-toolbar-wrap"><div className="pawlira-catalog-toolbar">
- <div className="pawlira-view-switch"><button type="button" aria-label="Rutnätsvy" aria-pressed={!list} onClick={()=>update(p=>p.delete("layout"))}><FiGrid size={18} strokeWidth={1.5}/></button><button type="button" aria-label="Listvy" aria-pressed={list} onClick={()=>update(p=>p.set("layout","list"))}><FiList size={20} strokeWidth={1.5}/></button></div>
- <label className="pawlira-sort-control"><span className="hidden sm:inline">Sortera:</span><select aria-label="Sortera produkter" value={params.get("sort")||""} onChange={e=>update(p=>{if(e.target.value)p.set("sort",e.target.value);else p.delete("sort")})}>{sorting.map(item=><option key={item.slug||"default"} value={item.slug||""}>{item.title}</option>)}</select><FiChevronDown size={17} strokeWidth={1.5}/></label>
- </div></section>;
+ const [open,setOpen]=useState(false);
+ const root=useRef<HTMLDivElement>(null);
+ const currentSlug=params.get("sort")||"";
+ const currentItem=sorting.find(item=>(item.slug||"")===currentSlug)||sorting[0];
+ useEffect(()=>{
+  if(!open)return;
+  const outside=(e:PointerEvent)=>{if(!root.current?.contains(e.target as Node))setOpen(false)};
+  const escape=(e:KeyboardEvent)=>{if(e.key==="Escape")setOpen(false)};
+  document.addEventListener("pointerdown",outside);
+  document.addEventListener("keydown",escape);
+  return()=>{document.removeEventListener("pointerdown",outside);document.removeEventListener("keydown",escape)};
+ },[open]);
+ const selectSort=(slug:string|null)=>{
+  const next=new URLSearchParams(params.toString());
+  ["b","t","minPrice","maxPrice","layout"].forEach(k=>next.delete(k));
+  if(slug)next.set("sort",slug);else next.delete("sort");
+  setOpen(false);
+  router.push(createUrl("/products",next),{scroll:false});
+ };
+ return <div ref={root} className="pawlira-whisker-sort">
+  <button type="button" className="pawlira-whisker-sort-trigger" aria-haspopup="listbox" aria-expanded={open} onClick={()=>setOpen(v=>!v)}>
+   <span>Sortera</span>
+   <LuChevronDown size={18} strokeWidth={1.75} className={open?"rotate-180":""}/>
+  </button>
+  {open&&<div role="listbox" aria-label="Sortera produkter" className="pawlira-whisker-sort-menu">
+   {sorting.map(item=>{
+    const active=(item.slug||"")===currentSlug||(item===currentItem&&!currentSlug);
+    return <button key={item.slug||"default"} type="button" role="option" aria-selected={active} className={"pawlira-whisker-sort-option "+(active?"is-active":"")} onClick={()=>selectSort(item.slug)}>
+     {item.title}
+    </button>;
+   })}
+  </div>}
+ </div>;
 }

@@ -40,6 +40,6 @@ export default function FullComparison({categories,categoryHandle,selectedHandle
  <tr><th scope="row">Beskrivning</th>{slots.map(s=><td key={s.handle}><div className="pawlira-compare-description">{s.data?.description||"Ej tillgängligt"}</div></td>)}</tr>
  <tr><th scope="row">Produkt</th>{slots.map(s=><td key={s.handle}><Link href={"/products/"+encodeURIComponent(s.handle)} className="pawlira-merch-cta">Visa produkt<FiArrowUpRight size={17} strokeWidth={1.5}/></Link></td>)}</tr>
  </tbody></table></div><p className="pawlira-comparison-note">Tekniska uppgifter visas när de finns tillgängliga i produktinformationen. ”Ej angivet” betyder att uppgiften saknas, inte att funktionen saknas.</p>
- <div className="pawlira-compare-help"><div><h3>Behöver du hjälp att välja?</h3><p>Se våra köpråd och vad du bör kontrollera innan du beställer.</p></div><Link href="/#kopguide" className="btn btn-outline-primary rounded-full">Till köpguiden <FiArrowUpRight className="inline ml-2" strokeWidth={1.5}/></Link></div>
+ <div className="pawlira-compare-help"><div><h3>Behöver du hjälp att välja?</h3><p>Se våra köpråd och vad du bör kontrollera innan du beställer.</p></div><Link href={"/kopguide?c="+encodeURIComponent(categoryHandle)} className="btn btn-outline-primary rounded-full">Till köpguiden <FiArrowUpRight className="inline ml-2" strokeWidth={1.5}/></Link></div>
  </section>;
 }

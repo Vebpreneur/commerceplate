@@ -66,44 +66,47 @@ const SignUp = () => {
     <section className="section">
       <div className="container">
         <div className="row">
-          <div className="col-11 sm:col-9 md:col-7 mx-auto">
-            <div className="mb-14 text-center">
-              <h2 className="max-md:h1 md:mb-2">Create an account</h2>
-              <p className="md:text-lg">
-                Create an account and start using...
+          <div className="col-11 sm:col-9 md:col-7 lg:col-5 mx-auto">
+            <div className="mb-10 text-center">
+              <h1 className="mb-3">Skapa konto</h1>
+              <p className="text-neutral-600">
+                Fyll i dina uppgifter för att skapa ett kundkonto hos Pawlira.
               </p>
             </div>
 
-            <form onSubmit={handleSignUp}>
+            <form onSubmit={handleSignUp} className="space-y-6">
               <div>
-                <label className="form-label">Name</label>
+                <label className="block text-sm font-medium mb-2">Namn</label>
                 <input
                   name="firstName"
-                  className="form-input"
-                  placeholder="Enter your name"
+                  className="form-input border border-neutral-300 rounded-xl bg-white px-4 py-3.5"
+                  placeholder="Ditt namn"
                   type="text"
+                  required
                   onChange={handleChange}
                 />
               </div>
 
               <div>
-                <label className="form-label mt-8">Email Address</label>
+                <label className="block text-sm font-medium mb-2">E-postadress</label>
                 <input
                   name="email"
-                  className="form-input"
-                  placeholder="Type your email"
+                  className="form-input border border-neutral-300 rounded-xl bg-white px-4 py-3.5"
+                  placeholder="namn@exempel.se"
                   type="email"
+                  required
                   onChange={handleChange}
                 />
               </div>
 
               <div>
-                <label className="form-label mt-8">Password</label>
+                <label className="block text-sm font-medium mb-2">Lösenord</label>
                 <input
                   name="password"
-                  className="form-input"
-                  placeholder="********"
+                  className="form-input border border-neutral-300 rounded-xl bg-white px-4 py-3.5"
+                  placeholder="••••••••"
                   type="password"
+                  required
                   onChange={handleChange}
                 />
               </div>
@@ -111,7 +114,7 @@ const SignUp = () => {
               {errorMessages.map((error: CustomerError) => (
                 <p
                   key={error.code}
-                  className="ont-medium text-red-500 truncate mt-2"
+                  className="font-medium text-red-600 text-sm mt-2"
                 >
                   *{error.message}
                 </p>
@@ -119,37 +122,37 @@ const SignUp = () => {
 
               <button
                 type="submit"
-                className="btn btn-primary md:text-lg md:font-medium w-full mt-10"
+                className="btn btn-primary rounded-full w-full mt-4"
               >
                 {loading ? (
-                  <BiLoaderAlt className={`animate-spin mx-auto`} size={26} />
+                  <BiLoaderAlt className="animate-spin mx-auto" size={22} />
                 ) : (
-                  "Sign Up"
+                  "Skapa konto"
                 )}
               </button>
             </form>
 
-            <div className="flex gap-x-2 text-sm md:text-base mt-6">
-              <p className="text-text-light dark:text-darkmode-text-light">
-                I have read and agree to the
+            <div className="flex flex-wrap justify-center gap-x-1.5 text-sm mt-6">
+              <p className="text-neutral-600">
+                Genom att skapa ett konto godkänner du våra
               </p>
               <Link
-                className="underline font-medium text-text-dark dark:text-darkmode-text-dark"
-                href={"/terms-services"}
+                className="underline font-medium text-black"
+                href="/terms-services"
               >
-                Terms & Conditions
+                köpvillkor
               </Link>
             </div>
 
-            <div className="flex gap-x-2 text-sm md:text-base mt-2">
-              <p className="text-text-light dark:text-darkmode-text-light">
-                Have an account?
+            <div className="flex justify-center gap-x-2 text-sm mt-3">
+              <p className="text-neutral-600">
+                Har du redan ett konto?
               </p>
               <Link
-                className="underline font-medium text-text-dark dark:text-darkmode-text-dark"
-                href={"/login"}
+                className="underline font-medium text-black"
+                href="/login"
               >
-                Login
+                Logga in
               </Link>
             </div>
           </div>

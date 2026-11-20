@@ -6,7 +6,7 @@ import type {ProductVariant} from "@/lib/shopify/types";
 export default function StickyBuyBar({title,image,variant,pending,buttonId,available,message}:{title:string;image?:string;variant?:ProductVariant;pending:boolean;buttonId:string;available:boolean;message?:string|null}){
  const [visible,setVisible]=useState(false),[top,setTop]=useState(0);
  useEffect(()=>{
-  const button=document.getElementById(buttonId);if(!button){setVisible(false);return}
+  const button=document.getElementById(buttonId);if(!button)return;
   const header=document.querySelector<HTMLElement>(".pawlira-polished-header");let frame=0;
   const measure=()=>{cancelAnimationFrame(frame);frame=requestAnimationFrame(()=>{const rect=header?.getBoundingClientRect();const value=rect&&header&&["sticky","fixed"].includes(getComputedStyle(header).position)?Math.max(0,rect.bottom):0;setTop(value);setVisible(button.getBoundingClientRect().bottom<=value)})};
   const io=new IntersectionObserver(measure,{threshold:[0,1]});io.observe(button);
