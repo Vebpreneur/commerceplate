@@ -59,7 +59,7 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
   const description=customerText(product.description);
   const descriptionHtml=customerHtml(product.descriptionHtml);
   const [recommended,accessories]=await Promise.all([getProductRecommendations(id).catch(()=>[]),compatibleAccessories([product.handle],product.priceRange.minVariantPrice.currencyCode)]);
-  const relatedProducts=Array.from(new Map(recommended.filter(p=>p.id!==id&&p.availableForSale).map(p=>[p.id,p])).values()).slice(0,4);
+  const relatedProducts=Array.from(new Map(recommended.filter(p=>p.id!==id&&p.availableForSale).map(p=>[p.id,p])).values()).slice(0,3);
   const fields=productFields(product);
   const galleryImages=Array.from(new Map([...(product.featuredImage?.url?[product.featuredImage]:[]),...images].filter(i=>i.url).map(i=>[i.url.split("?")[0],i])).values());
 
@@ -87,7 +87,7 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
 
             {/* left side contents  */}
             <div className="min-w-0 lg:col-span-5"><div className="pawlira-purchase-panel lg:sticky lg:top-28">
-              <p className="pawlira-eyebrow">Pawlira</p><h1 className="pawlira-h1 mb-5">{title}</h1>
+              <h1 className="pawlira-h1 mb-5">{title}</h1>
 
               <div className="my-6"><Suspense><VariantSelector options={options} variants={variants} images={images} /></Suspense></div>
 
@@ -120,7 +120,7 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
       {relatedProducts?.length > 0 && <section id="relaterade" className="container pawlira-home-section scroll-mt-48">
           {relatedProducts?.length > 0 && (
             <>
-              <div className="pawlira-section-heading"><div><p className="pawlira-eyebrow">Fler möjligheter</p><h2>Fler produkter för din katt</h2></div><Link href="/products" className="pawlira-text-link">Hela sortimentet<FiArrowUpRight size={20} strokeWidth={1.5}/></Link></div>
+              <div className="pawlira-section-heading"><div><h2>Relaterade produkter</h2></div><Link href="/products" className="pawlira-text-link">Hela sortimentet<FiArrowUpRight size={20} strokeWidth={1.5}/></Link></div>
               <LatestProducts products={relatedProducts} showAllLink={false} />
             </>
           )}

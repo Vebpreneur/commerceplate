@@ -1,0 +1,40 @@
+/* Support, brand and FAQ refinement. */
+.pawlira-support-hero.pawlira-support-art{display:flex;align-items:center;min-height:370px;background:#0a0a0a linear-gradient(90deg,#0a0a0a 0%,#0a0a0a66 48%,transparent 100%);background-image:linear-gradient(90deg,#0a0a0af2 0%,#0a0a0a77 54%,transparent 100%),url('/images/support-hero.webp');background-position:center,right center;background-size:cover;color:#fff}
+.pawlira-support-art h1,.pawlira-support-art p{color:#fff!important}
+.pawlira-support-art>div{max-width:580px}
+.pawlira-brand-art{display:grid;place-items:center;min-height:340px;background:radial-gradient(ellipse at 78% 18%,#333 0%,#0a0a0a 55%);position:relative;overflow:hidden}
+.pawlira-brand-art::before{content:"";position:absolute;width:66%;aspect-ratio:1;right:-13%;bottom:-33%;border-radius:50%;border:1px solid #ffffff24;box-shadow:0 0 0 35px #ffffff05,0 0 0 75px #ffffff03}
+.pawlira-brand-art a{position:relative;z-index:1;pointer-events:none}
+.pawlira-care-editorial article{padding:0;overflow:hidden;background:#f5f5f7}
+.pawlira-care-photo{position:relative;aspect-ratio:16/9;background:#e9e9e9;overflow:hidden}
+.pawlira-care-content{padding:24px;display:flex;flex-direction:column;gap:10px}
+.pawlira-care-content h3{margin:0}
+.pawlira-care-content summary{display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;list-style:none;font-weight:600;padding-top:16px;border-top:1px solid #ddd}
+.pawlira-care-content summary::-webkit-details-marker{display:none}
+.pawlira-care-content details[open] summary svg{transform:rotate(45deg)}
+.pawlira-faq-dark{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(0,1fr);border-radius:16px;overflow:hidden;background:#171717;color:#fff}
+.pawlira-faq-main{min-width:0;padding:clamp(24px,4vw,56px)}
+.pawlira-faq-dark :is(h2,h3,h4,p,a,label,button){color:#fff}
+.pawlira-faq-dark h2{margin:0 0 28px;color:#fff!important}
+.pawlira-faq-dark p{color:#d4d4d4!important}
+.pawlira-faq-contact-panel{background:#202020;padding:clamp(24px,4vw,48px);min-width:0}
+.pawlira-faq-contact-panel h3{margin:0 0 10px;color:white!important}
+.pawlira-faq-contact-panel form{display:grid;gap:12px;margin-top:20px}
+.pawlira-faq-contact-panel label{display:grid;gap:6px;font-size:13px}
+.pawlira-faq-contact-panel :is(input,textarea),.pawlira-faq-dark .pawlira-faq-search input{background:#2b2b2b;border:1px solid #454545;color:white;border-radius:8px;width:100%;padding:12px}
+.pawlira-faq-contact-panel .btn{justify-self:start;margin-top:12px}
+.pawlira-faq-dark .pawlira-faq-search{background:#262626;border:1px solid #444;border-radius:8px;padding:6px 12px;color:white;margin-bottom:14px}
+.pawlira-faq-dark .pawlira-faq-search input{border:0;padding:8px}
+.pawlira-faq-dark-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.pawlira-faq-dark-tabs button{border:1px solid #555;border-radius:999px;padding:8px 12px;font-size:13px}
+.pawlira-faq-dark-tabs button[aria-pressed=true]{background:white;color:#0a0a0a}
+.pawlira-faq-dark .pawlira-accordion{background:transparent;border:0;border-bottom:1px solid #383838;border-radius:0;margin:0;padding:0;box-shadow:none}
+.pawlira-faq-dark .accordion-header{background:transparent;color:#fff!important;border:0;padding:20px 0;display:flex;align-items:center;justify-content:space-between;gap:16px;text-align:left;line-height:1.5;font-size:15px;font-weight:500}
+.pawlira-faq-dark .accordion-icon{flex-shrink:0;width:19px;height:19px;transform:none!important;color:#fff}
+.pawlira-faq-dark .accordion-inner{color:#d4d4d4;padding:0 0 16px}
+.pawlira-faq-dark .accordion-inner a{color:white;text-decoration:underline}
+.pawlira-faq-dark .pawlira-white-link{margin-top:22px}
+body .btn.btn-inverse,body .pawlira-footer .pawlira-footer-cta{background:#fff!important;color:#0a0a0a!important;border-color:#fff!important}
+body .btn.btn-inverse svg,body .pawlira-footer .pawlira-footer-cta svg{color:#0a0a0a!important}
+body .btn.btn-inverse:hover,body .pawlira-footer .pawlira-footer-cta:hover{background:#e8e8e8!important}
+@media(max-width:767px){.pawlira-faq-dark{grid-template-columns:minmax(0,1fr)}.pawlira-support-hero.pawlira-support-art{min-height:300px;background-position:center,65% center}.pawlira-brand-art{min-height:240px}.pawlira-care-content{padding:18px}}

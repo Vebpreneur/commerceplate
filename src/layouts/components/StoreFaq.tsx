@@ -4,6 +4,7 @@ import {usePathname} from "next/navigation";
 import type {ReactNode} from "react";
 import Link from "next/link";
 import Accordion from "@/shortcodes/Accordion";
+import SupportContact from "./SupportContact";
 import {LuBox as FiBox,LuTruck as FiTruck,LuRefreshCcw as FiRefreshCcw,LuMessageCircle as FiMessageCircle,LuArrowUpRight as FiArrowUpRight,LuSearch as FiSearch} from "react-icons/lu";
 
 type Policy={title:string;body:string;url:string}|null;
@@ -39,9 +40,9 @@ export default function StoreFaq({shipping=null,refund=null,terms=null,email=nul
  const needle=query.trim().toLocaleLowerCase("sv-SE");
  const tokens=needle.split(/\s+/).filter(Boolean);
  const contactHref=pathname==="/contact"?"#kontakt":"/contact#kontakt";
- const matches=needle?groups.flatMap(g=>g.items).filter(q=>tokens.every(token=>(q.title+" "+(q.keywords||"")).toLocaleLowerCase("sv-SE").includes(token))):groups[active].items;
- return <section id="faq" className="container pawlira-home-section pawlira-faq-section scroll-mt-36">
- <div className="pawlira-section-heading"><div><p className="pawlira-eyebrow">Kundservice</p><h2>Vanliga frågor</h2><p className="pawlira-section-description">Sök bland produktfrågor, leverans, returer och reklamationer.</p></div><Link href={contactHref} className="pawlira-text-link">Kontakta oss<FiArrowUpRight size={20} strokeWidth={1.5}/></Link></div>
- <div className="pawlira-faq-layout"><aside className="pawlira-faq-aside"><div className="pawlira-faq-search"><FiSearch size={20} strokeWidth={1.5}/><input aria-label="Sök bland frågor" placeholder="Sök efter din fråga" value={query} onChange={e=>setQuery(e.target.value)}/></div><div className="pawlira-faq-topics" aria-label="Ämnesområden">{groups.map(({title,icon:Icon,items},i)=><button type="button" key={title} aria-pressed={!needle&&active===i} onClick={()=>{setQuery("");setActive(i)}}><Icon size={20} strokeWidth={1.5}/><span>{title}</span><span className="pawlira-faq-count">{items.length}</span></button>)}</div><div className="pawlira-faq-contact"><FiMessageCircle size={20} strokeWidth={1.5}/><h3>Hittar du inte svaret?</h3><p>Kontakta oss med modellnamn eller ordernummer.</p><Link href={contactHref} className="btn btn-primary rounded-full">Kontakta kundservice</Link></div></aside>
- <div className="pawlira-faq-results" aria-live="polite"><div className="pawlira-faq-results-head"><h3>{needle?"Sökresultat":groups[active].title}</h3><span>{matches.length} {matches.length===1?"fråga":"frågor"}</span></div><div key={needle?"search-"+needle:active}>{matches.map((q,i)=><Accordion title={q.title} key={q.title} className="pawlira-faq-item" defaultOpen={!needle&&i===0}>{q.answer}</Accordion>)}</div>{!matches.length&&<p className="p-6">Ingen fråga matchade din sökning. Prova ett annat ord eller välj ett ämnesområde.</p>}</div></div></section>;
+ const compact=pathname!=="/contact";
+ const matches=needle?groups.flatMap(g=>g.items).filter(q=>tokens.every(token=>(q.title+" "+(q.keywords||"")).toLocaleLowerCase("sv-SE").includes(token))):compact? [groups[0].items[0],groups[0].items[1],groups[1].items[1],groups[1].items[2],groups[2].items[0]]:groups[active].items;
+ return <section id="faq" className="container pawlira-home-section pawlira-faq-section scroll-mt-36"><div className="pawlira-faq-dark">
+ <div className="pawlira-faq-main"><h2>Vanliga frågor</h2>{!compact&&<><div className="pawlira-faq-search"><FiSearch size={20} strokeWidth={1.5}/><input aria-label="Sök bland frågor" placeholder="Sök bland frågor" value={query} onChange={e=>setQuery(e.target.value)}/></div><div className="pawlira-faq-dark-tabs" aria-label="Ämnesområden">{groups.map(({title},i)=><button key={title} type="button" aria-pressed={!needle&&active===i} onClick={()=>{setQuery("");setActive(i)}}>{title}</button>)}</div></>}
+ <div className="pawlira-faq-dark-rows" aria-live="polite" key={needle||String(active)}>{matches.map(q=><Accordion key={q.title} title={q.title} className="pawlira-faq-dark-item">{q.answer}</Accordion>)}{!matches.length&&<p>Inga matchande frågor.</p>}</div>{compact&&<Link href="/contact#faq" className="pawlira-white-link">Alla frågor och svar<FiArrowUpRight size={18} strokeWidth={1.5}/></Link>}</div><SupportContact email={email}/></div></section>;
 }

@@ -9,7 +9,7 @@ function FooterLinks({title,items}:{title:string;items:{title:string;url:string}
 }
 export default function Footer({categories=[]}:{categories?:NavigationCategory[]}){
  return <footer className="pawlira-footer"><div className="container">
- <div className="pawlira-footer-intro"><div><Logo variant="white" width={224}/><p>Självrengörande kattlådor, foderautomater och vattenfontäner.</p></div><Link href="/products" className="pawlira-footer-cta">Utforska sortimentet<FiArrowUpRight size={20} strokeWidth={1.5}/></Link></div>
+ <div className="pawlira-footer-intro"><div><Logo variant="white" width={224}/><p>Självrengörande kattlådor, foderautomater och vattenfontäner.</p></div><Link href="/contact" className="pawlira-footer-cta">Kontakta oss<FiArrowUpRight size={20} strokeWidth={1.5}/></Link></div>
  <div className="pawlira-footer-grid">
  <FooterLinks title="Sortiment" items={[...categories.map(c=>({title:c.title,url:"/products?c="+encodeURIComponent(c.handle)})),{title:"Visa alla produkter",url:"/products"}]}/>
  <FooterLinks title="Upptäck" items={[...discover,...(categories.length?[{title:"Handla efter kategori",url:"/#kategorier"}]:[])]}/>
