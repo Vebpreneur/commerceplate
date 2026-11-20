@@ -19,11 +19,11 @@ const Accordion = ({
 
   return (
     <div className={`accordion pawlira-accordion ${show ? "active" : ""} ${className || ""}`}>
-      <button className="accordion-header" type="button" aria-expanded={show} aria-controls={panelId} onClick={() => setShow(!show)}>
-        {title}
+      <button className="accordion-header" type="button" aria-expanded={show} aria-controls={panelId} onClick={() => setShow(previous => !previous)}>
+        <span className="accordion-title">{title}</span>
         {show?<LuMinus className="accordion-icon" size={19} strokeWidth={1.5}/>:<LuPlus className="accordion-icon" size={19} strokeWidth={1.5}/> }
       </button>
-      <div id={panelId} className="accordion-content" inert={!show}><div className="accordion-inner"><div>{children}</div></div></div>
+      <div id={panelId} className="accordion-content" hidden={!show}><div className="accordion-inner"><div>{children}</div></div></div>
     </div>
   );
 };

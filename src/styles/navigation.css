@@ -141,7 +141,7 @@
 .pawlira-menu-close:hover{background:#111;color:#fff}
 .pawlira-menu-content{overflow:auto;flex:1;min-height:0;padding:25px 26px}
 .pawlira-menu-label{font-size:11px;letter-spacing:.14em;font-weight:600;text-transform:uppercase;margin-bottom:13px;color:#555!important}
-.pawlira-menu-all{display:flex;justify-content:space-between;align-items:center;border:1px solid #111;border-radius:9px;padding:15px 17px;background:#000;color:white!important;margin-bottom:13px;font-weight:600}
+.pawlira-menu-all{display:flex;justify-content:space-between;align-items:center;border:1px solid #111;border-radius:9px;padding:15px 17px;background:#f5f5f7;color:#0a0a0a!important;margin-bottom:13px;font-weight:600}
 .pawlira-menu-category{border-bottom:1px solid #ddd}
 .pawlira-menu-category summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 0;font-weight:600;font-size:1.03rem}
 .pawlira-menu-category summary::-webkit-details-marker{display:none}
@@ -161,10 +161,10 @@
 .pawlira-menu-bottom a{display:flex;align-items:center;gap:10px;color:#111!important;font-size:.88rem;font-weight:600}
 .pawlira-menu-bottom a>svg:last-child{margin-left:auto}
 .pawlira-footer{background:#000;color:#fff;padding:58px 0 0}
-.pawlira-footer a,.pawlira-footer h3,.pawlira-footer p{color:#fff!important}
+.pawlira-footer a:not(.pawlira-footer-cta),.pawlira-footer h3,.pawlira-footer p{color:#fff!important}
 .pawlira-footer-intro{display:flex;justify-content:space-between;align-items:center;gap:25px;padding-bottom:38px;border-bottom:1px solid #353535}
 .pawlira-footer-intro p{font-size:.95rem;line-height:1.65;margin-top:20px}
-.pawlira-footer-cta{display:flex;gap:22px;align-items:center;border:1px solid #fff;padding:17px 21px;border-radius:999px;font-weight:600;transition:background .2s,color .2s}
+.pawlira-footer-cta{color:#0a0a0a!important;display:flex;gap:22px;align-items:center;border:1px solid #fff;padding:17px 21px;border-radius:999px;font-weight:600;transition:background .2s,color .2s}
 
 .pawlira-footer-grid{display:grid;grid-template-columns:1.25fr 1fr 1fr 1fr;gap:clamp(18px,4vw,60px);padding:42px 0}
 .pawlira-footer-grid h3{font-size:1rem;margin-bottom:19px;letter-spacing:.015em}

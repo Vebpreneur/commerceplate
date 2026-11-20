@@ -2,7 +2,7 @@ import Link from "next/link";
 import GettingStarted from "@/components/GettingStarted";
 import FaqSection from "@/partials/FaqSection";
 import {Suspense} from "react";
-import {LuPackage as FiPackage,LuMail as FiMail,LuRefreshCcw as FiRefreshCcw,LuArrowUpRight as FiArrowUpRight,LuBox as FiBox,LuClipboard as FiClipboard,LuSearch as FiSearch} from "react-icons/lu";
+import {LuPackage as FiPackage,LuMail as FiMail,LuRefreshCcw as FiRefreshCcw,LuArrowUpRight as FiArrowUpRight,LuBox as FiBox,LuClipboard as FiClipboard} from "react-icons/lu";
 
 export const dynamic="force-dynamic";
 export default function Contact(){
@@ -14,7 +14,7 @@ export default function Contact(){
  {Icon:FiRefreshCcw,title:"Retur och ångerrätt",detail:"Se vad som gäller om du vill returnera en vara eller behöver reklamera den.",href:"/refund-policy",label:"Returinformation"}
  ];
  return <>
- <section className="container pawlira-support-intro"><div className="pawlira-support-hero pawlira-support-art"><div><h1>Hur kan vi hjälpa dig?</h1><p>Information om leverans, returer, produktfrågor och skötsel.</p><a href="#faq" className="btn btn-inverse rounded-full inline-flex items-center gap-2"><FiSearch size={20} strokeWidth={1.5}/> Hitta svar på din fråga</a></div></div></section>
+ <section className="container pawlira-support-intro"><div className="pawlira-support-hero pawlira-support-art"><div><h1>Hur kan vi hjälpa dig?</h1><p>Information om leverans, returer, produktfrågor och skötsel.</p></div></div></section>
  <section className="container pawlira-home-section"><div className="pawlira-section-heading"><div><h2>Leverans, returer och garanti</h2></div></div><div className="pawlira-support-grid">{topics.map(({Icon,title,detail,href,label})=><Link key={href} href={href} className="pawlira-guide-card"><Icon size={20} strokeWidth={1.5}/><h3>{title}</h3><p>{detail}</p><span className="pawlira-text-link">{label}<FiArrowUpRight size={20} strokeWidth={1.5}/></span></Link>)}</div></section>
  <GettingStarted/>
  <Suspense fallback={<section id="faq" className="container py-12"><h2>Vanliga frågor</h2></section>}><FaqSection/></Suspense>
