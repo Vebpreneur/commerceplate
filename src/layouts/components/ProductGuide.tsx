@@ -11,8 +11,8 @@ function guidance(category:Category){
  if(/vatten|fontän|fontan|water|fountain/.test(text))return {title:"Välja vattenfontän",intro:"Utgå från kattens drickvanor och hur mycket plats du har hemma.",checks:[["Kapacitet och material","Jämför behållarens storlek, material och produktens mått."],["Filter och rengöring","Kontrollera filtertyp, tillgång till reservdelar och rengöringsinstruktioner."],["Placering och drift","Kontrollera strömförsörjning och de funktioner den aktuella modellen erbjuder."]]};
  return {title:"Produktval",intro:"Jämför produkter efter dina och kattens faktiska behov.",checks:[["Mått och användning","Kontrollera produktmått och tillverkarens användningsinstruktioner."],["Funktioner","Jämför funktioner, varianter och vad som ingår."],["Underhåll","Läs om rengöring, tillbehör och eventuella anslutningskrav."]]};
 }
-export default function ProductGuide({categories}:{categories:Category[]}){
- const [handle,setHandle]=useState(categories[0]?.handle||"");
+export default function ProductGuide({categories,initialHandle}:{categories:Category[];initialHandle?:string}){
+ const [handle,setHandle]=useState(categories.find(c=>c.handle===initialHandle)?.handle||categories[0]?.handle||"");
  const category=categories.find(c=>c.handle===handle)||categories[0];
  if(!category)return null;
  const data=guidance(category);
