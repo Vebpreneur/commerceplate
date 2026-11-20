@@ -1,7 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import EditorialPhoto from "@/components/EditorialPhoto";
-import {editorialImages} from "@/config/editorialImages";
 import {LuArrowUpRight as FiArrowUpRight,LuLayoutGrid as FiGrid} from "react-icons/lu";
 import {getCollections,getCollectionProducts,getProducts,getProduct} from "@/lib/shopify";
 import type {Collection,Product} from "@/lib/shopify/types";
@@ -63,7 +61,7 @@ export default async function HomeSections(){
  {featuredProducts.length>0&&<div className="pawlira-band pawlira-band-white"><section id="utvalda-produkter" className="container pawlira-home-section pawlira-home-featured scroll-mt-36"><Heading eyebrow="" title="Utvalda produkter"/><FeaturedProducts products={featuredProducts} showAllLink={false}/></section></div>}
  {spotlightProducts.length>0&&<div className="pawlira-band pawlira-band-white"><Spotlight products={spotlightProducts} showHeadingLink={false}/></div>}
  {litter&&<div className="pawlira-band pawlira-band-white"><FeatureHotspots showHeadingLink={false} image={engineeringModel?picture(engineeringModel):featuredLitter?picture(featuredLitter):litter.category.image} href={collectionPath(litter.category)} model={engineeringModel?{title:engineeringModel.title,href:path(engineeringModel),specs:tech}:undefined}/></div>}
- <section className="pawlira-home-brand"><div className="container pawlira-home-section"><div className="pawlira-home-brand-grid"><div className="pawlira-home-brand-photo"><EditorialPhoto src={editorialImages.home.url} alt={editorialImages.home.alt}/></div><div className="pawlira-home-brand-copy"><p className="pawlira-eyebrow">Om Pawlira</p><h2>Smart kattvård för ett enklare hem</h2><p>Mer tid tillsammans, mindre tid åt vardagens måsten. Upptäck smarta lösningar för kattens mat, vatten och toalett – med plats för både dig och din katt.</p><Link href="/about" className="btn btn-primary">Lär känna Pawlira<FiArrowUpRight size={18} strokeWidth={1.5}/></Link></div></div></div></section>
+ <section className="pawlira-home-brand pawlira-home-brand-banner" aria-labelledby="pawlira-home-brand-banner-title"><div className="pawlira-home-brand-banner-content"><p className="pawlira-home-brand-banner-eyebrow"><span>Om Pawlira</span></p><h2 id="pawlira-home-brand-banner-title"><span>Mer tid tillsammans.</span><span>Mindre tid åt måsten.</span></h2><p className="pawlira-home-brand-banner-description"><span>Smart kattvård som förenklar vardagen –</span><span>så att du får mer tid med din katt.</span></p><Link href="/about" className="pawlira-home-brand-banner-cta"><span>Lär känna Pawlira</span><FiArrowUpRight size={28} strokeWidth={1.8}/></Link></div></section>
  {litter&&litter.products.length>0&&<ProductRail group={litter}/>}
  <div className="pawlira-band pawlira-band-warm"><Suspense fallback={<section id="faq" className="container pawlira-home-section"><h2 className="pawlira-large-heading">Vanliga frågor</h2></section>}><FaqSection/></Suspense></div>
  

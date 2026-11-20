@@ -513,3 +513,46 @@ body .btn.btn-outline-primary:not(:disabled):is(:hover,:focus-visible) svg,body 
 body .btn.btn-inverse:not(:disabled):is(:hover,:focus-visible),body .pawlira-footer .pawlira-footer-cta:is(:hover,:focus-visible),body .pawlira-product-sticky-inner .pawlira-product-nav-buy:is(:hover,:focus-visible),body .pawlira-promo-strip a:is(:hover,:focus-visible){background:#242222!important;color:#fff!important;border-color:#fff!important;box-shadow:none!important;transform:none!important}
 body .btn.btn-inverse:not(:disabled):is(:hover,:focus-visible) svg,body .pawlira-footer .pawlira-footer-cta:is(:hover,:focus-visible) svg,body .pawlira-product-sticky-inner .pawlira-product-nav-buy:is(:hover,:focus-visible) svg{color:#fff!important}
 @media(prefers-reduced-motion:reduce){header.pawlira-polished-header .pawlira-whisker-shop{transition:none}}
+
+/* Catalog sizing and menu type calibrated against the Whisker robots listing.
+   All dimensions stay fluid with the grid; home cards and other page sections are untouched. */
+@layer components{body main .pawlira-catalog-page .container.pawlira-catalog-whisker-section.pawlira-catalog-width{max-width:1260px!important}}
+.pawlira-catalog-whisker-layout{grid-template-columns:300px minmax(0,1fr);gap:clamp(24px,1.6vw,38px)}
+body main .pawlira-catalog-top-row h2{font-family:StabilGrotesk,"Helvetica Neue",Helvetica,Arial,sans-serif!important;font-size:32px!important;font-weight:500!important;line-height:35.2px!important;letter-spacing:-.02em!important}
+.pawlira-catalog-group summary,.pawlira-catalog-row-link{font-family:StabilGrotesk,"Helvetica Neue",Helvetica,Arial,sans-serif!important;font-size:20px;font-weight:500;line-height:26px;letter-spacing:-.02em}
+.pawlira-catalog-subcategories a{font-family:StabilGrotesk,"Helvetica Neue",Helvetica,Arial,sans-serif!important;font-size:20px;line-height:26px;letter-spacing:-.02em}
+body .pawlira-catalog-page .pawlira-catalog-grid{gap:clamp(28px,1.875vw,45px) clamp(16px,1.25vw,30px)}
+body .pawlira-catalog-page .pawlira-catalog-product .pawlira-card-media{aspect-ratio:5/6}
+body .pawlira-catalog-page .pawlira-catalog-product .pawlira-clean-product-info{padding:0;gap:2px}
+body .pawlira-catalog-page .pawlira-catalog-product .pawlira-clean-product-info h3{font-size:18px!important;line-height:1.2!important;letter-spacing:-.02em!important;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+body .pawlira-catalog-page .pawlira-catalog-product .pawlira-clean-product-info h3 a{display:inline;min-height:0}
+body .pawlira-catalog-page .pawlira-catalog-product .pawlira-catalog-price{margin-top:0}
+@media(max-width:1199px){.pawlira-catalog-whisker-layout{grid-template-columns:238px minmax(0,1fr);gap:24px}}
+@media(max-width:767px){
+ body .pawlira-catalog-page .pawlira-catalog-whisker-section.pawlira-catalog-width{padding-inline:15px}
+ .pawlira-catalog-whisker-layout{grid-template-columns:minmax(0,1fr);gap:24px}
+ .pawlira-catalog-group summary,.pawlira-catalog-row-link{font-size:17px;line-height:24px}
+ .pawlira-catalog-subcategories a{font-size:17px;line-height:24px}
+ body .pawlira-catalog-page .pawlira-catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px 8px}
+ body .pawlira-catalog-page .pawlira-catalog-product .pawlira-card-media{aspect-ratio:.8}
+ body .pawlira-catalog-page .pawlira-catalog-product .pawlira-clean-product-info{padding:11px 0 0;gap:2px}
+ body .pawlira-catalog-page .pawlira-catalog-product .pawlira-clean-product-info h3{font-size:16px!important;line-height:1.2!important;-webkit-line-clamp:2}
+ body .pawlira-catalog-page .pawlira-catalog-product-description{font-size:12px!important;line-height:1.3!important}
+ body .pawlira-catalog-page .pawlira-catalog-product .pawlira-catalog-price-value{font-size:14px!important;line-height:1!important}
+}
+
+/* Full-width home brand banner, composed over the supplied clean background image. */
+.pawlira-home-brand-banner{position:relative;isolation:isolate;display:flex;align-items:flex-start;box-sizing:border-box;width:100%;height:clamp(560px,33.333vw,820px);overflow:hidden;background-color:#1b1009;background-image:linear-gradient(90deg,rgba(22,13,8,.18) 0%,rgba(22,13,8,.12) 42%,rgba(22,13,8,0) 70%),url('/images/pawlira-home-brand-banner.png');background-repeat:no-repeat;background-position:center;background-size:cover;color:#fff}
+.pawlira-home-brand-banner-content{width:min(100%,1050px);box-sizing:border-box;margin-left:6.2%;padding-top:clamp(86px,4.6vw,120px);padding-bottom:48px;color:#fff}
+.pawlira-home-brand-banner-eyebrow{display:flex;align-items:center;gap:clamp(14px,1.02vw,25px);margin:0;color:#fff;font-size:clamp(16px,1.02vw,25px);font-weight:500;line-height:1.2;letter-spacing:.34em;text-transform:uppercase}
+.pawlira-home-brand-banner-eyebrow::after{content:"";display:block;width:clamp(70px,6.08vw,160px);height:1px;background:rgba(255,255,255,.68)}
+.pawlira-home-brand-banner-content h2{display:flex;flex-direction:column;margin:clamp(28px,2.2vw,54px) 0 0;color:#fff!important;font-size:clamp(46px,3.5vw,88px)!important;font-weight:600!important;line-height:1.12!important;letter-spacing:-.035em!important;text-align:left}
+.pawlira-home-brand-banner-description{display:flex;flex-direction:column;margin:clamp(18px,1.25vw,32px) 0 0;color:#f5ece4;font-size:clamp(22px,1.6vw,38.5px);font-weight:400;line-height:1.4;letter-spacing:-.012em}
+.pawlira-home-brand-banner-cta{display:inline-flex;align-items:center;justify-content:space-between;gap:clamp(20px,1.3vw,32px);min-width:clamp(280px,17.2vw,420px);min-height:clamp(60px,3.6vw,90px);box-sizing:border-box;margin-top:clamp(20px,1.52vw,38px);padding:0 clamp(26px,1.6vw,40px) 0 clamp(32px,2.12vw,52px);border:1px solid rgba(255,255,255,.9);border-radius:999px;background:#fff;color:#191613!important;font-size:clamp(18px,1.1vw,28px);font-weight:600;line-height:1.2;text-decoration:none!important;transition:transform .25s cubic-bezier(.2,.7,.2,1),box-shadow .25s ease,background-color .25s ease}
+.pawlira-home-brand-banner-cta svg{flex-shrink:0;transition:transform .25s cubic-bezier(.2,.7,.2,1)}
+.pawlira-home-brand-banner-cta:hover{transform:translateY(-3px);background:#fff;color:#191613!important;box-shadow:0 14px 34px rgba(0,0,0,.24)}
+.pawlira-home-brand-banner-cta:hover svg{transform:translate(3px,-3px)}
+.pawlira-home-brand-banner-cta:focus-visible{outline:2px solid #fff;outline-offset:5px}
+@media(max-width:1023px){.pawlira-home-brand-banner{min-height:560px;background-position:58% center}.pawlira-home-brand-banner-content{width:min(100%,760px);margin-left:5%;padding-top:76px}.pawlira-home-brand-banner-content h2{margin-top:30px}.pawlira-home-brand-banner-description{margin-top:22px}.pawlira-home-brand-banner-cta{margin-top:34px}}
+@media(max-width:767px){.pawlira-home-brand-banner{height:auto;min-height:690px;align-items:flex-end;background-image:linear-gradient(0deg,rgba(22,13,8,.94) 0%,rgba(22,13,8,.78) 38%,rgba(22,13,8,.2) 68%,rgba(22,13,8,0) 100%),url('/images/pawlira-home-brand-banner.png');background-position:center,72% center}.pawlira-home-brand-banner-content{width:100%;margin:0;padding:0 24px 42px}.pawlira-home-brand-banner-eyebrow{gap:14px;font-size:13px;letter-spacing:.3em}.pawlira-home-brand-banner-eyebrow::after{width:70px}.pawlira-home-brand-banner-content h2{margin-top:22px;font-size:clamp(38px,10vw,48px)!important;line-height:1.08!important;letter-spacing:-.04em!important}.pawlira-home-brand-banner-description{margin-top:16px;font-size:18px;line-height:1.45;letter-spacing:-.01em}.pawlira-home-brand-banner-description span{max-width:34ch}.pawlira-home-brand-banner-cta{gap:22px;min-width:0;min-height:58px;margin-top:24px;padding:0 22px;font-size:17px}.pawlira-home-brand-banner-cta svg{width:22px;height:22px}}
+@media(prefers-reduced-motion:reduce){.pawlira-home-brand-banner-cta,.pawlira-home-brand-banner-cta svg{transition:none}}
