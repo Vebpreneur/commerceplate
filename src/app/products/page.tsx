@@ -11,7 +11,7 @@ import Image from "next/image";
 import {LuArrowUpRight as FiArrowUpRight,LuLayoutGrid as FiGrid,LuChevronRight as FiChevronRight} from "react-icons/lu";
 import type {Collection} from "@/lib/shopify/types";
 import {categoryName} from "@/lib/utils/modelName";
-import {categoryEditorial} from "@/lib/utils/categoryEditorial";
+
 type SearchParams=Record<string,string|string[]|undefined>;
 type Category=Collection&{image?:{url:string;altText?:string}|null};
 const one=(v:SearchParams[string])=>Array.isArray(v)?v[0]:v;
@@ -25,12 +25,13 @@ async function ShowProducts({searchParams}:{searchParams:SearchParams}){
  const current=categories.find(c=>c.handle===one(searchParams.c));
  const query=one(searchParams.q);
  const key=JSON.stringify(searchParams);
- const heroImage=query?undefined:current?.image?.url||initialData.products.find(p=>p.featuredImage?.url)?.featuredImage?.url;
+ const heroImages=query?[]:current?(current.image?.url?[current]:[]):categories.filter(c=>c.image?.url).slice(0,3);
+ const categoryDescription=current?(/kattlå|kattla|litter/i.test(current.title+" "+current.handle)?"Automatiska kattlådor med olika kapacitet, rengöringsfunktioner och styralternativ.":/foder|feed/i.test(current.title+" "+current.handle)?"Foderautomater med olika behållarvolymer, portionsinställningar och styralternativ.":/vatten|fontän|fountain/i.test(current.title+" "+current.handle)?"Vattenfontäner med olika behållarvolymer, filterlösningar och material.":current.title):"Självrengörande kattlådor, foderautomater och vattenfontäner." ;
  const categoryUrl=(handle:string)=>"/products?c="+encodeURIComponent(handle);
  return <>
  <section className="container pt-7 lg:pt-10 pb-9 lg:pb-12">
   <nav aria-label="Brödsmulor" className="pawlira-catalog-breadcrumb"><Link href="/">Hem</Link><FiChevronRight strokeWidth={1.5}/><Link href="/products">Produkter</Link>{current&&<><FiChevronRight strokeWidth={1.5}/><span aria-current="page">{current.title}</span></>}</nav>
-  <div className={`pawlira-catalog-hero ${heroImage?"has-image":""}`}><div className="pawlira-catalog-hero-copy"><p className="pawlira-eyebrow">Pawlira · Sortiment</p><h1>{query?"Sökresultat":current?.title||"Utforska sortimentet"}</h1><p>{query?`Resultat för ”${query}”`:current?(current.description?.trim()||categoryEditorial(current.title,current.handle).description):"Självrengörande kattlådor, foderautomater och vattenfontäner."}</p>{current&&<Link href="/products" className="pawlira-text-link">Visa hela sortimentet<FiArrowUpRight size={19} strokeWidth={1.5}/></Link>}</div>{heroImage&&<div className="pawlira-catalog-hero-image"><Image src={heroImage} alt={current?.title||"Pawlira produkt"} fill sizes="(max-width: 767px) 90vw, 50vw" className="object-contain"/></div>}</div>
+  <div className={`pawlira-catalog-hero ${heroImages.length?"has-image":""}`}><div className="pawlira-catalog-hero-copy"><h1>{query?"Sökresultat":current?.title||"Alla produkter"}</h1><p>{query?`Resultat för ”${query}”`:categoryDescription}</p>{current&&<Link href="/products" className="pawlira-text-link">Visa hela sortimentet<FiArrowUpRight size={19} strokeWidth={1.5}/></Link>}</div>{heroImages.length>0&&<div className={"pawlira-catalog-art "+(current?"is-category":"is-collection")}>{heroImages.map(c=><div key={c.handle}><Image src={c.image!.url} alt={c.title} fill sizes="(max-width:767px) 90vw, 50vw" className="object-contain"/></div>)}</div>}</div>
  </section>
  {categories.length>0&&<section className="container pb-9"><div className="pawlira-category-tabs" aria-label="Produktkategorier"><Link href="/products" aria-current={!current?"page":undefined}><FiGrid size={18} strokeWidth={1.5}/> Alla produkter</Link>{categories.map(c=><Link href={categoryUrl(c.handle)} key={c.handle} aria-current={current?.handle===c.handle?"page":undefined}>{c.title}<FiArrowUpRight size={16} strokeWidth={1.5}/></Link>)}</div></section>}
  <Suspense><ProductLayouts {...filterProps}/></Suspense>

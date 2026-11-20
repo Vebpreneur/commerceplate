@@ -1,79 +1,23 @@
 "use client";
-
-import { createUrl } from "@/lib/utils";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { IoClose, IoSearch } from "react-icons/io5";
-
-const SearchBar = () => {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-
-  const [inputValue, setInputValue] = useState(searchParams.get("q") || "");
-
-  useEffect(() => { setInputValue(searchParams.get("q") || ""); }, [searchParams]);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-
-    // Search when submitted, not on every keystroke.
-  };
-
-  const handleClear = () => {
-    setInputValue("");
-
-    const newParams = new URLSearchParams(pathname === "/products" ? searchParams.toString() : "");
-    newParams.delete("q");
-
-    if(pathname === "/products" && searchParams.has("q")) router.push(createUrl("/products", newParams));
-  };
-
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const search = inputValue.trim();
-    const newParams = new URLSearchParams();
-
-    if (search) {
-      newParams.set("q", search);
-    } else {
-      newParams.delete("q");
-    }
-
-    router.push(createUrl("/products", newParams));
-  };
-
-  return (
-    <form
-      onSubmit={onSubmit}
-      className="pawlira-search-field border border-border rounded-full flex bg-white text-black pl-4 relative"
-    >
-      <input
-        id="searchInput"
-        className="bg-transparent border-none search-input focus:ring-transparent p-2 w-full min-w-0"
-        aria-label="Sök produkter"
-        type="search"
-        name="search"
-        placeholder="Sök produkter"
-        autoComplete="off"
-        value={inputValue}
-        onChange={handleChange}
-      />
-      {inputValue && (
-        <button
-          type="button" aria-label="Rensa sökfält"
-          className="p-2 m-1 rounded-full"
-          onClick={handleClear}
-        >
-          <IoClose size={20} />
-        </button>
-      )}
-      <button type="submit" aria-label="Sök" className="search-icon !bg-black !text-white p-2 m-1 rounded-full shrink-0 flex items-center justify-center">
-        <IoSearch size={20} style={{color:"#fff",fill:"#fff"}} />
-      </button>
-    </form>
-  );
-};
-
-export default SearchBar;
+import {usePathname,useRouter,useSearchParams} from "next/navigation";
+import {useEffect,useMemo,useRef,useState} from "react";
+import {LuSearch,LuX,LuArrowUpRight} from "react-icons/lu";
+import Image from "next/image";
+import Link from "next/link";
+import type {NavigationCategory} from "@/lib/shopify/navigation";
+import {customerTitle} from "@/lib/utils/customerTitle";
+const normalize=(s:string)=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLocaleLowerCase("sv-SE");
+export default function SearchBar({categories=[]}:{categories?:NavigationCategory[]}){
+ const router=useRouter(),pathname=usePathname(),params=useSearchParams();
+ const [value,setValue]=useState(params.get("q")||""),[open,setOpen]=useState(false);
+ const root=useRef<HTMLDivElement>(null),input=useRef<HTMLInputElement>(null);
+ useEffect(()=>{setValue(params.get("q")||"");setOpen(false)},[pathname,params]);
+ useEffect(()=>{const close=(e:PointerEvent)=>{if(!root.current?.contains(e.target as Node))setOpen(false)};document.addEventListener("pointerdown",close);return()=>document.removeEventListener("pointerdown",close)},[]);
+ const tokens=normalize(value.trim()).split(/\s+/).filter(Boolean);
+ const results=useMemo(()=>{if(!tokens.length)return {products:[],categories:[]};const match=(s:string)=>tokens.every(t=>normalize(s).includes(t));const products=Array.from(new Map(categories.flatMap(c=>c.products.filter(p=>match(p.title+" "+p.tags.join(" ")+" "+c.title)).map(p=>[p.handle,p] as const))).values());return {products:products.sort((a,b)=>Number(match(b.title))-Number(match(a.title))).slice(0,6),categories:categories.filter(c=>match(c.title)).slice(0,3)}},[value,categories]);
+ const href="/products"+(value.trim()?"?q="+encodeURIComponent(value.trim()):"");
+ const show=open&&tokens.length>0;
+ return <div ref={root} className="pawlira-live-search" onBlur={e=>{if(!e.currentTarget.contains(e.relatedTarget as Node))setOpen(false)}} onKeyDown={e=>{if(e.key==="Escape"){setOpen(false);input.current?.focus()}if(e.key==="ArrowDown"&&e.target===input.current&&show){e.preventDefault();root.current?.querySelector<HTMLAnchorElement>(".pawlira-search-results a")?.focus()}}}>
+ <form onSubmit={e=>{e.preventDefault();setOpen(false);router.push(href)}} className="pawlira-search-field border border-border rounded-full flex bg-white text-black pl-4 relative"><input ref={input} id="searchInput" type="search" aria-label="Sök produkter" aria-expanded={show} aria-controls={show?"pawlira-search-results":undefined} className="bg-transparent border-none search-input focus:ring-transparent p-2 w-full min-w-0" placeholder="Sök produkter" autoComplete="off" value={value} onFocus={()=>setOpen(true)} onChange={e=>{setValue(e.target.value);setOpen(true)}}/>{value&&<button type="button" aria-label="Rensa sökning" className="p-2" onClick={()=>{setValue("");setOpen(false);input.current?.focus()}}><LuX size={18} strokeWidth={1.5}/></button>}<button type="submit" aria-label="Sök" className="search-icon !bg-black !text-white p-2 m-1 rounded-full shrink-0"><LuSearch size={20} strokeWidth={1.5}/></button></form>
+ {show&&<div id="pawlira-search-results" className="pawlira-search-results"><div className="pawlira-search-results-scroll" aria-live="polite">{results.categories.length>0&&<div className="pawlira-search-group"><p>Kategorier</p>{results.categories.map(c=><Link key={c.handle} href={"/products?c="+encodeURIComponent(c.handle)} onClick={()=>setOpen(false)}>{c.title}<LuArrowUpRight size={17} strokeWidth={1.5}/></Link>)}</div>}{results.products.length>0&&<div className="pawlira-search-group"><p>Produkter</p>{results.products.map(p=><Link key={p.handle} href={"/products/"+encodeURIComponent(p.handle)} onClick={()=>setOpen(false)} className="pawlira-search-product"><span className="pawlira-search-thumb">{p.featuredImage?.url&&<Image src={p.featuredImage.url} alt="" width={60} height={60} className="object-contain"/>}</span><span>{customerTitle(p.title)}{p.priceRange&&<small>{Number(p.priceRange.maxVariantPrice.amount)>Number(p.priceRange.minVariantPrice.amount)?"Från ":""}{new Intl.NumberFormat("sv-SE",{style:"currency",currency:p.priceRange.minVariantPrice.currencyCode}).format(Number(p.priceRange.minVariantPrice.amount))}</small>}</span><LuArrowUpRight size={17} strokeWidth={1.5}/></Link>)}</div>}{!results.products.length&&!results.categories.length&&<p className="pawlira-search-empty">Inga direkta träffar.</p>}</div><Link href={href} className="pawlira-search-all" onClick={()=>setOpen(false)}>Visa alla resultat<LuArrowUpRight size={18} strokeWidth={1.5}/></Link></div>}</div>;
+}

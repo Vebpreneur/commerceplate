@@ -38,3 +38,33 @@ body .btn.btn-inverse,body .pawlira-footer .pawlira-footer-cta{background:#fff!i
 body .btn.btn-inverse svg,body .pawlira-footer .pawlira-footer-cta svg{color:#0a0a0a!important}
 body .btn.btn-inverse:hover,body .pawlira-footer .pawlira-footer-cta:hover{background:#e8e8e8!important}
 @media(max-width:767px){.pawlira-faq-dark{grid-template-columns:minmax(0,1fr)}.pawlira-support-hero.pawlira-support-art{min-height:300px;background-position:center,65% center}.pawlira-brand-art{min-height:240px}.pawlira-care-content{padding:18px}}
+
+/* Predictive search reuses current Shopify navigation data, without extra round trips. */
+.pawlira-live-search{position:relative;min-width:0}
+.pawlira-search-results{position:absolute;top:calc(100% + 10px);right:0;width:min(440px,calc(100vw - 32px));background:#fff;border:1px solid #e5e5e5;border-radius:14px;color:#0a0a0a;z-index:65;box-shadow:0 16px 48px #0003;overflow:hidden}
+.pawlira-search-results-scroll{max-height:min(54vh,460px);overflow:auto;overscroll-behavior:contain;padding:10px}
+.pawlira-search-group>p{font-size:12px;color:#525252;padding:8px 10px;font-weight:600}
+.pawlira-search-group a,.pawlira-search-all{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px;border-radius:8px;text-align:left;color:#0a0a0a!important;font-size:14px;text-decoration:none}
+.pawlira-search-product>span:nth-child(2){flex:1;min-width:0;overflow-wrap:anywhere;line-height:1.4}
+.pawlira-search-product small{display:block;color:#525252;margin-top:4px;font-size:12px}
+.pawlira-search-thumb{display:grid;place-items:center;width:56px;height:56px;background:#f5f5f7;border-radius:8px;flex-shrink:0}
+.pawlira-search-thumb img{width:100%;height:100%;object-fit:contain}
+.pawlira-search-results a:hover,.pawlira-search-results a:focus-visible{background:#f5f5f7;outline:1px solid #d4d4d4}
+.pawlira-search-all{border-top:1px solid #e5e5e5;border-radius:0;padding:15px 20px;font-weight:600}
+.pawlira-search-empty{padding:12px;color:#525252}
+.pawlira-search-results svg{flex-shrink:0;color:#0a0a0a!important}
+.pawlira-menu-dialog .pawlira-menu-all{background:#f5f5f7!important;color:#0a0a0a!important;border-color:#e5e5e5!important;border-radius:10px;justify-content:flex-start;padding:12px;min-height:50px}
+.pawlira-menu-dialog .pawlira-menu-all svg{color:#0a0a0a!important}
+.pawlira-menu-dialog .pawlira-menu-category{border:0;border-bottom:1px solid #e5e5e5;border-radius:0}
+.pawlira-menu-dialog .pawlira-menu-category summary{padding-inline:0}
+.pawlira-menu-dialog .pawlira-menu-category-more{border:0;padding:12px 0;margin:0;font-size:14px}
+.pawlira-menu-dialog .pawlira-menu-category-more:hover{background:#f5f5f7;color:#0a0a0a!important}
+.pawlira-menu-dialog .pawlira-menu-support{margin-top:22px}
+.pawlira-catalog-hero.has-image{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.pawlira-catalog-art{min-width:0;display:grid;gap:8px;align-items:stretch;background:#f5f5f7;border-radius:12px;overflow:hidden}
+.pawlira-catalog-art.is-collection{grid-template-columns:repeat(3,minmax(0,1fr))}
+.pawlira-catalog-art>div{position:relative;min-height:240px;background:#f5f5f7}
+.pawlira-catalog-art.is-collection>div{min-height:0;aspect-ratio:3/4}
+.pawlira-catalog-hero-copy p{max-width:42ch}
+#relaterade .pawlira-featured-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:767px){.pawlira-search-results{width:100%;right:0}.pawlira-catalog-hero.has-image{grid-template-columns:1fr}.pawlira-catalog-art>div{min-height:180px}#relaterade .pawlira-featured-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
