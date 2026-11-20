@@ -323,3 +323,22 @@ body .pawlira-home-content .pawlira-clean-category .pawlira-home-category-photo{
 .pawlira-search-results a:hover,.pawlira-search-results a:focus-visible{background:var(--pawlira-paper)}
 /* Dark footer stays distinct from selected dark brand bands. */
 body .pawlira-footer{background:var(--pawlira-charcoal);border-radius:22px 22px 0 0;overflow:hidden}
+
+/* Reference-inspired editorial rhythm and light FAQ on storefront content.
+   The support page retains its existing dedicated searchable FAQ styling. */
+.pawlira-home-content .pawlira-faq-dark,#kundinformation .pawlira-faq-dark{background:var(--pawlira-paper);color:var(--pawlira-charcoal);border:1px solid var(--pawlira-paper-line)}
+.pawlira-home-content .pawlira-faq-dark :is(h2,h3,h4,p,a,label,button),#kundinformation .pawlira-faq-dark :is(h2,h3,h4,p,a,label,button){color:var(--pawlira-charcoal)!important}
+.pawlira-home-content .pawlira-faq-dark .pawlira-accordion,#kundinformation .pawlira-faq-dark .pawlira-accordion{border-bottom-color:var(--pawlira-paper-line)}
+.pawlira-home-content .pawlira-faq-dark .accordion-icon,#kundinformation .pawlira-faq-dark .accordion-icon{color:var(--pawlira-charcoal)}
+.pawlira-home-content .pawlira-faq-dark .accordion-inner,#kundinformation .pawlira-faq-dark .accordion-inner{color:#525252}
+.pawlira-home-content .pawlira-faq-dark .accordion-header:focus-visible,#kundinformation .pawlira-faq-dark .accordion-header:focus-visible{outline-color:var(--pawlira-charcoal)}
+.pawlira-home-content .pawlira-faq-dark .pawlira-white-link{border-bottom-color:var(--pawlira-charcoal)}
+.pawlira-home-content .pawlira-faq-dark h2,#kundinformation .pawlira-faq-dark h2{text-align:center}
+.pawlira-product-purchase-section .pawlira-purchase-facts a{background:#fff;border-color:var(--pawlira-paper-line)}
+.pawlira-dimension-grid article,.pawlira-included-grid article{background:var(--pawlira-paper)}
+#specifikationer{background:var(--pawlira-paper);border-color:var(--pawlira-paper-line)}
+.pawlira-story-image,.pawlira-story-gallery-image{border-color:var(--pawlira-paper-line);background:#fff}
+.pawlira-home-content .pawlira-help-card{background:var(--pawlira-paper)}
+.pawlira-home-content .pawlira-spotlight-content{background:var(--pawlira-paper)}
+.pawlira-home-content .pawlira-spotlight{border-radius:18px}
+@media(prefers-reduced-motion:reduce){.pawlira-whisker-card,.pawlira-whisker-panel .pawlira-whisker-buy{transition:none}}
