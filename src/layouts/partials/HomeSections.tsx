@@ -8,7 +8,6 @@ import type {Collection,Product} from "@/lib/shopify/types";
 import FeaturedProducts from "@/partials/FeaturedProducts";
 import Spotlight from "@/components/product/Spotlight";
 import FeatureHotspots from "@/components/FeatureHotspots";
-import ComparisonSection from "@/components/ComparisonSection";
 import CustomerStories from "@/components/CustomerStories";
 import MerchandiseRail from "@/components/product/ProductRail";
 import FaqSection from "@/partials/FaqSection";
@@ -80,7 +79,6 @@ export default async function HomeSections(){
  {featuredProducts.length>0&&<section className="container pawlira-home-section pawlira-home-featured"><Heading eyebrow="" title="Utvalda produkter" href="/products"/><FeaturedProducts products={featuredProducts} showAllLink={false}/></section>}
  {spotlightProducts.length>0&&<Spotlight products={spotlightProducts}/>}
  {litter&&<FeatureHotspots image={engineeringModel?picture(engineeringModel):featuredLitter?picture(featuredLitter):litter.category.image} href={collectionPath(litter.category)} model={engineeringModel?{title:engineeringModel.title,href:path(engineeringModel),specs:tech}:undefined}/>}
- {litter&&<ComparisonSection href={"/compare?c="+encodeURIComponent(litter.category.handle)}/>}
  <CustomerStories/>
  <section className="pawlira-home-black pawlira-home-feature-banner"><div className="container"><div className="pawlira-brand-statement"><h2>Om Pawlira</h2><p>Självrengörande kattlådor, foderautomater och vattenfontäner.</p><Link href="/about" className="pawlira-white-link">Lär känna Pawlira<FiArrowUpRight size={20} strokeWidth={1.5}/></Link></div><div className="pawlira-brand-points">{[{Icon:FiHeart,title:"Produktinformation",text:"Mått, funktioner och specifikationer på produktsidan."},{Icon:FiSliders,title:"Modelljämförelse",text:"Jämför pris, funktioner och produktalternativ."},{Icon:FiGrid,title:"Fri frakt",text:"0 kr i frakt vid leverans inom Sverige."}].map(({Icon,title,text})=><div key={title}><Icon size={29} strokeWidth={1.5}/><h3>{title}</h3><p>{text}</p></div>)}</div></div></section>
  {shelves[0]&&<ProductRail group={shelves[0]}/>}
