@@ -8,7 +8,7 @@ import Link from "next/link";
 import Image from "next/image";
 import {usePathname} from "next/navigation";
 import {Suspense,useEffect,useRef,useState} from "react";
-import {LuMenu as FiMenu,LuX as FiX,LuChevronDown as FiChevronDown,LuChevronRight as FiChevronRight,LuArrowUpRight as FiArrowUpRight,LuArrowUpRight as FiArrowRight,LuBox as FiBox,LuCircleHelp as FiHelpCircle,LuSearch as FiSearch,LuLayoutGrid as FiGrid,LuBookOpen as FiBookOpen,LuHeart as FiHeart} from "react-icons/lu";
+import {LuMenu as FiMenu,LuX as FiX,LuChevronDown as FiChevronDown,LuArrowUpRight as FiArrowUpRight,LuArrowUpRight as FiArrowRight,LuBox as FiBox,LuCircleHelp as FiHelpCircle,LuSearch as FiSearch,LuLayoutGrid as FiGrid} from "react-icons/lu";
 
 import {modelName} from "@/lib/utils/modelName";
 const categoryHref=(handle:string)=>"/products?c="+encodeURIComponent(handle);
@@ -24,14 +24,13 @@ function MenuModel({product,onClick,selected=false,card=false}:{product:Navigati
  <span className={card?"pawlira-mega-product-image":"pawlira-menu-thumbnail"}><MenuImage key={product.featuredImage?.url} image={product.featuredImage} size={card?240:56}/></span>
  {card?<span className="pawlira-mega-product-info"><span className="pawlira-mega-product-name">{modelName(product.title)}</span><MegaPrice product={product}/></span>:<span className="pawlira-menu-model-name">{modelName(product.title)}</span>}<FiArrowUpRight size={17} strokeWidth={1.5}/></Link>;
 }
-export default function Header({children,categories=[]}:{children:any;categories?:NavigationCategory[]}){
- const [open,setOpen]=useState(false),[mega,setMega]=useState(false),[active,setActive]=useState("");
+export default function Header({children,categories=[],favorites=[]}:{children:any;categories?:NavigationCategory[];favorites?:NavigationProduct[]}){
+ const [open,setOpen]=useState(false),[mega,setMega]=useState(false);
  const [query,setQuery]=useState("");
  const dialog=useRef<HTMLDialogElement>(null),trigger=useRef<HTMLButtonElement>(null),megaTrigger=useRef<HTMLButtonElement>(null),megaRegion=useRef<HTMLDivElement>(null);
  const pathname=usePathname();
  const close=()=>setOpen(false);
  const closeAll=()=>{setOpen(false);setMega(false)};
- const activeCategory=categories.find(c=>c.handle===active)||categories.find(c=>c.products.some(p=>pathname===productHref(p.handle)))||categories[0];
  const needle=query.trim().toLocaleLowerCase("sv-SE");
  const matching=categories.map(c=>({...c,products:!needle||c.title.toLocaleLowerCase("sv-SE").includes(needle)?c.products:c.products.filter(p=>p.title.toLocaleLowerCase("sv-SE").includes(needle))})).filter(c=>c.products.length);
  useEffect(()=>{closeAll()},[pathname]);
@@ -51,8 +50,7 @@ export default function Header({children,categories=[]}:{children:any;categories
     <button ref={megaTrigger} type="button" aria-expanded={mega} aria-controls={mega?"pawlira-mega":undefined} className="pawlira-main-menu-button" onClick={()=>setMega(!mega)}>Produkter<FiChevronDown size={17} className={mega?"rotate-180":""} strokeWidth={1.5}/></button>
     {mega&&<div id="pawlira-mega" className="pawlira-mega-menu">
      <div className="pawlira-mega-top"><div><h2>Produkter</h2></div><Link href="/products" onClick={closeAll} className="pawlira-mega-all">Alla produkter<FiArrowUpRight size={19} strokeWidth={1.5}/></Link></div>
-     {activeCategory?<div className="pawlira-mega-layout"><div className="pawlira-mega-categories" aria-label="Produktkategorier">{categories.map(c=><button key={c.handle} type="button" aria-pressed={activeCategory.handle===c.handle} onClick={()=>setActive(c.handle)}><span className="pawlira-mega-cat-thumb"><MenuImage image={c.image?.url?c.image:c.products[0]?.featuredImage}/></span><span>{c.title}</span><FiChevronRight size={17} strokeWidth={1.5}/></button>)}</div><div className="pawlira-mega-content" key={activeCategory.handle}><div className="pawlira-mega-content-head"><h3>{activeCategory.title}</h3><Link href={categoryHref(activeCategory.handle)} onClick={closeAll}>Visa kategorin<FiArrowUpRight size={17} strokeWidth={1.5}/></Link></div><div className="pawlira-mega-products">{activeCategory.products.slice(0,4).map(p=><MenuModel key={p.handle} product={p} card onClick={closeAll} selected={pathname===productHref(p.handle)}/>)}</div>{activeCategory.products.length>4&&<Link href={categoryHref(activeCategory.handle)} onClick={closeAll} className="pawlira-mega-more">Alla modeller<FiArrowRight size={17} strokeWidth={1.5}/></Link>}</div></div>:<Link href="/products" onClick={closeAll} className="pawlira-mega-more">Upptäck hela sortimentet<FiArrowRight strokeWidth={1.5}/></Link>}
-     <div className="pawlira-mega-bottom"><Link href="/compare" onClick={closeAll}><FiGrid size={19} strokeWidth={1.5}/> Jämför modeller<FiArrowUpRight size={15} strokeWidth={1.5}/></Link><Link href="/#kopguide" onClick={closeAll}><FiBookOpen size={19} strokeWidth={1.5}/> Hjälp att välja<FiArrowUpRight size={15} strokeWidth={1.5}/></Link><Link href="/#faq" onClick={closeAll}><FiHelpCircle size={19} strokeWidth={1.5}/> Frågor & svar<FiArrowUpRight size={15} strokeWidth={1.5}/></Link><Link href="/about" onClick={closeAll}><FiHeart size={19} strokeWidth={1.5}/> Lär känna Pawlira<FiArrowUpRight size={15} strokeWidth={1.5}/></Link></div>
+     <div className="pawlira-favorites-mega-layout"><div className="pawlira-favorites-mega-main"><h3>Favoriter</h3>{favorites.length>0?<div className="pawlira-favorites-mega-products">{favorites.map(p=><MenuModel key={p.handle} product={p} card onClick={closeAll} selected={pathname===productHref(p.handle)}/>)}</div>:<div className="pawlira-favorites-empty"><h3>Upptäck sortimentet</h3><p>Hitta smarta produkter för kattens dagliga rutiner.</p><Link href="/products" className="pawlira-text-link" onClick={closeAll}>Alla produkter<FiArrowUpRight size={17} strokeWidth={1.5}/></Link></div>}</div><div className="pawlira-favorites-mega-links"><div><h3>Handla</h3>{categories.map(c=><Link key={c.handle} href={categoryHref(c.handle)} onClick={closeAll}>{c.title}<FiArrowUpRight size={15} strokeWidth={1.5}/></Link>)}<Link href="/products" onClick={closeAll}>Alla produkter<FiArrowUpRight size={15} strokeWidth={1.5}/></Link></div><div><h3>Upptäck Pawlira</h3>{[{title:"Jämför modeller",href:"/compare"},{title:"Köpguide",href:"/#kopguide"},{title:"Vanliga frågor",href:"/#faq"},{title:"Om Pawlira",href:"/about"},{title:"Kundservice",href:"/contact"}].map(item=><Link key={item.href} href={item.href} onClick={closeAll}>{item.title}<FiArrowUpRight size={15} strokeWidth={1.5}/></Link>)}</div></div></div>
     </div>}
    </div>
    <Link href="/about" onClick={closeAll} aria-current={pathname==="/about"?"page":undefined}>Om Pawlira</Link><Link href="/contact" onClick={closeAll} aria-current={pathname==="/contact"?"page":undefined}>Kundservice</Link>

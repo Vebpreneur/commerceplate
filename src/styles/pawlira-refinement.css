@@ -90,3 +90,36 @@ body .btn.btn-inverse:hover,body .pawlira-footer .pawlira-footer-cta:hover{backg
 .pawlira-compare-page-intro.pawlira-compare-art{background-color:#0a0a0a;background-image:linear-gradient(90deg,#0a0a0af2 0%,#0a0a0a99 54%,transparent 100%),url('/images/support-hero.webp');background-position:center,right center;background-size:cover;background-repeat:no-repeat}
 .pawlira-search-field .search-icon svg{fill:none;stroke:currentColor}
 @media(max-width:767px){.pawlira-compare-page-intro.pawlira-compare-art{background-position:center,65% center}}
+
+/* Lightweight retail navigation */
+.pawlira-menu-dialog .pawlira-menu-all{background:#fff!important;border-color:#dedee0!important;min-height:48px;border-radius:10px}
+.pawlira-menu-dialog .pawlira-menu-category-more{display:flex;width:100%;min-height:44px;box-sizing:border-box;align-items:center;justify-content:space-between;padding:10px 12px;margin:5px 0 0;border-radius:8px;text-decoration:none!important}
+.pawlira-menu-dialog .pawlira-menu-model{border-color:transparent;border-radius:8px;box-shadow:none}
+.pawlira-menu-dialog .pawlira-menu-model[aria-current=page]{background:#f1f1f3;border-color:transparent}
+.pawlira-menu-dialog .pawlira-menu-category summary{border-radius:8px;padding-inline:10px;transition:background-color .18s}
+.pawlira-menu-dialog .pawlira-menu-category[open]>summary{background:#f6f6f7}
+@media(hover:hover) and (pointer:fine){
+ .pawlira-menu-dialog .pawlira-menu-all:hover{background:#f5f5f7!important;border-color:#d9d9dc!important}
+ .pawlira-menu-dialog .pawlira-menu-category summary:hover,.pawlira-menu-dialog .pawlira-menu-model:hover,.pawlira-menu-dialog .pawlira-menu-category-more:hover{background:#f5f5f7;border-color:transparent;box-shadow:none}
+}
+.pawlira-favorites-mega-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(190px,240px);gap:30px}
+.pawlira-favorites-mega-main{min-width:0}
+.pawlira-favorites-mega-main>h3,.pawlira-favorites-mega-links h3{font-size:15px!important;line-height:1.4!important;margin:0 0 14px}
+.pawlira-favorites-mega-products{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.pawlira-favorites-mega-products .pawlira-mega-product{background:#f7f7f8;border:1px solid #efeff0;border-radius:14px;min-height:0;padding:12px;text-decoration:none!important;box-shadow:none}
+.pawlira-favorites-mega-products .pawlira-mega-product-image{background:#fff;border-radius:9px}
+.pawlira-favorites-mega-products .pawlira-mega-product-name{font-size:14px;line-height:1.4;text-decoration:none!important}
+.pawlira-favorites-mega-products .pawlira-mega-product:hover,.pawlira-favorites-mega-products .pawlira-mega-product[aria-current=page]{background:#f0f0f2;border-color:#dedee0;box-shadow:none}
+.pawlira-favorites-mega-links{border-left:1px solid #e5e5e5;padding-left:24px;display:flex;flex-direction:column;gap:22px}
+.pawlira-favorites-mega-links>div+div{border-top:1px solid #e5e5e5;padding-top:20px}
+.pawlira-favorites-mega-links a{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 10px;margin-inline:-10px;font-size:14px;line-height:1.4;border-radius:6px;text-decoration:none}
+.pawlira-favorites-mega-links a:hover{background:#f5f5f7;text-decoration:none}
+.pawlira-favorites-mega-links a svg{flex-shrink:0;opacity:.65}
+.pawlira-favorites-empty{padding:30px;background:#f7f7f8;border-radius:14px;min-height:180px;display:flex;flex-direction:column;justify-content:center;gap:10px}
+.pawlira-catalog-layout.pawlira-catalog-full{grid-template-columns:minmax(0,1fr)}
+@media(min-width:1024px){.pawlira-catalog-full .pawlira-catalog-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(min-width:1440px){.pawlira-catalog-full .pawlira-catalog-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:1280px){.pawlira-favorites-mega-layout{gap:20px;grid-template-columns:minmax(0,1fr) 200px}.pawlira-favorites-mega-products{gap:8px}.pawlira-favorites-mega-links{padding-left:16px}}
+@media(prefers-reduced-motion:reduce){.pawlira-menu-dialog .pawlira-menu-category summary{transition:none}}
+
+.pawlira-support-shortcuts{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}.pawlira-support-shortcuts a{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:10px 16px;border:1px solid #ffffff80;border-radius:999px;color:#fff!important;text-decoration:none}.pawlira-support-shortcuts a:hover{background:#ffffff19}.pawlira-support-shortcuts a:focus-visible{outline:2px solid #fff;outline-offset:3px}

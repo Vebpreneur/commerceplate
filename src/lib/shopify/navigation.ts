@@ -13,3 +13,10 @@ export const getStoreNavigation=cache(async():Promise<NavigationCategory[]>=>{
  }catch{return [];}
 });
 export const navigationProductTitle=modelName;
+
+export const getMenuFavorites=cache(async():Promise<NavigationProduct[]>=>{
+ try{
+  const result=await shopifyFetch<{data:{products:{nodes:NavigationProduct[]}}}>({query:`query PawliraFavorites {products(first:20,query:"tag:favoriter"){nodes{title handle tags featuredImage{url altText} priceRange{minVariantPrice{amount currencyCode} maxVariantPrice{amount currencyCode}}}}}`});
+  return result.body.data.products.nodes.filter(p=>p.tags.some(t=>t.trim().toLocaleLowerCase("sv-SE")==="favoriter")&&!p.tags.includes("nextjs-frontend-hidden")).slice(0,4);
+ }catch{return [];}
+});

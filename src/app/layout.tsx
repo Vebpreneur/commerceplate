@@ -7,12 +7,12 @@ import TwSizeIndicator from "@/helpers/TwSizeIndicator";
 import Footer from "@/partials/Footer";
 import Header from "@/partials/Header";
 import Providers from "@/partials/Providers";
-import {getStoreNavigation} from "@/lib/shopify/navigation";
+import {getStoreNavigation,getMenuFavorites} from "@/lib/shopify/navigation";
 import "@/styles/main.css";
 import { GoogleTagManager } from "@next/third-parties/google";
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
-  const categories = await getStoreNavigation();
+  const [categories,favorites] = await Promise.all([getStoreNavigation(),getMenuFavorites()]);
   // import google font css
   const pf = theme.fonts.font_family.primary;
   const sf = theme.fonts.font_family.secondary;
@@ -67,7 +67,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       >
         <Providers>
           <Announcement />
-          <Header categories={categories}>
+          <Header categories={categories} favorites={favorites}>
             <OpenCart />
             <Cart />
           </Header>
