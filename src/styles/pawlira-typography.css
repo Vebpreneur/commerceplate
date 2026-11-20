@@ -1,6 +1,6 @@
 /* Single storefront type scale. Layout, images and interactions remain in pawlira-system.css. */
 :root {
- --pawlira-font:"Inter",Arial,sans-serif;
+ --pawlira-font:"DM Sans",Arial,sans-serif;
  --pawlira-type-h1:36px;
  --pawlira-type-h2:26px;
  --pawlira-type-h3:16px;
@@ -51,3 +51,7 @@ body :is(.pawlira-card-soldout,.pawlira-catalog-stock,.pawlira-clean-product-inf
  .pawlira-marquee{padding-block:18px}
  .pawlira-home-content .pawlira-clean-product-info h3 a{min-height:4.2em}
 }
+
+body :is(a,button,input,select,textarea,p,li,label,th,td){font-family:var(--pawlira-font)}
+header.pawlira-polished-header .pawlira-whisker-about h3,header.pawlira-polished-header .pawlira-whisker-side h3{font-size:13px!important;line-height:1.4!important;letter-spacing:0!important;font-weight:600!important}
+header.pawlira-polished-header .pawlira-whisker-about a,header.pawlira-polished-header .pawlira-whisker-side a{font-size:12px;line-height:1.5;font-weight:400}
