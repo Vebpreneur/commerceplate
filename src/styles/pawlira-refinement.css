@@ -452,3 +452,11 @@ body .pawlira-clean-list .pawlira-clean-list-info{background:var(--pawlira-produ
 @media(max-width:1023px){.pawlira-hero-shortcut-grid{gap:12px}.pawlira-hero-shortcut{grid-template-columns:48px minmax(0,1fr) 18px;padding:10px 8px;gap:8px}.pawlira-shortcut-visual svg{width:32px;height:32px}}
 @media(max-width:767px){.pawlira-hero-shortcut-grid{grid-template-columns:1fr;gap:10px;transform:translateY(-24px);margin-bottom:-24px}.pawlira-hero-shortcut{min-height:76px;grid-template-columns:58px minmax(0,1fr) 22px;padding:8px 12px}.pawlira-hero-shortcuts{padding-bottom:18px}.pawlira-home-brand-grid{grid-template-columns:1fr}.pawlira-home-brand-photo,.pawlira-home-brand-photo>div{min-height:240px}.pawlira-home-brand-copy{padding:28px 22px}}
 @media(prefers-reduced-motion:reduce){.pawlira-hero-shortcut,.pawlira-shortcut-arrow{transition:none}}
+
+/* Compact buying-guide entry in product templates, separate from the purchase flow. */
+.pawlira-pdp-guide-section{background:#fff}
+.pawlira-pdp-guide-card{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:24px;align-items:center;background:var(--pawlira-paper);padding:clamp(24px,3vw,40px);border:1px solid var(--pawlira-neutral-line);border-radius:16px}
+.pawlira-pdp-guide-icon{width:64px;height:64px;display:grid;place-items:center;background:#fff;border-radius:50%;color:#242222}
+.pawlira-pdp-guide-copy h2{font-size:clamp(22px,2vw,30px);line-height:1.2;margin:0 0 8px}
+.pawlira-pdp-guide-copy p{font-size:16px;line-height:1.6;color:#525252;margin:0}
+@media(max-width:767px){.pawlira-pdp-guide-card{grid-template-columns:48px minmax(0,1fr);gap:14px;padding:20px}.pawlira-pdp-guide-icon{width:48px;height:48px}.pawlira-pdp-guide-card>.btn{grid-column:1/-1;justify-self:start}.pawlira-pdp-guide-copy p{font-size:14px}}
