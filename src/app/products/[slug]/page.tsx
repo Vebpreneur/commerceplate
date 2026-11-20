@@ -74,7 +74,7 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(structuredData).replace(/</g,"\\u003c")}} />
-      <section id="kop" className="py-16 lg:py-24 bg-white scroll-mt-32">
+      <section id="kop" className="py-16 lg:py-24 pawlira-product-purchase-section scroll-mt-32">
         <div className="pawlira-pdp-container">
           <nav aria-label="Brödsmulor" className="flex flex-wrap gap-2 text-xs text-neutral-600 mb-6"><Link href="/">Hem</Link><span aria-hidden="true">/</span><Link href="/products">Produkter</Link><span aria-hidden="true">/</span><span aria-current="page">{title}</span></nav>
           <div className="pawlira-pdp-grid grid grid-cols-1 lg:grid-cols-12 gap-12">
