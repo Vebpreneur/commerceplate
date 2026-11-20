@@ -279,9 +279,9 @@ body .pawlira-clean-product .pawlira-card-photo,
 body .pawlira-clean-list .pawlira-card-media,
 body .pawlira-clean-list .pawlira-card-photo{background:#fff}
 body .pawlira-merch-card.pawlira-clean-product,
-body .pawlira-list-card.pawlira-clean-list{border:1px solid var(--pawlira-paper-line)}
+body .pawlira-list-card.pawlira-clean-list{border:0}
 body .pawlira-merch-card.pawlira-clean-product:hover,
-body .pawlira-list-card.pawlira-clean-list:hover{border-color:#d8cebd;box-shadow:none}
+body .pawlira-list-card.pawlira-clean-list:hover{border:0;box-shadow:none;transform:none}
 .pawlira-rail-card,.pawlira-compare-card,.pawlira-editorial-tile{background:var(--pawlira-paper);border-color:var(--pawlira-paper-line)}
 /* Home: white base; individual editorial bands own their background. */
 .pawlira-home-content{background:#fff}
@@ -322,7 +322,7 @@ body .pawlira-home-content .pawlira-clean-category .pawlira-home-category-photo{
 .pawlira-search-thumb{background:white}
 .pawlira-search-results a:hover,.pawlira-search-results a:focus-visible{background:var(--pawlira-paper)}
 /* Dark footer stays distinct from selected dark brand bands. */
-body .pawlira-footer{background:var(--pawlira-charcoal);border-radius:22px 22px 0 0;overflow:hidden}
+body .pawlira-footer{background:#000;border-radius:0;overflow:hidden}
 
 /* Reference-inspired editorial rhythm and light FAQ on storefront content.
    The support page retains its existing dedicated searchable FAQ styling. */
@@ -361,3 +361,43 @@ body .pawlira-footer{background:var(--pawlira-charcoal);border-radius:22px 22px 
 .pawlira-band-warm .pawlira-dimension-grid article,.pawlira-band-warm .pawlira-included-grid article{background:white}
 .pawlira-band-warm .pawlira-story-text{color:var(--pawlira-charcoal)}
 #relaterade{background:#fff}
+
+/* Storefront consistency: white merchandising bands, warm information panels,
+   fixed card geometry and independent interactive states. */
+.pawlira-home-content :is(.pawlira-home-featured,.pawlira-home-product-rail,#kategorier,#vardagsinspiration){background:#fff}
+body .pawlira-home-content .pawlira-clean-category{border:0;box-shadow:none;transform:none}
+body .pawlira-home-content .pawlira-clean-category:hover{border:0;box-shadow:none;transform:none}
+body .pawlira-home-content .pawlira-clean-category .pawlira-home-category-caption{background:var(--pawlira-paper)}
+body .pawlira-clean-product .pawlira-clean-product-info,
+body .pawlira-clean-list .pawlira-clean-list-info{background:var(--pawlira-paper)}
+body .pawlira-merch-card.pawlira-clean-product,
+body .pawlira-merch-card.pawlira-clean-product:hover,
+body .pawlira-list-card.pawlira-clean-list,
+body .pawlira-list-card.pawlira-clean-list:hover{border:0;box-shadow:none;transform:none}
+body .pawlira-clean-product .pawlira-card-photo,
+body .pawlira-clean-list .pawlira-card-photo{background:#fff}
+body .pawlira-clean-product .pawlira-card-photo img,
+body .pawlira-clean-list .pawlira-card-photo img{transform:none}
+body .pawlira-clean-product .pawlira-merch-bottom .pawlira-merch-cta{width:100%;min-height:44px;height:44px;justify-content:center;text-align:center;border-radius:999px}
+body .pawlira-clean-product .pawlira-merch-cta,
+body .pawlira-clean-list .pawlira-merch-cta,
+body main .btn-primary{--action-bg:#242222;--action-hover:#45413e}
+body .pawlira-clean-product .pawlira-merch-cta:hover,
+body .pawlira-clean-list .pawlira-merch-cta:hover{box-shadow:none;transform:none}
+body .pawlira-clean-product .pawlira-merch-cta svg,
+body .pawlira-clean-list .pawlira-merch-cta svg{flex-shrink:0}
+body .pawlira-clean-product .pawlira-merch-cta:hover svg,
+body .pawlira-clean-list .pawlira-merch-cta:hover svg{transform:none}
+body .pawlira-home-content .pawlira-clean-product-info{align-content:start}
+body .pawlira-home-content .pawlira-clean-product-info h3{line-height:1.4!important}
+body .pawlira-home-content .pawlira-home-category-caption{align-items:center}
+.pawlira-home-content .pawlira-editorial-tile{box-shadow:none;border:0;transform:none}
+.pawlira-home-content .pawlira-editorial-tile:hover{box-shadow:none;border:0;transform:none}
+.pawlira-home-content .pawlira-editorial-tile-caption{background:var(--pawlira-paper)}
+.pawlira-home-content .pawlira-rail-navigation button,
+.pawlira-home-content .pawlira-hotspot-tabs button{transition:background-color .2s,color .2s,border-color .2s}
+.pawlira-home-content .pawlira-rail-navigation button:not(:disabled):hover{background:var(--pawlira-charcoal);border-color:var(--pawlira-charcoal);color:white}
+.pawlira-home-content .pawlira-hotspot-tabs button:not([aria-pressed=true]):hover{background:var(--pawlira-paper);border-color:var(--pawlira-paper-line)}
+.pawlira-home-content .pawlira-guide-choice-grid>button:not([aria-pressed=true]):hover{background:var(--pawlira-paper-hover);border-color:var(--pawlira-paper-line);box-shadow:none}
+.pawlira-home-content .pawlira-help-card:hover{background:var(--pawlira-paper-hover);border-color:var(--pawlira-paper-line);box-shadow:none}
+@media(prefers-reduced-motion:reduce){.pawlira-home-content :is(.pawlira-rail-navigation button,.pawlira-hotspot-tabs button,.pawlira-help-card,.pawlira-editorial-tile){transition:none}}
