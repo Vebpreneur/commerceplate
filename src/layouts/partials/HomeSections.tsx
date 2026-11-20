@@ -27,8 +27,8 @@ const unique=(products:Product[])=>Array.from(new Map(products.map(p=>[p.id,p]))
 function Photo({image,alt,cover=false,className=""}:{image:{url:string;altText?:string}|undefined|null;alt:string;cover?:boolean;className?:string}){
  return image?.url?<Image src={image.url} alt={image.altText||alt} fill sizes="(max-width: 767px) 90vw, (max-width: 1199px) 50vw, 600px" className={(cover?"object-cover":"object-contain")+" "+className}/>:null;
 }
-function Heading({eyebrow,title,description,href,label="Visa alla produkter"}:{eyebrow:string;title:string;description?:string;href?:string;label?:string}){
- return <div className="pawlira-section-heading"><div>{eyebrow&&<p className="pawlira-eyebrow">{eyebrow}</p>}<h2>{title}</h2>{description&&<p className="pawlira-section-description">{description}</p>}</div>{href&&<Link href={href} className="pawlira-text-link">{label}<FiArrowUpRight size={20} strokeWidth={1.5}/></Link>}</div>;
+function Heading({eyebrow,title,description}:{eyebrow:string;title:string;description?:string}){
+ return <div className="pawlira-section-heading"><div>{eyebrow&&<p className="pawlira-eyebrow">{eyebrow}</p>}<h2>{title}</h2>{description&&<p className="pawlira-section-description">{description}</p>}</div></div>;
 }
 function CategoryCard({group}:{group:Group}){
  const {category,products}=group;
@@ -39,7 +39,7 @@ function CategoryCard({group}:{group:Group}){
  </Link>;
 }
 function ProductRail({group}:{group:Group}){
- return <section className="container pawlira-home-section pawlira-home-product-rail"><Heading eyebrow="" title={group.category.title} href={collectionPath(group.category)} label="Se hela kategorin"/>
+ return <section className="container pawlira-home-section pawlira-home-product-rail"><Heading eyebrow="" title={group.category.title}/>
   <MerchandiseRail products={group.products.slice(0,6)} label={group.category.title}/>
  </section>;
 }
@@ -59,10 +59,10 @@ export default async function HomeSections(){
  const engineeringModel=featuredLitter?await getProduct(featuredLitter.handle).catch(()=>undefined):undefined;
  const tech=engineeringModel?hotspotSpecifications(productFields(engineeringModel)):[];
  return <div className="pawlira-home-content pawlira-restored-home">
- {available.length>0&&<div className="pawlira-band pawlira-band-white"><section id="kategorier" className="container pawlira-home-section scroll-mt-36"><Heading eyebrow="" title="Kategorier" href="/products" label="Hela sortimentet"/><div className="pawlira-home-categories">{available.map(group=><CategoryCard key={group.category.handle} group={group}/>)}</div></section></div>}
- {featuredProducts.length>0&&<div className="pawlira-band pawlira-band-white"><section id="utvalda-produkter" className="container pawlira-home-section pawlira-home-featured scroll-mt-36"><Heading eyebrow="" title="Utvalda produkter" href="/products"/><FeaturedProducts products={featuredProducts} showAllLink={false}/></section></div>}
- {spotlightProducts.length>0&&<div className="pawlira-band pawlira-band-white"><Spotlight products={spotlightProducts}/></div>}
- {litter&&<div className="pawlira-band pawlira-band-white"><FeatureHotspots image={engineeringModel?picture(engineeringModel):featuredLitter?picture(featuredLitter):litter.category.image} href={collectionPath(litter.category)} model={engineeringModel?{title:engineeringModel.title,href:path(engineeringModel),specs:tech}:undefined}/></div>}
+ {available.length>0&&<div className="pawlira-band pawlira-band-white"><section id="kategorier" className="container pawlira-home-section scroll-mt-36"><Heading eyebrow="" title="Kategorier"/><div className="pawlira-home-categories">{available.map(group=><CategoryCard key={group.category.handle} group={group}/>)}</div></section></div>}
+ {featuredProducts.length>0&&<div className="pawlira-band pawlira-band-white"><section id="utvalda-produkter" className="container pawlira-home-section pawlira-home-featured scroll-mt-36"><Heading eyebrow="" title="Utvalda produkter"/><FeaturedProducts products={featuredProducts} showAllLink={false}/></section></div>}
+ {spotlightProducts.length>0&&<div className="pawlira-band pawlira-band-white"><Spotlight products={spotlightProducts} showHeadingLink={false}/></div>}
+ {litter&&<div className="pawlira-band pawlira-band-white"><FeatureHotspots showHeadingLink={false} image={engineeringModel?picture(engineeringModel):featuredLitter?picture(featuredLitter):litter.category.image} href={collectionPath(litter.category)} model={engineeringModel?{title:engineeringModel.title,href:path(engineeringModel),specs:tech}:undefined}/></div>}
  <section className="pawlira-home-brand"><div className="container pawlira-home-section"><div className="pawlira-home-brand-grid"><div className="pawlira-home-brand-photo"><EditorialPhoto src={editorialImages.home.url} alt={editorialImages.home.alt}/></div><div className="pawlira-home-brand-copy"><p className="pawlira-eyebrow">Om Pawlira</p><h2>Smart kattvård för ett enklare hem</h2><p>Mer tid tillsammans, mindre tid åt vardagens måsten. Upptäck smarta lösningar för kattens mat, vatten och toalett – med plats för både dig och din katt.</p><Link href="/about" className="btn btn-primary">Lär känna Pawlira<FiArrowUpRight size={18} strokeWidth={1.5}/></Link></div></div></div></section>
  {litter&&litter.products.length>0&&<ProductRail group={litter}/>}
  <section className="pawlira-help-section"><div className="container"><Heading eyebrow="" title="Handla tryggt hos Pawlira"/><div className="grid sm:grid-cols-3 gap-4">{[{Icon:FiPackage,title:"Fri frakt inom Sverige",text:"Läs mer om leverans och spårning.",href:"/shipping-policy"},{Icon:FiRefreshCcw,title:"Retur och ångerrätt",text:"Läs om ångerrätt och reklamation.",href:"/refund-policy"},{Icon:FiMessageCircle,title:"Kundservice",text:"Få svar på produkt- och orderfrågor.",href:"/contact"}].map(({Icon,title,text,href})=><Link key={title} href={href} className="pawlira-help-card"><Icon size={28} strokeWidth={1.5}/><div><h3>{title}</h3><p>{text}</p></div><FiArrowUpRight size={20} strokeWidth={1.5}/></Link>)}</div></div></section>
