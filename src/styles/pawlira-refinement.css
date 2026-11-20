@@ -164,7 +164,7 @@ header.pawlira-polished-header .pawlira-header-inner .pawlira-whisker-panel{top:
 .pawlira-whisker-name{font-size:16px;font-weight:600;line-height:1.3;text-decoration:none!important}
 .pawlira-whisker-ctas{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:auto}
 .pawlira-whisker-panel .pawlira-whisker-buy{border:1px solid #222;border-radius:999px;background:white;color:#222!important;padding:6px 24px;font-size:12px;transition:background .18s,color .18s;text-decoration:none!important}
-.pawlira-whisker-panel .pawlira-whisker-card:hover .pawlira-whisker-buy,.pawlira-whisker-panel .pawlira-whisker-card:focus-within .pawlira-whisker-buy{background:#222;color:white!important}
+.pawlira-whisker-panel a.pawlira-whisker-buy:hover,.pawlira-whisker-panel a.pawlira-whisker-buy:focus-visible{background:#222;color:white!important}
 .pawlira-whisker-learn{font-size:12px;text-decoration:underline!important;text-underline-offset:3px}
 .pawlira-whisker-category{grid-column:1/-1;justify-self:end;display:flex;align-items:center;gap:6px;font-size:13px}
 .pawlira-whisker-about{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:55px;max-width:800px;margin:auto;padding:8px 0 22px}
@@ -254,3 +254,72 @@ header.pawlira-polished-header .pawlira-whisker-tab,header.pawlira-polished-head
 .pawlira-whisker-name{font-size:16px}
 .pawlira-whisker-panel .pawlira-whisker-buy{padding-inline:15px}
 }
+
+/* Shared warm retail surfaces: white photography, warm information panels,
+   neutral paper sections and charcoal contrast. Keep the established layout. */
+:root{
+ --pawlira-paper:#faf8f3;
+ --pawlira-paper-deep:#f2efe5;
+ --pawlira-paper-hover:#faf5e9;
+ --pawlira-paper-line:#e8e2d7;
+ --pawlira-charcoal:#242222;
+ --pawlira-accent:#b32319;
+}
+header.pawlira-polished-header{background:var(--pawlira-paper)!important}
+.pawlira-whisker-card{background:var(--pawlira-paper);border-color:var(--pawlira-paper-line)}
+.pawlira-whisker-card:hover,.pawlira-whisker-card:focus-within{background:var(--pawlira-paper-hover);border-color:#e9dfcb}
+.pawlira-whisker-panel .pawlira-whisker-buy{background:white;color:var(--pawlira-charcoal)!important}
+.pawlira-whisker-panel a.pawlira-whisker-buy:hover,.pawlira-whisker-panel a.pawlira-whisker-buy:focus-visible{background:var(--pawlira-charcoal);color:white!important}
+/* Product cards across home, collections, rails and related products. */
+body .pawlira-clean-product .pawlira-clean-product-info,
+body .pawlira-clean-list .pawlira-clean-list-info,
+body .pawlira-restored-home .pawlira-clean-product-info{background:var(--pawlira-paper)}
+body .pawlira-clean-product .pawlira-card-media,
+body .pawlira-clean-product .pawlira-card-photo,
+body .pawlira-clean-list .pawlira-card-media,
+body .pawlira-clean-list .pawlira-card-photo{background:#fff}
+body .pawlira-merch-card.pawlira-clean-product,
+body .pawlira-list-card.pawlira-clean-list{border:1px solid var(--pawlira-paper-line)}
+body .pawlira-merch-card.pawlira-clean-product:hover,
+body .pawlira-list-card.pawlira-clean-list:hover{border-color:#d8cebd;box-shadow:none}
+.pawlira-rail-card,.pawlira-compare-card,.pawlira-editorial-tile{background:var(--pawlira-paper);border-color:var(--pawlira-paper-line)}
+/* Home: warm paper canvas with deliberately white functional/photo surfaces. */
+.pawlira-home-content{background:var(--pawlira-paper)}
+.pawlira-marquee{background:var(--pawlira-paper);border-color:var(--pawlira-paper-line)}
+body .pawlira-home-content .pawlira-clean-category{background:#fff;border:1px solid var(--pawlira-paper-line)}
+body .pawlira-home-content .pawlira-clean-category .pawlira-home-category-photo{background:white}
+.pawlira-home-category-caption,.pawlira-editorial-tile-caption{background:var(--pawlira-paper)}
+.pawlira-spotlight{background:white;border-color:var(--pawlira-paper-line)}
+.pawlira-spotlight-content{background:white}
+.pawlira-spotlight-tabs button{border-color:var(--pawlira-paper-line)}
+.pawlira-hotspot-inline .pawlira-hotspot-stage{background:#fff!important}
+.pawlira-hotspot-inline .pawlira-hotspot-popover{border-color:var(--pawlira-paper-line)}
+.pawlira-hotspot-tabs button:not([aria-pressed=true]){border-color:var(--pawlira-paper-line)}
+.pawlira-stories-grid article,.pawlira-dimension-grid article,.pawlira-included-grid article,.pawlira-care-grid article{border-color:var(--pawlira-paper-line)}
+.pawlira-home-black,.pawlira-home-feature-banner,.pawlira-home-final{background:var(--pawlira-charcoal)}
+.pawlira-help-section{background:#fff;border-color:var(--pawlira-paper-line)}
+.pawlira-help-card,.pawlira-guide-choice-grid>button{border-color:var(--pawlira-paper-line)}
+.pawlira-comparison-scroll{border-color:var(--pawlira-paper-line)}
+.pawlira-system-compare tr>*:nth-child(2){background:var(--pawlira-paper);border-color:var(--pawlira-paper-line)}
+/* Catalog and product detail: warm merchandising surfaces, not tinted photos. */
+.pawlira-catalog-hero{background:var(--pawlira-paper);border-color:var(--pawlira-paper-line)}
+.pawlira-category-tabs a:not([aria-current=page]){background:var(--pawlira-paper);border-color:var(--pawlira-paper-line)}
+.pawlira-catalog-sidebar{background:var(--pawlira-paper);border-color:var(--pawlira-paper-line)}
+.pawlira-product-purchase-section{background:var(--pawlira-paper)}
+.pawlira-pdp-grid .pawlira-gallery-frame{background:white;border-color:var(--pawlira-paper-line)}
+.pawlira-pdp-grid .pawlira-gallery-stage{background:white}
+.pawlira-pdp-grid .pawlira-gallery-thumbs button{border-color:var(--pawlira-paper-line)}
+.pawlira-pdp-grid .pawlira-gallery-thumbs button[aria-pressed=true]{border-color:var(--pawlira-charcoal)}
+.pawlira-purchase-panel .pawlira-option:not(.is-selected){border-color:var(--pawlira-paper-line)}
+.pawlira-order-bump{background:white;border-color:var(--pawlira-paper-line)}
+.pawlira-order-bump:has(input:checked){border-color:var(--pawlira-charcoal)}
+.pawlira-care-editorial article{background:var(--pawlira-paper)}
+.pawlira-care-photo{background:white}
+.pawlira-product-sticky-nav{background:var(--pawlira-charcoal)}
+.pawlira-sticky-buy{background:#faf8f3f5;border-color:var(--pawlira-paper-line)}
+.pawlira-sticky-buy-photo,.pawlira-cart-extra-item img{background:white}
+.pawlira-search-overlay{background:var(--pawlira-paper-deep)}
+.pawlira-search-thumb{background:white}
+.pawlira-search-results a:hover,.pawlira-search-results a:focus-visible{background:var(--pawlira-paper)}
+/* Dark footer stays distinct from selected dark brand bands. */
+body .pawlira-footer{background:var(--pawlira-charcoal);border-radius:22px 22px 0 0;overflow:hidden}
