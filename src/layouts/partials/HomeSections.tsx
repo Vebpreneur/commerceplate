@@ -75,20 +75,20 @@ export default async function HomeSections(){
  const shelves=available.filter(g=>g.products.length>=2).slice(0,3);
  const compareGroups=available.filter(g=>g.products.length>=2).map(g=>({title:g.category.title,handle:g.category.handle,products:g.products}));
  return <div className="pawlira-home-content pawlira-restored-home">
- {available.length>0&&<section id="kategorier" className="container pawlira-home-section scroll-mt-36"><Heading eyebrow="" title="Kategorier" href="/products" label="Hela sortimentet"/><div className="pawlira-home-categories">{available.map(group=><CategoryCard key={group.category.handle} group={group}/>)}</div></section>}
- {featuredProducts.length>0&&<section className="container pawlira-home-section pawlira-home-featured"><Heading eyebrow="" title="Utvalda produkter" href="/products"/><FeaturedProducts products={featuredProducts} showAllLink={false}/></section>}
- {spotlightProducts.length>0&&<Spotlight products={spotlightProducts}/>}
- {litter&&<FeatureHotspots image={engineeringModel?picture(engineeringModel):featuredLitter?picture(featuredLitter):litter.category.image} href={collectionPath(litter.category)} model={engineeringModel?{title:engineeringModel.title,href:path(engineeringModel),specs:tech}:undefined}/>}
- <CustomerStories/>
+ {available.length>0&&<div className="pawlira-band pawlira-band-white"><section id="kategorier" className="container pawlira-home-section scroll-mt-36"><Heading eyebrow="" title="Kategorier" href="/products" label="Hela sortimentet"/><div className="pawlira-home-categories">{available.map(group=><CategoryCard key={group.category.handle} group={group}/>)}</div></section></div>}
+ {featuredProducts.length>0&&<div className="pawlira-band pawlira-band-white"><section className="container pawlira-home-section pawlira-home-featured"><Heading eyebrow="" title="Utvalda produkter" href="/products"/><FeaturedProducts products={featuredProducts} showAllLink={false}/></section></div>}
+ {spotlightProducts.length>0&&<div className="pawlira-band pawlira-band-warm"><Spotlight products={spotlightProducts}/></div>}
+ {litter&&<div className="pawlira-band pawlira-band-white"><FeatureHotspots image={engineeringModel?picture(engineeringModel):featuredLitter?picture(featuredLitter):litter.category.image} href={collectionPath(litter.category)} model={engineeringModel?{title:engineeringModel.title,href:path(engineeringModel),specs:tech}:undefined}/></div>}
+ <div className="pawlira-band pawlira-band-warm"><CustomerStories/></div>
  <section className="pawlira-home-black pawlira-home-feature-banner"><div className="container"><div className="pawlira-brand-statement"><h2>Om Pawlira</h2><p>Självrengörande kattlådor, foderautomater och vattenfontäner.</p><Link href="/about" className="pawlira-white-link">Lär känna Pawlira<FiArrowUpRight size={20} strokeWidth={1.5}/></Link></div><div className="pawlira-brand-points">{[{Icon:FiHeart,title:"Produktinformation",text:"Mått, funktioner och specifikationer på produktsidan."},{Icon:FiSliders,title:"Modelljämförelse",text:"Jämför pris, funktioner och produktalternativ."},{Icon:FiGrid,title:"Fri frakt",text:"0 kr i frakt vid leverans inom Sverige."}].map(({Icon,title,text})=><div key={title}><Icon size={29} strokeWidth={1.5}/><h3>{title}</h3><p>{text}</p></div>)}</div></div></section>
  {shelves[0]&&<ProductRail group={shelves[0]}/>}
- <DailyLife groups={available}/>
+ <div className="pawlira-band pawlira-band-warm"><DailyLife groups={available}/></div>
  {shelves[1]&&<ProductRail group={shelves[1]}/>}
- {compareGroups.length>0&&<CompareModels groups={compareGroups}/>}
+ {compareGroups.length>0&&<div className="pawlira-band pawlira-band-warm"><CompareModels groups={compareGroups}/></div>}
  {shelves[2]&&<ProductRail group={shelves[2]}/>}
- {available.length>0?<ProductGuide categories={available.map(g=>({title:g.category.title,handle:g.category.handle,image:g.category.image?.url?g.category.image:g.products.map(picture).find(Boolean)}))}/>:<section id="kopguide" className="container pawlira-home-section"><Heading eyebrow="Pawlira köpguide" title="Hitta rätt för din katt"/><Link href="/products" className="btn btn-primary rounded-full">Utforska sortimentet</Link></section>}
+ <div className="pawlira-band pawlira-band-warm">{available.length>0?<ProductGuide categories={available.map(g=>({title:g.category.title,handle:g.category.handle,image:g.category.image?.url?g.category.image:g.products.map(picture).find(Boolean)}))}/>:<section id="kopguide" className="container pawlira-home-section"><Heading eyebrow="Pawlira köpguide" title="Hitta rätt för din katt"/><Link href="/products" className="btn btn-primary rounded-full">Utforska sortimentet</Link></section>}</div>
  <section className="pawlira-help-section"><div className="container"><Heading eyebrow="" title="Kundservice"/><div className="grid sm:grid-cols-3 gap-4">{[{Icon:FiPackage,title:"Leverans",text:"Se leveransvillkor och spårning.",href:"/shipping-policy"},{Icon:FiRefreshCcw,title:"Retur och ångerrätt",text:"Läs om ångerrätt och reklamation.",href:"/refund-policy"},{Icon:FiMessageCircle,title:"Kundservice",text:"Få svar på produkt- och orderfrågor.",href:"/contact"}].map(({Icon,title,text,href})=><Link key={title} href={href} className="pawlira-help-card"><Icon size={28} strokeWidth={1.5}/><div><h3>{title}</h3><p>{text}</p></div><FiArrowUpRight size={20} strokeWidth={1.5}/></Link>)}</div></div></section>
- <Suspense fallback={<section id="faq" className="container pawlira-home-section"><h2 className="pawlira-large-heading">Vanliga frågor</h2></section>}><FaqSection/></Suspense>
+ <div className="pawlira-band pawlira-band-warm"><Suspense fallback={<section id="faq" className="container pawlira-home-section"><h2 className="pawlira-large-heading">Vanliga frågor</h2></section>}><FaqSection/></Suspense></div>
  
  </div>;
 }
