@@ -259,6 +259,7 @@ header.pawlira-polished-header .pawlira-whisker-tab,header.pawlira-polished-head
    neutral paper sections and charcoal contrast. Keep the established layout. */
 :root{
  --pawlira-paper:#faf8f3;
+ --pawlira-product-caption:#fdfcf9;
  --pawlira-paper-deep:#f2efe5;
  --pawlira-paper-hover:#faf5e9;
  --pawlira-paper-line:#e8e2d7;
@@ -273,7 +274,7 @@ header.pawlira-polished-header{background:var(--pawlira-paper)!important}
 /* Product cards across home, collections, rails and related products. */
 body .pawlira-clean-product .pawlira-clean-product-info,
 body .pawlira-clean-list .pawlira-clean-list-info,
-body .pawlira-restored-home .pawlira-clean-product-info{background:var(--pawlira-paper)}
+body .pawlira-restored-home .pawlira-clean-product-info{background:var(--pawlira-product-caption)}
 body .pawlira-clean-product .pawlira-card-media,
 body .pawlira-clean-product .pawlira-card-photo,
 body .pawlira-clean-list .pawlira-card-media,
@@ -369,7 +370,7 @@ body .pawlira-home-content .pawlira-clean-category{border:0;box-shadow:none;tran
 body .pawlira-home-content .pawlira-clean-category:hover{border:0;box-shadow:none;transform:none}
 body .pawlira-home-content .pawlira-clean-category .pawlira-home-category-caption{background:var(--pawlira-paper)}
 body .pawlira-clean-product .pawlira-clean-product-info,
-body .pawlira-clean-list .pawlira-clean-list-info{background:var(--pawlira-paper)}
+body .pawlira-clean-list .pawlira-clean-list-info{background:var(--pawlira-product-caption)}
 body .pawlira-merch-card.pawlira-clean-product,
 body .pawlira-merch-card.pawlira-clean-product:hover,
 body .pawlira-list-card.pawlira-clean-list,
@@ -401,3 +402,18 @@ body .pawlira-home-content .pawlira-home-category-caption{align-items:center}
 .pawlira-home-content .pawlira-guide-choice-grid>button:not([aria-pressed=true]):hover{background:var(--pawlira-paper-hover);border-color:var(--pawlira-paper-line);box-shadow:none}
 .pawlira-home-content .pawlira-help-card:hover{background:var(--pawlira-paper-hover);border-color:var(--pawlira-paper-line);box-shadow:none}
 @media(prefers-reduced-motion:reduce){.pawlira-home-content :is(.pawlira-rail-navigation button,.pawlira-hotspot-tabs button,.pawlira-help-card,.pawlira-editorial-tile){transition:none}}
+
+/* Regular merchandise cards only: no outline or shadow, pure white photography,
+   and a barely tinted caption. Mega menu cards keep their own styling. */
+body article.pawlira-merch-card.pawlira-clean-product,
+body article.pawlira-merch-card.pawlira-clean-product:hover,
+body article.pawlira-merch-card.pawlira-clean-product:focus-within,
+body .pawlira-list-card.pawlira-clean-list,
+body .pawlira-list-card.pawlira-clean-list:hover,
+body .pawlira-list-card.pawlira-clean-list:focus-within{border:0!important;box-shadow:none!important;background:#fff;transform:none!important;border-radius:16px}
+body .pawlira-clean-product .pawlira-card-media,
+body .pawlira-clean-product .pawlira-card-photo,
+body .pawlira-clean-list .pawlira-card-media,
+body .pawlira-clean-list .pawlira-card-photo{background:#fff!important}
+body .pawlira-clean-product .pawlira-clean-product-info,
+body .pawlira-clean-list .pawlira-clean-list-info{background:var(--pawlira-product-caption)!important;border:0;box-shadow:none}
