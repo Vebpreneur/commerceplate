@@ -9,7 +9,7 @@ import ProductSectionNav from "@/components/product/ProductSectionNav";
 import {productFields} from "@/lib/utils/productFields";
 import {customerOptions,customerText,customerHtml,customerVariants} from "@/lib/utils/customerProduct";
 import {compatibleAccessories} from "@/lib/shopify/accessories";
-import ProductStory,{productStoryImages} from "@/components/product/ProductStory";
+import ProductStory,{productStoryImages,type ProductFamily} from "@/components/product/ProductStory";
 import {getStoreNavigation} from "@/lib/shopify/navigation";
 import {LuBookOpen} from "react-icons/lu";
 import {LuPackage as FiPackage,LuRefreshCcw as FiRefreshCcw,LuCircleHelp as FiHelpCircle,LuArrowUpRight as FiArrowUpRight,LuChevronRight} from "react-icons/lu";
@@ -61,10 +61,13 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
   const [recommended,accessories,navigation]=await Promise.all([getProductRecommendations(id).catch(()=>[]),compatibleAccessories([product.handle],product.priceRange.minVariantPrice.currencyCode),getStoreNavigation()]);
   const guideCategory=navigation.find(c=>c.products.some(p=>p.handle===product.handle));
   const guideHref=guideCategory?"/kopguide?c="+encodeURIComponent(guideCategory.handle):"/kopguide";
+  const categoryText=[guideCategory?.title,guideCategory?.handle,...(product.collections?.nodes||[]).map((c:{title?:string})=>c.title),product.title].filter(Boolean).join(" ").toLocaleLowerCase("sv-SE");
+  const family:ProductFamily=/kattlå|kattla|litter|toalett/.test(categoryText)?"litter":/foder|feed|matningsautomat/.test(categoryText)?"feeder":/vatten|fontän|fountain/.test(categoryText)?"water":"other";
   const relatedProducts=Array.from(new Map(recommended.filter(p=>p.id!==id&&p.availableForSale).map(p=>[p.id,p])).values()).slice(0,3);
   const fields=productFields(product);
   const galleryImages=Array.from(new Map([...(product.featuredImage?.url?[product.featuredImage]:[]),...images].filter(i=>i.url).map(i=>[i.url.split("?")[0],i])).values());
   const storyImages=productStoryImages(product).gallery;
+  const hasSpecs=fields.some(field=>field.key==="spec")||/<li\\b[^>]*>[\\s\\S]*?(?:\\d[\\d.,]*\\s?(?:kg|g|l|ml|liter|db|ghz|hz|w|v|cm|mm)\\b|wi[ -]?fi|sensor)/i.test(descriptionHtml);
 
   const defaultVariantId = variants.length > 0 ? variants[0].id : undefined;
   const url=new URL("/products/"+encodeURIComponent(product.handle),config.site.base_url).toString();
@@ -115,8 +118,8 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
         </div>
       </section>
 
-      <ProductSectionNav hasDetails={true} hasGallery={storyImages.length>0} hasFaq={false} hasRelated={relatedProducts.length>0}/>
-      <ProductStory product={{...product,description,descriptionHtml}} descriptionHtml={descriptionHtml} fields={fields}/>
+      <ProductSectionNav hasDetails={true} hasSpecs={hasSpecs} hasGallery={storyImages.length>0} hasFaq={false} hasRelated={relatedProducts.length>0}/>
+      <ProductStory product={{...product,description,descriptionHtml}} descriptionHtml={descriptionHtml} fields={fields} family={family}/>
       <section className="container pawlira-home-section pawlira-pdp-guide-section"><div className="pawlira-pdp-guide-card"><div className="pawlira-pdp-guide-icon"><LuBookOpen size={30} strokeWidth={1.5} aria-hidden="true"/></div><div className="pawlira-pdp-guide-copy"><h2>Hitta rätt produkt för din katt</h2><p>Vår köpguide hjälper dig att jämföra egenskaper, mått och funktioner utifrån din katts behov.</p></div><Link href={guideHref} className="btn btn-primary">Öppna köpguiden <FiArrowUpRight size={18} strokeWidth={1.5}/></Link></div></section>
       {/* Recommended Products section  */}
       {relatedProducts?.length > 0 && <section id="relaterade" className="container pawlira-home-section scroll-mt-48">
