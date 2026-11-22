@@ -118,7 +118,7 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
         </div>
       </section>
 
-      <ProductSectionNav hasDetails={true} hasSpecs={hasSpecs} hasGallery={storyImages.length>0} hasFaq={false} hasRelated={relatedProducts.length>0}/>
+      <ProductSectionNav hasDetails={true} hasSpecs={hasSpecs} hasGallery={storyImages.length>0} hasFaq={true} hasRelated={relatedProducts.length>0}/>
       <ProductStory product={{...product,description,descriptionHtml}} descriptionHtml={descriptionHtml} fields={fields} family={family}/>
       <section className="container pawlira-home-section pawlira-pdp-guide-section"><div className="pawlira-pdp-guide-card"><div className="pawlira-pdp-guide-icon"><LuBookOpen size={30} strokeWidth={1.5} aria-hidden="true"/></div><div className="pawlira-pdp-guide-copy"><h2>Hitta rätt produkt för din katt</h2><p>Vår köpguide hjälper dig att jämföra egenskaper, mått och funktioner utifrån din katts behov.</p></div><Link href={guideHref} className="btn btn-primary">Öppna köpguiden <FiArrowUpRight size={18} strokeWidth={1.5}/></Link></div></section>
       {/* Recommended Products section  */}
