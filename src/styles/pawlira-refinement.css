@@ -606,3 +606,25 @@ body .pawlira-catalog-page .pawlira-catalog-product .pawlira-catalog-price{margi
 .pawlira-content-hero{background:#faf8f3}
 .pawlira-content-hero.pawlira-campaign-hero{background:linear-gradient(100deg,#cb2410,#a31400)}
 .pawlira-editorial-page .pawlira-home-black,.pawlira-about-page .pawlira-home-black{background:#000}
+
+/* Product-only immersive editorial stages: Shopify photos, no invented artwork.
+   Scoped to the product story; existing HOME and catalog styles remain intact. */
+.pawlira-pdp-showcase{width:100%;overflow:hidden;background:#fff}
+.pawlira-pdp-showcase-band{background:linear-gradient(110deg,#eae5dc 0%,#f9f7f1 72%,#fff 100%);overflow:hidden}
+.pawlira-pdp-showcase-inner{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.14fr);align-items:center;gap:clamp(30px,5vw,85px);min-height:clamp(540px,55vw,790px);padding-block:clamp(52px,7vw,104px)}
+.pawlira-pdp-showcase-copy{min-width:0}
+.pawlira-pdp-showcase-copy .pawlira-eyebrow{font-size:13px;line-height:1.4;letter-spacing:.13em;text-transform:uppercase;font-weight:600;color:#52504d;margin:0 0 24px}
+body main .pawlira-pdp-showcase-copy h2{font-size:clamp(36px,4.5vw,72px)!important;font-weight:500!important;line-height:1.05!important;letter-spacing:-.052em!important;max-width:12ch;color:#201e1c;margin:0 0 24px}
+.pawlira-pdp-showcase-copy>p:not(.pawlira-eyebrow){font-size:clamp(17px,1.4vw,21px);line-height:1.55;color:#494642;max-width:44ch;margin:0}
+.pawlira-pdp-showcase-link{display:inline-flex;align-items:center;gap:12px;font-size:15px;font-weight:600;color:#201e1c!important;text-decoration:none!important;border-bottom:1px solid #201e1c;padding-bottom:7px;margin-top:30px;transition:gap .2s}
+.pawlira-pdp-showcase-link:hover{gap:18px}
+.pawlira-pdp-showcase-image{position:relative;min-width:0;min-height:360px;aspect-ratio:1/1;isolation:isolate}
+.pawlira-pdp-showcase-image img{object-fit:contain;max-width:100%;max-height:100%;mix-blend-mode:multiply}
+.pawlira-pdp-showcase-chapter{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);align-items:center;gap:clamp(34px,6vw,96px);min-height:clamp(470px,49vw,700px);padding-block:clamp(60px,7vw,110px)}
+.pawlira-pdp-showcase-chapter .pawlira-pdp-showcase-image{background:#f5f3ef;border-radius:18px;overflow:hidden;aspect-ratio:1.12/1}
+.pawlira-pdp-showcase-chapter .pawlira-pdp-showcase-image img{padding:clamp(8px,2vw,22px);mix-blend-mode:multiply}
+.pawlira-pdp-showcase-chapter .pawlira-pdp-showcase-copy h2{font-size:clamp(34px,3.8vw,60px)!important;max-width:14ch}
+.pawlira-product-detail-accordions{scroll-margin-top:110px}
+.pawlira-product-detail-accordions .pawlira-detail-values{font-size:16px;line-height:1.6}
+@media(max-width:767px){.pawlira-pdp-showcase-inner,.pawlira-pdp-showcase-chapter{grid-template-columns:1fr;min-height:0;gap:22px;padding-block:48px}.pawlira-pdp-showcase-inner .pawlira-pdp-showcase-image{grid-row:1;min-height:260px;max-height:400px}.pawlira-pdp-showcase-chapter .pawlira-pdp-showcase-image{min-height:270px}.pawlira-pdp-showcase-copy .pawlira-eyebrow{margin-bottom:14px}body main .pawlira-pdp-showcase-copy h2{font-size:clamp(33px,9vw,48px)!important;margin-bottom:16px}.pawlira-pdp-showcase-copy>p:not(.pawlira-eyebrow){font-size:17px}.pawlira-pdp-showcase-link{margin-top:20px}}
+@media(prefers-reduced-motion:reduce){.pawlira-pdp-showcase-link{transition:none}}
