@@ -1,29 +1,65 @@
 import Image from "next/image";
 import Link from "next/link";
 import type {Product} from "@/lib/shopify/types";
+import type {ProductField} from "@/lib/utils/productFields";
 import Accordion from "@/shortcodes/Accordion";
 import FieldDetails from "./FieldDetails";
-import {LuArrowUpRight as FiArrowUpRight,LuPackage as FiPackage,LuRefreshCcw as FiRefreshCcw,LuMessageCircle as FiMessageCircle} from "react-icons/lu";
-type Field={title:string;value:string};
-export default function ProductStory({product,fields}:{product:Product;fields:Field[]}){
- const images=Array.from(new Map(product.images.filter(i=>i.url).map(i=>[i.url,i])).values());
- const [description,...more]=product.descriptionHtml.split("--- split content ---");
+
+type DetailGroup={title:string;key:string;fallback:string};
+const detailGroups:DetailGroup[]=[
+ {title:"Tekniska specifikationer",key:"spec",fallback:"Tekniska värden för den här modellen saknas i den tillgängliga produktinformationen."},
+ {title:"Kompatibilitet",key:"compatibility",fallback:"Kompatibilitet är inte specificerad. Kontrollera produktens mått, anslutningar och eventuella krav mot förutsättningarna i ditt hem."},
+ {title:"Användning och underhåll",key:"usage",fallback:"Följ produktens bruksanvisning för montering, användning och rengöring. Koppla från strömmen när tillverkarens instruktioner kräver det."},
+ {title:"Säkerhetsinformation",key:"safety",fallback:"Följ produktens säkerhetsanvisningar och angivna gränser för användning. Automatisk drift ersätter inte tillsyn."},
+];
+
+export function productStoryImages(product:Product){
+ const images=Array.from(new Map(product.images.filter(image=>image.url).map(image=>[image.url.split("?")[0],image])).values());
  const main=images[1]||images[0]||product.featuredImage;
- const gallery=images.filter(i=>i.url!==main?.url&&i.url!==images[0]?.url).slice(0,6);
- const specifications=fields.filter(f=>f.title!=="Vanliga frågor"&&f.value.trim());
- const faqs=fields.filter(f=>f.title==="Vanliga frågor"&&f.value.trim());
+ const gallery=images.filter(image=>image.url!==main?.url&&image.url!==images[0]?.url).slice(0,6);
+ return {main,gallery};
+}
+
+function separateTechnicalItems(html:string){
+ const items=[...html.matchAll(/<li\b[^>]*>[\s\S]*?<\/li\s*>/gi)].map(match=>match[0]);
+ const technical=items.filter(item=>/(?:\d[\d.,]*\s?(?:kg|g|l|ml|liter|litre|db|ghz|hz|w|v|cm|mm)\b|wi[ -]?fi|\bsensor(?:er)?\b)/i.test(item.replace(/<[^>]*>/g," ")));
+ return technical.length?"<ul>"+technical.join("")+"</ul>":"";
+}
+
+function ProductDetailsEditorial(){
+ const rows=[
+  {title:"Genomtänkt teknik för livet med katt",paragraphs:["På Pawlira samlar vi moderna, automatiserade produkter som förenklar kattägarens vardag och skapar en ren, trygg och trivsam miljö för katten. Varje produkt i sortimentet är utvald för att lösa verkliga vardagsbehov i hemmet.","Oavsett om du bor i en mindre lägenhet eller i ett hem med flera katter kan du jämföra mått, kapacitet och funktioner för att hitta den lösning som passar bäst."]},
+  {title:"Självrengörande kattlådor",paragraphs:["Att skopa kattlådan för hand varje dag tar tid. En självrengörande kattlåda separerar automatiskt klumpar och avfall från den rena kattsanden efter kattens besök och samlar det i en sluten avfallsbehållare.","Resultatet är en fräsch sandbädd inför varje nytt besök, bättre luktkontroll i hemmet och mindre dagligt underhåll. Utforska våra modeller i kategorin eller jämför dem sida vid sida."]},
+  {title:"Automatiska foderautomater",paragraphs:["Katter mår bra av regelbundna måltider och jämna portioner. Med en foderautomat kan du schemalägga dagens utfodringar så att katten får mat på fasta tider – både tidiga morgnar och när du inte är hemma.","Jämför våra foderautomater utifrån behållarvolym, antal måltider per dygn, foderstorlek och om du föredrar appstyrning eller enkel programmering direkt på enheten."]},
+  {title:"Vattenfontäner och filtrering",paragraphs:["Många katter föredrar rinnande vatten framför stillastående vatten i en skål. En vattenfontän håller vattnet i cirkulation och filtrerar bort partiklar för att uppmuntra katten att dricka mer under dagen.","I vårt sortiment hittar du vattenfontäner med olika volymer, material och filterlösningar som är enkla att plocka isär och rengöra."]},
+  {title:"Säkerhet och rätt modellval",paragraphs:["Kattens säkerhet och trivsel kommer alltid först. Självrengörande kattlådor är utrustade med sensorer som känner av när katten befinner sig i eller nära lådan och pausar rengöringscykeln.","Kontrollera alltid tillverkarens angivna vikt- och åldersgränser på produktsidan, och följ manualens råd för en lugn introduktion i kattens egen takt."]},
+  {title:"Köpguide och modelljämförelse",paragraphs:[<>Behöver du vägledning innan du bestämmer dig? I vår interaktiva <Link href="/kopguide"><strong>köpguide</strong></Link> går vi igenom de viktigaste sakerna att kontrollera inför köpet av kattlåda, foderautomat eller vattenfontän.</>,<>Du kan även använda vårt <Link href="/compare"><strong>jämförelseverktyg</strong></Link> för att ställa upp till tre modeller bredvid varandra och jämföra pris, mått och specifikationer rad för rad.</>]},
+  {title:"Fri frakt, villkor och kundservice",paragraphs:[<>Alla beställningar hos Pawlira levereras med fri frakt inom Sverige. Information om leverans, spårning och aktuella villkor hittar du under <Link href="/shipping-policy"><strong>Leverans</strong></Link> samt <Link href="/refund-policy"><strong>Retur och ångerrätt</strong></Link>.</>,<>Har du frågor om en specifik modell, underhåll eller din beställning är du alltid välkommen att kontakta vår <Link href="/contact"><strong>kundservice</strong></Link>.</>]}
+ ];
+ return <section className="container pawlira-catalog-width pawlira-catalog-editorial-list pawlira-product-detail-editorial" aria-label="Produkt- och kategoriinformation">{rows.map(row=><article key={row.title} className="pawlira-catalog-editorial-row"><h2>{row.title}</h2><div className="pawlira-catalog-editorial-copy">{row.paragraphs.map((paragraph,index)=><p key={index}>{paragraph}</p>)}</div></article>)}</section>;
+}
+
+export default function ProductStory({product,fields,descriptionHtml}:{product:Product;fields:ProductField[];descriptionHtml:string}){
+ const {main,gallery}=productStoryImages(product);
+ const visibleImages=[...(main?[main]:[]),...gallery];
+ const specs=fields.filter(field=>field.key==="spec");
+ const descriptionSpecs=separateTechnicalItems(descriptionHtml);
+ const fieldContent=(key:string)=>fields.filter(field=>field.key===key);
+
  return <>
- <div className="pawlira-band pawlira-band-white"><section id="produktinformation" className="container pawlira-home-section scroll-mt-32">
-  <div className="pawlira-section-heading"><div><h2>Produktens funktioner</h2></div><a href="#kop" className="pawlira-text-link">Till produktvalet<FiArrowUpRight size={20} strokeWidth={1.5}/></a></div>
-  <div className={main?.url?"pawlira-story-split":"max-w-3xl mx-auto"}>
-   {main?.url&&<div className="pawlira-story-image"><Image src={main.url} alt={main.altText||product.title} fill sizes="(max-width: 767px) 90vw, 50vw" className="object-contain"/></div>}
-   <div className="pawlira-story-text"><h3 className="text-2xl lg:text-4xl tracking-tight mb-6">Så fungerar den</h3>{description?.trim()?<div className="content max-w-none" dangerouslySetInnerHTML={{__html:description}}/>:<p>{product.description||"Välj bland tillgängliga alternativ ovan."}</p>}</div>
-  </div>
- </section></div>
- {gallery.length>0&&<section id="produktbilder" className="container pawlira-home-section scroll-mt-48"><div className="pawlira-section-heading"><div><h2>Produktbilder</h2></div></div><div className="pawlira-story-gallery">{gallery.map((img,i)=><div className={"pawlira-story-gallery-image "+(i===0&&gallery.length%2===1?"pawlira-story-gallery-wide":"")} key={img.url}><Image src={img.url} alt={img.altText||product.title} fill sizes="(max-width: 767px) 90vw, 50vw" className="object-contain"/></div>)}</div></section>}
- {more.some(p=>p.trim())&&<div className="pawlira-band pawlira-band-warm"><section className="container pawlira-home-section"><h2 className="pawlira-large-heading mb-8">Fler produktdetaljer</h2><div className="max-w-4xl content">{more.filter(p=>p.trim()).map((p,i)=><div key={i} dangerouslySetInnerHTML={{__html:p}}/>)}</div></section></div>}
- {specifications.length>0&&<section id="specifikationer" className="border-y border-border py-14 lg:py-24 scroll-mt-32"><div className="container grid lg:grid-cols-[1fr_1.5fr] gap-8 lg:gap-20"><div><h2 className="pawlira-large-heading">Tekniska specifikationer</h2><p className="mt-5 max-w-sm">Mått, funktioner och vad som ingår – enligt produktinformationen.</p></div><div className="pawlira-spec-list">{specifications.map((f,i)=><article className="pawlira-spec-row" key={f.title+i}><h3>{f.title}</h3><FieldDetails value={f.value}/></article>)}</div></div></section>}
- <section className="pawlira-home-black"><div className="container"><h2 className="pawlira-large-heading mb-8">Leverans, returer och kundservice</h2><div className="grid sm:grid-cols-3 gap-4">{[{Icon:FiPackage,title:"Leverans",text:"Läs leveransvillkoren.",url:"/shipping-policy"},{Icon:FiRefreshCcw,title:"Retur och ångerrätt",text:"Läs om dina rättigheter.",url:"/refund-policy"},{Icon:FiMessageCircle,title:"Kundservice",text:"Hitta information om ditt köp.",url:"/contact"}].map(({Icon,title,text,url})=><Link key={title} href={url} className="pawlira-dark-link border border-neutral-700 rounded-xl p-7 flex flex-col gap-4"><Icon size={20} strokeWidth={1.5}/><h3 className="text-xl">{title}</h3><p>{text}</p><span className="pawlira-white-link mt-auto">Läs mer<FiArrowUpRight strokeWidth={1.5}/></span></Link>)}</div></div></section>
- <div className="pawlira-band pawlira-band-warm"><section id="kundinformation" className="container pawlira-home-section scroll-mt-32"><div className="pawlira-faq-dark"><div className="pawlira-faq-main"><h2>Vanliga frågor</h2><div className="pawlira-faq-dark-rows">{faqs.map((f,i)=><Accordion key={i} title="Produktrelaterade frågor"><p className="whitespace-pre-wrap">{f.value}</p></Accordion>)}<Accordion title="Var hittar jag produktens specifikationer?"><p>Se mått, kapacitet, strömförsörjning och appkrav under produktinformationen. Följ tillverkarens gränser för kattens storlek, vikt och ålder.</p></Accordion><Accordion title="Hur fungerar leveransen?"><p>Frakten är kostnadsfri vid beställning till Sverige. Tillgängliga leveransalternativ visas i kassan. Spara orderbekräftelsen så att du kan följa upp beställningen. <Link href="/shipping-policy" className="underline">Aktuella leveransvillkor</Link>.</p></Accordion><Accordion title="Hur fungerar returer?"><p>Kontrollera aktuella returvillkor innan du skickar tillbaka en vara. Kontakta kundservice med ordernummer och vilken produkt det gäller, och följ returinstruktionerna. <Link href="/refund-policy" className="underline">Retur och ångerrätt</Link>.</p></Accordion><Accordion title="Behöver du hjälp att välja?"><p>Jämför produktens funktioner, mått och krav med kattens behov och ditt hem. Om något är oklart, ange modellnamnet när du kontaktar kundservice. Du hittar fler svar i vår <Link href="/#faq" className="underline">FAQ</Link>.</p></Accordion></div></div></div></section></div>
+  {visibleImages.length>0&&<section id="produktbilder" className="container pawlira-home-section scroll-mt-32"><div className="pawlira-section-heading"><div><h2>Produktbilder</h2></div></div><div className="pawlira-story-gallery">{visibleImages.map((image,index)=><div className={"pawlira-story-gallery-image "+(index===0&&visibleImages.length%2===1?"pawlira-story-gallery-wide":"")} key={image.url}><Image src={image.url} alt={image.altText||product.title} fill sizes="(max-width: 767px) 90vw, 50vw" className="object-contain"/></div>)}</div></section>}
+  <section id="produktinformation" className="container pawlira-catalog-width pawlira-catalog-faq scroll-mt-32">
+   <h2>Produktdetaljer</h2>
+   <div className="pawlira-catalog-faq-list pawlira-product-detail-accordions">
+    {detailGroups.map(group=>{
+     const matched=group.key==="spec"?specs:fieldContent(group.key);
+     const value=matched.map(field=>field.value).join("\n\n");
+     const content=group.key==="spec"&&!value?descriptionSpecs:"";
+     const contentId=group.key==="spec"?"specifikationer":undefined;
+     return <div id={contentId} key={group.key}><Accordion title={group.title}>{value?<div className="space-y-4">{matched.map((field,index)=><div key={field.key+field.title+index}><FieldDetails value={field.value}/></div>)}</div>:content?<div className="content" dangerouslySetInnerHTML={{__html:content}}/>:<p>{group.fallback}</p>}</Accordion></div>;
+    })}
+   </div>
+  </section>
+  <ProductDetailsEditorial/>
  </>;
 }

@@ -4,7 +4,10 @@ export type ProductField={title:string;value:string;key:string};
 const labels:Record<string,{title:string;key:string}>={
  specifications:{title:"Tekniska specifikationer",key:"spec"},spec:{title:"Tekniska specifikationer",key:"spec"},technical_specifications:{title:"Tekniska specifikationer",key:"spec"},
  details:{title:"Produktdetaljer",key:"details"},detaljer:{title:"Produktdetaljer",key:"details"},
- included:{title:"Vad ingår?",key:"included"},ingar:{title:"Vad ingår?",key:"included"},features:{title:"Funktioner och egenskaper",key:"features"},faq:{title:"Vanliga frågor",key:"faq"}
+ included:{title:"Vad ingår?",key:"included"},ingar:{title:"Vad ingår?",key:"included"},features:{title:"Funktioner och egenskaper",key:"features"},faq:{title:"Vanliga frågor",key:"faq"},
+ compatibility:{title:"Kompatibilitet",key:"compatibility"},kompatibilitet:{title:"Kompatibilitet",key:"compatibility"},
+ usage:{title:"Användning och underhåll",key:"usage"},anvandning:{title:"Användning och underhåll",key:"usage"},maintenance:{title:"Användning och underhåll",key:"usage"},underhall:{title:"Användning och underhåll",key:"usage"},
+ safety:{title:"Säkerhetsinformation",key:"safety"},sakerhet:{title:"Säkerhetsinformation",key:"safety"}
 };
 type RichNode={type?:string;value?:string;children?:RichNode[]};
 function flatten(node:RichNode):string{

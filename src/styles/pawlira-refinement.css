@@ -568,3 +568,41 @@ body .pawlira-catalog-page .pawlira-catalog-product .pawlira-catalog-price{margi
 .pawlira-home-content .pawlira-spotlight-content h3{font-size:clamp(28px,2.65vw,38px);line-height:1.12;letter-spacing:-.035em}
 .pawlira-home-content .pawlira-faq-dark h2{font-size:clamp(34px,3.1vw,44px)!important;line-height:1.08!important;letter-spacing:-.04em!important;margin-bottom:clamp(28px,3vw,40px)!important}
 @media(max-width:767px){.pawlira-home-hero{min-height:clamp(460px,125vw,560px)}.pawlira-home-hero h1{font-size:clamp(38px,10vw,46px)!important}.pawlira-home-content .pawlira-home-section{padding-block:38px}.pawlira-home-content .pawlira-section-heading h2{font-size:30px!important}.pawlira-home-content .pawlira-faq-dark h2{font-size:34px!important}}
+
+/* FAQ page controls reuse the light catalog FAQ rows and typography. */
+.pawlira-customer-faq-page .pawlira-faq-search{max-width:1040px;margin:0 auto 24px;border-color:#d5d0c4;border-radius:9px;background:#fff;color:#262323}
+.pawlira-customer-faq-page .pawlira-faq-search input{background:#fff;color:#262323}
+.pawlira-customer-faq-page .pawlira-faq-topic-tabs{display:flex;flex-wrap:wrap;gap:clamp(16px,2.5vw,32px);max-width:1040px;margin:0 auto 8px;border-bottom:1px solid #d5d0c4}
+.pawlira-customer-faq-page .pawlira-faq-topic-tabs button{padding:12px 0;border:0;border-bottom:2px solid transparent;border-radius:0;background:transparent;color:#262323;font-size:20px;font-weight:500;line-height:26px;letter-spacing:-.02em;cursor:pointer}
+.pawlira-customer-faq-page .pawlira-faq-topic-tabs button[aria-pressed=true]{border-bottom-color:#262323}
+.pawlira-customer-faq-page .pawlira-faq-topic-tabs button:hover{color:#595959}
+@media(max-width:767px){.pawlira-customer-faq-page .pawlira-faq-search{margin-bottom:18px}.pawlira-customer-faq-page .pawlira-faq-topic-tabs{gap:12px}.pawlira-customer-faq-page .pawlira-faq-topic-tabs button{font-size:17px;line-height:24px;padding:10px 0}}
+
+/* Standalone editorial pages share the same in-hero breadcrumb and content rhythm as policy pages. */
+.pawlira-catalog-breadcrumb .pawlira-breadcrumb-part{display:inline-flex;align-items:center;gap:8px}
+.pawlira-product-breadcrumb{font-size:14px;margin-bottom:24px}
+.pawlira-product-breadcrumb svg{width:14px;height:14px;flex:none;color:#777}
+.pawlira-campaign-hero{background:linear-gradient(100deg,#cb2410,#a31400);border-bottom:0;color:#fff}
+.pawlira-campaign-hero h1,.pawlira-campaign-hero>div>p:not(.pawlira-eyebrow){color:#fff!important}
+.pawlira-campaign-hero .pawlira-eyebrow{color:#ffffffd9!important}
+.pawlira-campaign-hero .pawlira-catalog-breadcrumb,.pawlira-campaign-hero .pawlira-catalog-breadcrumb a,.pawlira-campaign-hero .pawlira-catalog-breadcrumb span{color:#ffffffd9!important}
+.pawlira-campaign-hero .pawlira-catalog-breadcrumb svg{color:#ffffffb3}
+.pawlira-campaign-hero .btn-inverse{background:#fff!important;border-color:#fff!important;color:#242222!important}
+.pawlira-guide-article-content{max-width:800px;margin-inline:auto;padding-block:clamp(42px,6vw,76px)}
+.pawlira-guide-article-lead{padding-bottom:26px;margin-bottom:22px;border-bottom:1px solid var(--pawlira-neutral-line,#dedbd3)}
+.pawlira-guide-article-lead>p{font-size:clamp(18px,1.7vw,21px);line-height:1.6;font-weight:500;letter-spacing:-.015em}
+.pawlira-guide-article-lead>span{display:inline-flex;align-items:center;gap:8px;margin-top:12px;color:#62605d;font-size:14px}
+.pawlira-guide-article-section{padding-block:24px;border-bottom:1px solid var(--pawlira-neutral-line,#dedbd3)}
+.pawlira-guide-article-section h2{margin:0 0 14px}
+.pawlira-guide-article-section>p:not(.pawlira-eyebrow),.pawlira-guide-article-section li{max-width:70ch;font-size:var(--pawlira-type-body,16px);line-height:1.75;color:#46433f}
+.pawlira-guide-article-section ul{padding-left:1.25rem;list-style:disc}
+.pawlira-guide-article-cta{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px;margin-top:40px;padding:clamp(22px,3vw,36px);border:1px solid var(--pawlira-neutral-line,#dedbd3);border-radius:14px;background:var(--pawlira-paper,#faf8f3)}
+.pawlira-guide-article-cta h2{margin:0 0 8px}
+.pawlira-guide-article-cta p:not(.pawlira-eyebrow){max-width:52ch;margin:0;color:#555}
+.pawlira-guide-related{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;margin-top:26px}
+@media(max-width:767px){.pawlira-product-breadcrumb{font-size:14px;margin-bottom:18px}.pawlira-guide-article-content{padding-block:32px 48px}.pawlira-guide-article-section{padding-block:20px}.pawlira-guide-article-cta{align-items:flex-start;flex-direction:column}.pawlira-guide-article-cta .flex{width:100%}}
+
+/* Editorial and support pages follow the established policy-page hero. */
+.pawlira-content-hero{background:#faf8f3}
+.pawlira-content-hero.pawlira-campaign-hero{background:linear-gradient(100deg,#cb2410,#a31400)}
+.pawlira-editorial-page .pawlira-home-black,.pawlira-about-page .pawlira-home-black{background:#000}

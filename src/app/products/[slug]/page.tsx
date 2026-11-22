@@ -1,7 +1,6 @@
 import { AddToCart } from "@/components/cart/AddToCart";
 import LoadingProductGallery from "@/components/loadings/skeleton/SkeletonProductGallery";
 import ProductGallery from "@/components/product/ProductGallery";
-import Tabs from "@/components/product/Tabs";
 import { VariantSelector } from "@/components/product/VariantSelector";
 import { getProduct, getProductRecommendations } from "@/lib/shopify";
 import LatestProducts from "@/partials/FeaturedProducts";
@@ -9,12 +8,11 @@ import Link from "next/link";
 import ProductSectionNav from "@/components/product/ProductSectionNav";
 import {productFields} from "@/lib/utils/productFields";
 import {customerOptions,customerText,customerHtml,customerVariants} from "@/lib/utils/customerProduct";
-import DimensionsGuide from "@/components/product/DimensionsGuide";
 import {compatibleAccessories} from "@/lib/shopify/accessories";
-import ProductStory from "@/components/product/ProductStory";
+import ProductStory,{productStoryImages} from "@/components/product/ProductStory";
 import {getStoreNavigation} from "@/lib/shopify/navigation";
 import {LuBookOpen} from "react-icons/lu";
-import {LuPackage as FiPackage,LuRefreshCcw as FiRefreshCcw,LuCircleHelp as FiHelpCircle,LuArrowUpRight as FiArrowUpRight} from "react-icons/lu";
+import {LuPackage as FiPackage,LuRefreshCcw as FiRefreshCcw,LuCircleHelp as FiHelpCircle,LuArrowUpRight as FiArrowUpRight,LuChevronRight} from "react-icons/lu";
 import { notFound } from "next/navigation";
 import { Suspense, cache } from "react";
 import config from "@/config/config.json";
@@ -66,6 +64,7 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
   const relatedProducts=Array.from(new Map(recommended.filter(p=>p.id!==id&&p.availableForSale).map(p=>[p.id,p])).values()).slice(0,3);
   const fields=productFields(product);
   const galleryImages=Array.from(new Map([...(product.featuredImage?.url?[product.featuredImage]:[]),...images].filter(i=>i.url).map(i=>[i.url.split("?")[0],i])).values());
+  const storyImages=productStoryImages(product).gallery;
 
   const defaultVariantId = variants.length > 0 ? variants[0].id : undefined;
   const url=new URL("/products/"+encodeURIComponent(product.handle),config.site.base_url).toString();
@@ -80,7 +79,7 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
       <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(structuredData).replace(/</g,"\\u003c")}} />
       <section id="kop" className="py-16 lg:py-24 pawlira-product-purchase-section scroll-mt-32">
         <div className="pawlira-pdp-container">
-          <nav aria-label="Brödsmulor" className="flex flex-wrap gap-2 text-xs text-neutral-600 mb-6"><Link href="/">Hem</Link><span aria-hidden="true">/</span><Link href="/products">Produkter</Link><span aria-hidden="true">/</span><span aria-current="page">{title}</span></nav>
+          <nav aria-label="Brödsmulor" className="pawlira-catalog-breadcrumb pawlira-product-breadcrumb"><Link href="/">Hem</Link><LuChevronRight aria-hidden="true" strokeWidth={1.5}/><Link href="/products">Produkter</Link><LuChevronRight aria-hidden="true" strokeWidth={1.5}/><span aria-current="page">{title}</span></nav>
           <div className="pawlira-pdp-grid grid grid-cols-1 lg:grid-cols-12 gap-12">
             {/* right side contents  */}
             <div className="min-w-0 lg:col-span-7"><div className="pawlira-gallery-frame">
@@ -109,17 +108,15 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
                 </Suspense>
               </div>
 
-              {description && <p className="text-sm leading-relaxed text-text-light mb-6">{description.slice(0, 240)}{description.length > 240 ? "…" : ""}</p>}
-              <Link href={"/compare?product="+encodeURIComponent(product.handle)} className="pawlira-product-compare-link">Jämför med andra modeller <FiArrowUpRight size={20} strokeWidth={1.5}/></Link>
-              <div className="pawlira-purchase-facts">{[{Icon:FiPackage,title:"Leverans",href:"/shipping-policy"},{Icon:FiRefreshCcw,title:"Retur",href:"/refund-policy"},{Icon:FiHelpCircle,title:"Kundservice",href:"/contact"}].map(({Icon,title,href})=><Link href={href} key={href}><Icon size={20} strokeWidth={1.5}/><span>{title}</span><FiArrowUpRight size={20} strokeWidth={1.5}/></Link>)}</div><Tabs descriptionHtml={descriptionHtml} fields={fields} /></div>
+              {descriptionHtml&&<div className="content pawlira-product-description text-sm leading-relaxed text-text-light mb-6" dangerouslySetInnerHTML={{__html:descriptionHtml}}/>}
+              <div className="pawlira-purchase-facts">{[{Icon:FiPackage,title:"Leverans",href:"/shipping-policy"},{Icon:FiRefreshCcw,title:"Retur",href:"/refund-policy"},{Icon:FiHelpCircle,title:"Kundservice",href:"/contact"}].map(({Icon,title,href})=><Link href={href} key={href}><Icon size={20} strokeWidth={1.5}/><span>{title}</span><LuChevronRight size={18} strokeWidth={1.5}/></Link>)}</div></div>
             </div>
           </div>
         </div>
       </section>
 
-      <ProductSectionNav hasDetails={fields.some(f=>f.title!=="Vanliga frågor"&&f.value.trim())} hasGallery={new Set(images.filter(i=>i.url).map(i=>i.url)).size>2} hasRelated={relatedProducts.length>0}/>
-      <div className="pawlira-band pawlira-band-warm"><DimensionsGuide fields={fields}/></div>
-      <ProductStory product={{...product,description,descriptionHtml}} fields={fields}/>
+      <ProductSectionNav hasDetails={true} hasGallery={storyImages.length>0} hasFaq={false} hasRelated={relatedProducts.length>0}/>
+      <ProductStory product={{...product,description,descriptionHtml}} descriptionHtml={descriptionHtml} fields={fields}/>
       <section className="container pawlira-home-section pawlira-pdp-guide-section"><div className="pawlira-pdp-guide-card"><div className="pawlira-pdp-guide-icon"><LuBookOpen size={30} strokeWidth={1.5} aria-hidden="true"/></div><div className="pawlira-pdp-guide-copy"><h2>Hitta rätt produkt för din katt</h2><p>Vår köpguide hjälper dig att jämföra egenskaper, mått och funktioner utifrån din katts behov.</p></div><Link href={guideHref} className="btn btn-primary">Öppna köpguiden <FiArrowUpRight size={18} strokeWidth={1.5}/></Link></div></section>
       {/* Recommended Products section  */}
       {relatedProducts?.length > 0 && <section id="relaterade" className="container pawlira-home-section scroll-mt-48">
