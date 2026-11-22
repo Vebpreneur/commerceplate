@@ -628,3 +628,11 @@ body main .pawlira-pdp-showcase-copy h2{font-size:clamp(36px,4.5vw,72px)!importa
 .pawlira-product-detail-accordions .pawlira-detail-values{font-size:16px;line-height:1.6}
 @media(max-width:767px){.pawlira-pdp-showcase-inner,.pawlira-pdp-showcase-chapter{grid-template-columns:1fr;min-height:0;gap:22px;padding-block:48px}.pawlira-pdp-showcase-inner .pawlira-pdp-showcase-image{grid-row:1;min-height:260px;max-height:400px}.pawlira-pdp-showcase-chapter .pawlira-pdp-showcase-image{min-height:270px}.pawlira-pdp-showcase-copy .pawlira-eyebrow{margin-bottom:14px}body main .pawlira-pdp-showcase-copy h2{font-size:clamp(33px,9vw,48px)!important;margin-bottom:16px}.pawlira-pdp-showcase-copy>p:not(.pawlira-eyebrow){font-size:17px}.pawlira-pdp-showcase-link{margin-top:20px}}
 @media(prefers-reduced-motion:reduce){.pawlira-pdp-showcase-link{transition:none}}
+
+/* About-only neutral variant for the consolidated brand principles. */
+.pawlira-about-page .pawlira-about-values-light{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.pawlira-about-page .pawlira-about-values-light article{background:var(--pawlira-paper,#faf8f3);border:1px solid var(--pawlira-neutral-line,#e5e5e5);border-radius:16px;padding:clamp(22px,2.5vw,34px);color:#242222}
+.pawlira-about-page .pawlira-about-values-light .pawlira-about-value-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:22px;color:#444}
+.pawlira-about-page .pawlira-about-values-light article h3{font-size:clamp(20px,1.8vw,26px);font-weight:600;line-height:1.18;letter-spacing:-.03em;color:#242222;margin:0 0 12px}
+.pawlira-about-page .pawlira-about-values-light article p{font-size:16px;line-height:1.65;color:#4c4c4c;margin:0}
+@media(max-width:767px){.pawlira-about-page .pawlira-about-values-light{grid-template-columns:1fr}}
