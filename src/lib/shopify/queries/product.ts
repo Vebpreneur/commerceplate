@@ -21,6 +21,17 @@ export const getProductQuery = /* GraphQL */ `
         {namespace:"custom",key:"underhall"},
         {namespace:"custom",key:"safety"},
         {namespace:"custom",key:"sakerhet"},
+        {namespace:"custom",key:"safety_information"},
+        {namespace:"custom",key:"sakerhetsinformation"},
+        {namespace:"custom",key:"safety_instructions"},
+        {namespace:"custom",key:"specifikationer"},
+        {namespace:"custom",key:"technical_details"},
+        {namespace:"custom",key:"product_details"},
+        {namespace:"custom",key:"dimensions"},
+        {namespace:"custom",key:"measurements"},
+        {namespace:"custom",key:"what_is_included"},
+        {namespace:"custom",key:"package_contents"},
+        {namespace:"custom",key:"care_instructions"},
         {namespace:"custom",key:"faq"}
       ]) { namespace key type value }
     }
