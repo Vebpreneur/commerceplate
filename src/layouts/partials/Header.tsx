@@ -13,7 +13,7 @@ import {LuMenu as FiMenu,LuX as FiX,LuChevronDown as FiChevronDown,LuArrowUpRigh
 import {modelName} from "@/lib/utils/modelName";
 const categoryHref=(handle:string)=>"/products?c="+encodeURIComponent(handle);
 const productHref=(handle:string)=>"/products/"+encodeURIComponent(handle);
-const aboutLinks=[{title:"Om Pawlira",href:"/about"},{title:"Vår filosofi",href:"/var-filosofi"},{title:"Våra designprinciper",href:"/designprinciper"}];
+const aboutLinks=[{title:"Om Pawlira",href:"/about"}];
 const discoverLinks=[{title:"Guider",href:"/guider"},{title:"Köpguide",href:"/kopguide"},{title:"Jämför modeller",href:"/compare"},{title:"Så fungerar det",href:"/sa-fungerar-det"}];
 const customerLinks=[{title:"Kontakta oss",href:"/contact"},{title:"Vanliga frågor",href:"/faq"},{title:"Leverans",href:"/shipping-policy"},{title:"Retur och ångerrätt",href:"/refund-policy"}];
 const support=[...aboutLinks,...discoverLinks,...customerLinks];
