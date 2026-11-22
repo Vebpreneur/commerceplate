@@ -75,6 +75,41 @@ function ProductDetailsEditorial({family}:{family:ProductFamily}){
  return <section className="container pawlira-catalog-width pawlira-catalog-editorial-list pawlira-product-detail-editorial" aria-label="Produkt- och kategoriinformation">{rows.map(row=><article key={row.title} className="pawlira-catalog-editorial-row"><h2>{row.title}</h2><div className="pawlira-catalog-editorial-copy">{row.paragraphs.map((paragraph,index)=><p key={index}>{paragraph}</p>)}</div></article>)}</section>;
 }
 
+const familyQuestions:Record<ProductFamily,{title:string;answer:string}[]>={
+ litter:[
+  {title:"Hur vet jag om en självrengörande kattlåda passar min katt?",answer:"Kontrollera modellens öppning, invändiga mått samt kattens vikt och ålder mot produktens användningsgränser. Låt katten bekanta sig med lådan i lugn takt."},
+  {title:"Vilken kattsand kan jag använda?",answer:"Strötyp och rekommenderad fyllnadsnivå skiljer sig mellan modeller. Läs produktens specifikationer och manual innan du fyller på."},
+  {title:"Hur ofta behöver avfallsbehållaren tömmas?",answer:"Det beror på behållarens kapacitet, hur många katter som använder lådan och hur ofta den används. Kontrollera avfallet regelbundet och följ modellens skötselråd."},
+  {title:"Vilka säkerhetsfunktioner finns?",answer:"Sensorer och stoppfunktioner varierar mellan modeller. Produktens säkerhetsinformation och användningsgränser beskriver vad som gäller för den aktuella modellen."}
+ ],
+ feeder:[
+  {title:"Vilket foder fungerar i automaten?",answer:"Kontrollera vilka fodertyper och storlekar som anges för den aktuella modellen. Använd inte andra typer om de inte stöds i manualen."},
+  {title:"Hur ställer jag in portioner och måltider?",answer:"Antal måltider, portionsstorlek och inställningsmetod varierar. Följ den aktuella modellens instruktioner och kontrollera den mängd foder som faktiskt serveras."},
+  {title:"Fungerar automaten utan Wi-Fi?",answer:"Det beror på modellen. Vissa kan styras med knappar eller timer och andra har appfunktioner. Läs anslutningskraven i produktspecifikationen."},
+  {title:"Hur rengör jag en foderautomat?",answer:"Följ modellens skötselanvisningar för matbehållare och löstagbara delar. Håll elektroniska delar torra enligt manualen."}
+ ],
+ water:[
+  {title:"Hur ofta behöver jag byta vattnet?",answer:"Byt och fyll på färskt vatten regelbundet. Följ modellens anvisningar för rengöring, särskilt i pump och vattenbehållare."},
+  {title:"Vilka filter passar vattenfontänen?",answer:"Kontrollera vilken filtertyp som anges för modellen. Filter och bytesintervall kan skilja sig åt mellan olika vattenfontäner."},
+  {title:"Hur rengör jag pumpen?",answer:"Koppla från strömmen enligt manualen och följ instruktionerna för demontering och rengöring av pump och andra delar."},
+  {title:"Hur hjälper jag katten att vänja sig?",answer:"Placera gärna fontänen bredvid den vanliga vattenskålen och låt katten undersöka den i egen takt. Behåll tillgången till färskt vatten under introduktionen."}
+ ],
+ other:[
+  {title:"Hur vet jag om produkten passar min katt?",answer:"Jämför produktens mått, användningsgränser och funktioner med kattens storlek, vanor och behoven hemma."},
+  {title:"Vad ingår när jag beställer?",answer:"Vad som ingår varierar mellan modeller och varianter. Läs produktens specifikationer och förpackningsinnehåll."},
+  {title:"Hur sköter jag produkten?",answer:"Följ den medföljande manualens instruktioner för användning, rengöring och eventuella förbrukningsdelar."},
+  {title:"Var hittar jag fler uppgifter?",answer:"Se produktens tekniska specifikationer ovan eller kontakta kundservice om en viktig uppgift saknas."}
+ ]
+};
+
+function ProductFaq({family,fields}:{family:ProductFamily;fields:ProductField[]}){
+ const submitted=fields.filter(field=>field.key==="faq");
+ return <section id="kundinformation" className="container pawlira-catalog-width pawlira-catalog-faq pawlira-product-faq scroll-mt-32" aria-labelledby="pawlira-product-faq-title"><h2 id="pawlira-product-faq-title">Vanliga frågor</h2><div className="pawlira-catalog-faq-list">
+  {submitted.map((field,index)=><Accordion key={"custom-"+index} title={field.title==="Vanliga frågor"?"Frågor och svar för modellen":field.title}><FieldDetails value={field.value}/></Accordion>)}
+  {familyQuestions[family].map(item=><Accordion key={item.title} title={item.title}><p>{item.answer}</p></Accordion>)}
+ </div></section>;
+}
+
 function ProductShowcase({product,family}:{product:Product;family:ProductFamily}){
  const info=familyInfo[family];
  const photos=Array.from(new Map(product.images.filter(image=>image.url).map(image=>[image.url.split("?")[0],image])).values());
@@ -121,6 +156,7 @@ export default function ProductStory({product,fields,descriptionHtml,family="oth
     })}
    </div>
   </section>
+  <ProductFaq family={family} fields={fields}/>
   <ProductDetailsEditorial family={family}/>
  </>;
 }
