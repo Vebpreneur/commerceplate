@@ -5,6 +5,7 @@ import type {Product} from "@/lib/shopify/types";
 import type {ProductField} from "@/lib/utils/productFields";
 import Accordion from "@/shortcodes/Accordion";
 import FieldDetails from "./FieldDetails";
+import DimensionsGuide from "./DimensionsGuide";
 
 export type ProductFamily="litter"|"feeder"|"water"|"other";
 type EditorialRow={title:string;paragraphs:ReactNode[]};
@@ -100,7 +101,7 @@ export default function ProductStory({product,fields,descriptionHtml,family="oth
  const accordionGroups=[
   {title:"Tekniska specifikationer",key:"spec",fallback:""},
   {title:"Funktioner och egenskaper",key:"features",fallback:""},
-  {title:"Produktinformation",key:"details",fallback:""},
+  {title:"Produktinformation",key:"details",fallback:!byKey("details").length?product.description?.trim()||"":""},
   {title:"Vad ingår i förpackningen?",key:"included",fallback:""},
   {title:"Kompatibilitet",key:"compatibility",fallback:""},
   {title:"Användning och underhåll",key:"usage",fallback:familyInfo[family].use},
@@ -108,6 +109,7 @@ export default function ProductStory({product,fields,descriptionHtml,family="oth
  ].filter(group=>byKey(group.key).length>0||(group.key==="spec"&&!!descriptionSpecs)||!!group.fallback);
  return <>
   <ProductShowcase product={product} family={family}/>
+  <div className="pawlira-band pawlira-band-warm"><DimensionsGuide fields={fields}/></div>
   {visibleImages.length>0&&<section id="produktbilder" className="container pawlira-home-section scroll-mt-32"><div className="pawlira-section-heading"><div><h2>Produktbilder</h2></div></div><div className="pawlira-story-gallery">{visibleImages.map((image,index)=><div className={"pawlira-story-gallery-image "+(index===0&&visibleImages.length%2===1?"pawlira-story-gallery-wide":"")} key={image.url}><Image src={image.url} alt={image.altText||product.title} fill sizes="(max-width: 767px) 90vw, 50vw" className="object-contain"/></div>)}</div></section>}
   <section id="produktinformation" className="container pawlira-catalog-width pawlira-catalog-faq scroll-mt-32">
    <h2>Produktdetaljer</h2>
