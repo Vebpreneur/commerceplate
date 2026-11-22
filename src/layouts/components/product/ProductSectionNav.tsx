@@ -1,8 +1,8 @@
 "use client";
 import {useEffect,useState,useRef,useMemo} from "react";
 type Item={id:string;label:string};
-export default function ProductSectionNav({hasDetails,hasGallery,hasFaq,hasRelated}:{hasDetails:boolean;hasGallery:boolean;hasFaq:boolean;hasRelated:boolean}){
- const items=useMemo<Item[]>(()=>[{id:"kop",label:"Produktval"},...(hasDetails?[{id:"produktinformation",label:"Produktdetaljer"},{id:"specifikationer",label:"Specifikationer"}]:[]),...(hasGallery?[{id:"produktbilder",label:"Bilder"}]:[]),...(hasFaq?[{id:"kundinformation",label:"Frågor & svar"}]:[]),...(hasRelated?[{id:"relaterade",label:"Relaterade produkter"}]:[])],[hasDetails,hasGallery,hasFaq,hasRelated]);
+export default function ProductSectionNav({hasDetails,hasSpecs,hasGallery,hasFaq,hasRelated}:{hasDetails:boolean;hasSpecs:boolean;hasGallery:boolean;hasFaq:boolean;hasRelated:boolean}){
+ const items=useMemo<Item[]>(()=>[{id:"kop",label:"Produktval"},...(hasDetails?[{id:"produktinformation",label:"Produktdetaljer"},...(hasSpecs?[{id:"specifikationer",label:"Specifikationer"}]:[])]:[]),...(hasGallery?[{id:"produktbilder",label:"Bilder"}]:[]),...(hasFaq?[{id:"kundinformation",label:"Frågor & svar"}]:[]),...(hasRelated?[{id:"relaterade",label:"Relaterade produkter"}]:[])],[hasDetails,hasSpecs,hasGallery,hasFaq,hasRelated]);
  const [active,setActive]=useState("kop"),[top,setTop]=useState(0);
  const nav=useRef<HTMLElement>(null);
  useEffect(()=>{const header=document.querySelector<HTMLElement>("header.pawlira-polished-header");const measure=()=>{const sticky=header&&["sticky","fixed"].includes(getComputedStyle(header).position);setTop(sticky?header.getBoundingClientRect().height:0)};measure();const ro=new ResizeObserver(measure);if(header)ro.observe(header);window.addEventListener("resize",measure);return()=>{ro.disconnect();window.removeEventListener("resize",measure)}},[]);
