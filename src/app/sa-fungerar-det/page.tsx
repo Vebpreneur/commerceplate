@@ -1,11 +1,3 @@
-import Link from "next/link";
-import PawliraPageHero from "@/partials/PawliraPageHero";
-import {LuArrowUpRight,LuClipboardCheck,LuSearch,LuShoppingBag} from "react-icons/lu";
-
-export const metadata={title:"Så fungerar det | Pawlira",description:"Så hittar du rätt Pawlira-produkt: börja med behovet, jämför specifikationerna och följ produktens instruktioner hemma."};
-const steps=[
- {Icon:LuSearch,title:"1. Börja med behovet",text:"Tänk igenom vilken rutin du vill förenkla: rengöring, mat eller vatten. Mät platsen där produkten ska stå och fundera på kattens storlek och vanor."},
- {Icon:LuClipboardCheck,title:"2. Jämför modeller",text:"Läs mått, kapacitet, funktioner och tekniska krav. Kontrollera vad som ingår och vilka skötselråd eller förbrukningsdelar modellen har."},
- {Icon:LuShoppingBag,title:"3. Välj och introducera",text:"Kontrollera variant, leveransvillkor och produktens gränser före köp. När produkten kommit hem följer du manualen och låter katten vänja sig i sin takt."}
-];
-export default function HowItWorks(){return <div className="pawlira-editorial-page"><PawliraPageHero title="Så fungerar det" description="Från produktval till vardag: en enkel process för att hitta, kontrollera och introducera rätt lösning för din katt." breadcrumbs={[{label:"Om Pawlira",href:"/about"}]}/><section className="pawlira-home-black"><div className="container"><div className="pawlira-section-heading"><div><h2>Från behov till trygg användning</h2><p className="pawlira-section-description">Ta ett steg i taget och kontrollera modellens uppgifter innan du börjar använda den.</p></div></div><div className="pawlira-about-values">{steps.map(({Icon,title,text},i)=><article key={title}><div className="pawlira-about-value-top"><Icon size={20} strokeWidth={1.5}/><span>0{i+1}</span></div><h3>{title}</h3><p>{text}</p></article>)}</div></div></section><section className="container pawlira-home-section"><div className="pawlira-about-manifesto"><div><h2 className="pawlira-large-heading">Välj med bra underlag</h2><p className="pawlira-section-description">Använd verktygen för att gå från kategori till konkret modelljämförelse.</p></div><div className="pawlira-about-paths"><Link href="/kopguide"><LuSearch size={20}/><div><h3>Köpguide</h3><p>Välj produktkategori och få en checklista.</p></div><LuArrowUpRight size={20}/></Link><Link href="/compare"><LuClipboardCheck size={20}/><div><h3>Jämför modeller</h3><p>Se specifikationer, pris och alternativ i en tabell.</p></div><LuArrowUpRight size={20}/></Link></div></div></section></div>}
+import {permanentRedirect} from "next/navigation";
+// "Så fungerar det" is now a complete section of Om Pawlira.
+export default function MergedHowItWorks(){permanentRedirect("/about");}
