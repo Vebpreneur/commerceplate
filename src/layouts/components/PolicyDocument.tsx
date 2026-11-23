@@ -89,7 +89,7 @@ function PolicySummary({kind}:{kind:PolicyKind}){
 }
 export default function PolicyDocument({kind,body}:{kind:PolicyKind;body:string|null|undefined}){
  const sections=sectionsFromShopify(body||"");
- const hasOriginal=!!body?.trim();
+ const hasOriginal=sections.length>0;
  return <div className="pawlira-policy-page-content">
   <TermsHighlights kind={kind}/>
   <PolicySummary kind={kind}/>
@@ -98,7 +98,7 @@ export default function PolicyDocument({kind,body}:{kind:PolicyKind;body:string|
   <div className="pawlira-policy-original">
    <div className="pawlira-policy-original-heading"><div><p className="pawlira-policy-kicker">Villkorsinformation</p><h2>{kind==="termsOfService"?"Fullständiga köpvillkor":kind==="refundPolicy"?"Fullständiga returvillkor":kind==="shippingPolicy"?"Leveransvillkor":"Integritetspolicy"}</h2><p>Informationen nedan hämtas från butikens villkor och visas med tydligare avsnitt och avgränsningar.</p></div></div>
    {hasOriginal?<div className="pawlira-policy-document-layout">
-    {sections.length>1&&<nav className="pawlira-policy-toc" aria-label="På den här sidan"><h3>Innehåll</h3>{sections.map((item,i)=><a key={i} href={"#villkor-"+i}>{item.title}</a>)}</nav>}
+    {sections.length>1&&<nav className="pawlira-policy-toc" aria-label="På den här sidan"><h3>Innehåll</h3>{sections.map((item,i)=><a key={i} href={"#villkor-"+i}><span className="pawlira-policy-toc-index">{String(i+1).padStart(2,"0")}</span><span>{item.title}</span></a>)}</nav>}
     <div className="pawlira-policy-sections">{sections.map((item,i)=><section className="pawlira-policy-section" id={"villkor-"+i} key={i}><div className="pawlira-policy-section-number">{String(i+1).padStart(2,"0")}</div><div className="pawlira-policy-section-text"><h3>{item.title}</h3><div className="content pawlira-policy-shopify-html" dangerouslySetInnerHTML={{__html:item.html}}/></div></section>)}</div>
    </div>:<div className="pawlira-policy-missing"><p>Den fullständiga texten från butikens policy är för närvarande inte tillgänglig i denna vy.</p><Link href="/contact">Kontakta oss för information <LuArrowUpRight size={17}/></Link></div>}
   </div>
