@@ -16,7 +16,7 @@ const steps=[
 ];
 
 export default function About(){
- return <main className="pawlira-about-page">
+ return <div className="pawlira-about-page">
   <PawliraPageHero title="Om Pawlira"/>
   <section className="container pawlira-home-section"><div className="pawlira-about-manifesto"><div><h2 className="pawlira-large-heading">Teknik som får ta hand om måsten</h2></div><div className="pawlira-about-prose"><p>Pawlira är en svensk webbutik med självrengörande kattlådor, foderautomater och vattenfontäner. Vi samlar smarta lösningar för de rutiner som återkommer varje dag.</p><p>Vi vill göra produktvalet tydligare. Därför hjälper vi kattägare att jämföra mått, kapacitet, funktioner och skötsel – så att det blir lättare att välja utifrån katten och hemmet.</p><p>Automatiska funktioner kan avlasta vardagen, men ersätter aldrig omtanke eller tillsyn. Vårt fokus är praktisk teknik som fungerar tillsammans med kattens behov.</p></div></div></section>
   <section className="pawlira-home-black pawlira-about-overview"><div className="container"><div className="pawlira-about-black-head"><div><h2 className="pawlira-large-heading">Det här står Pawlira för</h2></div></div><div className="pawlira-about-values">
@@ -26,5 +26,5 @@ export default function About(){
   <section id="designprinciper" className="pawlira-about-principles scroll-mt-36"><div className="container pawlira-home-section"><h2 className="pawlira-large-heading">Våra designprinciper</h2><div className="pawlira-about-principle-rows">{principles.map(item=><article className="pawlira-about-principle-row" key={item.number}><span className="pawlira-about-principle-number">{item.number}</span><h3>{item.title}</h3><p>{item.text}</p></article>)}</div></div></section>
   <section id="sa-fungerar-det" className="container pawlira-home-section scroll-mt-36"><div className="pawlira-section-heading"><div><h2>Så fungerar det</h2><p className="pawlira-section-description">Så går du från ett vardagsbehov till ett genomtänkt produktval.</p></div></div><div className="pawlira-about-process">{steps.map(({Icon,title,text},i)=><article key={title}><div className="pawlira-about-process-index"><Icon size={22} strokeWidth={1.5}/><span>0{i+1}</span></div><h3>{title}</h3><p>{text}</p></article>)}</div></section>
   <section className="pawlira-about-final"><div className="container pawlira-home-section"><div className="pawlira-about-manifesto"><div><h2 className="pawlira-large-heading">Hitta rätt lösning för ditt hem</h2><p className="pawlira-section-description">Redo att se vilka produkter som passar dig och din katt?</p></div><div className="pawlira-about-paths"><Link href="/products"><LuShoppingBag size={20} strokeWidth={1.5}/><div><h3>Utforska sortimentet</h3><p>Upptäck kattlådor, foderautomater och vattenfontäner.</p></div><LuArrowUpRight size={20} strokeWidth={1.5}/></Link><Link href="/kopguide"><LuBookOpen size={20} strokeWidth={1.5}/><div><h3>Öppna köpguiden</h3><p>Ta hjälp av en vägledd genomgång före köp.</p></div><LuArrowUpRight size={20} strokeWidth={1.5}/></Link></div></div></div></section>
- </main>;
+ </div>;
 }
