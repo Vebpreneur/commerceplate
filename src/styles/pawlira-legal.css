@@ -76,3 +76,21 @@
 @media(max-width:1023px){.pawlira-policy-document-layout{grid-template-columns:minmax(140px,.65fr) minmax(0,2fr);gap:28px}.pawlira-policy-payments{grid-template-columns:1fr}.pawlira-policy-payments-footnote{grid-column:1}}
 @media(max-width:767px){.pawlira-policy-wrapper{padding-block:34px 64px}.pawlira-policy-page-content{gap:46px}.pawlira-policy-highlights{grid-template-columns:1fr;gap:10px}.pawlira-policy-highlight{padding:20px}.pawlira-policy-highlight h2{font-size:21px}.pawlira-policy-summary-grid{grid-template-columns:1fr}.pawlira-policy-payments-cards{grid-template-columns:repeat(2,minmax(0,1fr))}.pawlira-policy-payment{min-height:61px}.pawlira-policy-document-layout{grid-template-columns:1fr}.pawlira-policy-toc{position:static;max-height:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 12px}.pawlira-policy-toc h3{grid-column:1/-1}.pawlira-policy-section{grid-template-columns:30px minmax(0,1fr);gap:12px;padding:26px 0}.pawlira-policy-contact-footer{flex-direction:column;align-items:flex-start;gap:24px}.pawlira-policy-privacy-contact{flex-direction:column;padding:22px}.pawlira-contact-form-panel-heading{padding:22px 20px 0}.pawlira-contact-form-panel>.pawlira-contact-form{padding:22px 20px}}
 @media(prefers-reduced-motion:reduce){.pawlira-policy-toc a{transition:none}}
+
+/* Refined legal document reading experience: numbered TOC, clear nested hierarchy. */
+.pawlira-policy-toc{gap:4px;border-right:1px solid #ece9e3;padding-right:clamp(12px,2vw,25px)}
+.pawlira-policy-toc a{display:grid;grid-template-columns:24px minmax(0,1fr);gap:12px;align-items:start;padding:11px 9px;border-radius:7px;font-size:15px;line-height:1.4;transition:background-color .18s,color .18s}
+.pawlira-policy-toc a:hover,.pawlira-policy-toc a:focus-visible{background:#faf8f3;text-decoration:none}
+.pawlira-policy-toc-index{font-size:12px;line-height:1.75;font-weight:600;color:#96908a;font-variant-numeric:tabular-nums}
+.pawlira-policy-section{padding:clamp(32px,3.5vw,52px) 0;gap:clamp(16px,2vw,30px);grid-template-columns:35px minmax(0,1fr)}
+.pawlira-policy-section-number{font-size:16px;font-weight:600;letter-spacing:-.015em;color:#8d8982}
+.pawlira-policy-section-text>h3{font-size:clamp(26px,2.5vw,36px);font-weight:500;line-height:1.17;letter-spacing:-.04em;margin:0 0 26px}
+.pawlira-policy-section-text .pawlira-policy-shopify-html{font-size:16px;line-height:1.85;max-width:76ch;color:#47433f}
+.pawlira-policy-shopify-html :is(p,ul,ol){margin-bottom:1.25em}
+.pawlira-policy-shopify-html p+p{margin-top:.85em}
+.pawlira-policy-shopify-html :is(h2,h3,h4){padding-top:4px;border-top:1px solid #ebe8e2;padding-bottom:0;margin-top:2.3em!important;margin-bottom:.85em!important;font-size:clamp(18px,1.7vw,23px)!important;line-height:1.25!important}
+.pawlira-policy-shopify-html :is(h2,h3,h4):first-child{margin-top:0!important;border-top:0}
+.pawlira-policy-shopify-html blockquote{padding:18px 22px;background:#faf8f3;border-left:2px solid #bdb7aa;border-radius:0 8px 8px 0}
+.pawlira-policy-shopify-html :is(ul,ol) li::marker{color:#878078}
+.pawlira-policy-shopify-html a:hover{text-decoration-thickness:2px}
+@media(max-width:767px){.pawlira-policy-toc{border-right:0;border-bottom:1px solid #dedbd5;padding:0 0 26px}.pawlira-policy-toc a{padding:9px 3px;gap:7px;grid-template-columns:18px minmax(0,1fr);font-size:14px}.pawlira-policy-section{grid-template-columns:26px minmax(0,1fr);gap:12px}.pawlira-policy-section-text>h3{font-size:25px;margin-bottom:18px}.pawlira-policy-section-text .pawlira-policy-shopify-html{font-size:15px;line-height:1.75}}
