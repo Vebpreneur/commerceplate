@@ -3,6 +3,7 @@ import Link from "next/link";
 import MDXContent from "@/helpers/MDXContent";
 import { getSinglePage } from "@/lib/contentParser";
 import PageHeader from "@/partials/PageHeader";
+import PolicyDocument from "@/components/PolicyDocument";
 import SeoMeta from "@/partials/SeoMeta";
 import { RegularPage } from "@/types";
 import { notFound } from "next/navigation";
@@ -30,7 +31,7 @@ const RegularPages = async (props: {
   if (Object.prototype.hasOwnProperty.call(policies,params.regular)) {
     const {kind,title}=policies[params.regular as keyof typeof policies];
     const policy=await getShopPolicy(kind);
-    return <><SeoMeta title={title}/><PageHeader title={title}/><section className="py-14"><div className="container"><div className="max-w-3xl mx-auto content">{policy?.body ? <div dangerouslySetInnerHTML={{__html:policy.body}}/> : <><p>Denna information kan för närvarande inte visas här. Läs villkoren i butikens kassa innan du genomför ett köp.</p><Link href="/contact" className="underline">Kontakta Pawlira</Link></>}</div></div></section></>;
+    return <><SeoMeta title={title}/><PageHeader title={title}/><section className="pawlira-policy-wrapper"><div className="container"><PolicyDocument kind={kind} body={policy?.body}/></div></section></>;
   }
   const regularData = getSinglePage("pages");
   const data = regularData.find(
