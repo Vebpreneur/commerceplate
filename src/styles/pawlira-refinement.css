@@ -636,3 +636,59 @@ body main .pawlira-pdp-showcase-copy h2{font-size:clamp(36px,4.5vw,72px)!importa
 .pawlira-about-page .pawlira-about-values-light article h3{font-size:clamp(20px,1.8vw,26px);font-weight:600;line-height:1.18;letter-spacing:-.03em;color:#242222;margin:0 0 12px}
 .pawlira-about-page .pawlira-about-values-light article p{font-size:16px;line-height:1.65;color:#4c4c4c;margin:0}
 @media(max-width:767px){.pawlira-about-page .pawlira-about-values-light{grid-template-columns:1fr}}
+
+/* Support + About: scoped refinements, approved HOME / product catalog untouched. */
+.pawlira-customer-support-page .pawlira-content-hero,
+.pawlira-about-page .pawlira-content-hero,
+.pawlira-customer-faq-page .pawlira-content-hero{min-height:clamp(215px,23vw,320px);padding-block:clamp(54px,6vw,88px)}
+.pawlira-customer-support-page .pawlira-content-hero h1,
+.pawlira-about-page .pawlira-content-hero h1,
+.pawlira-customer-faq-page .pawlira-content-hero h1{margin-bottom:0!important}
+.pawlira-contact-layout{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(32px,5vw,92px);align-items:start}
+.pawlira-contact-introduction>.pawlira-large-heading{margin:0 0 24px}
+.pawlira-contact-introduction>p{font-size:clamp(17px,1.4vw,20px);line-height:1.65;max-width:42ch;color:#4b4946;margin:0}
+.pawlira-contact-email{display:flex;align-items:flex-start;gap:16px;margin-top:36px;padding:24px 0;border-top:1px solid var(--pawlira-neutral-line,#e5e5e5)}
+.pawlira-contact-email h3{font-size:18px;font-weight:600;margin:0 0 8px}
+.pawlira-contact-email a{font-size:17px;color:#242222;text-decoration:underline;text-underline-offset:4px;overflow-wrap:anywhere}
+.pawlira-contact-tips{margin-top:34px;border-top:1px solid var(--pawlira-neutral-line,#e5e5e5);padding-top:24px}
+.pawlira-contact-tips h3{font-size:19px;font-weight:600;line-height:1.2;margin:0 0 12px}
+.pawlira-contact-tips p{color:#555;line-height:1.65;font-size:16px;max-width:46ch;margin:0}
+.pawlira-contact-form{display:flex;flex-direction:column;gap:22px;background:var(--pawlira-paper,#faf8f3);border:1px solid var(--pawlira-neutral-line,#e5e5e5);border-radius:18px;padding:clamp(22px,3vw,42px)}
+.pawlira-contact-form-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.pawlira-contact-form label{display:flex;flex-direction:column;gap:9px;color:#242222;font-size:15px;font-weight:600;line-height:1.4}
+.pawlira-contact-form label>span{color:#a7221b}
+.pawlira-contact-input{box-sizing:border-box;display:block;width:100%;min-width:0;min-height:50px;background:#fff;color:#242222;border:1px solid #d5d5d5;border-radius:9px;padding:12px 14px;font:inherit;font-size:16px;font-weight:400;line-height:1.5;transition:border-color .2s,box-shadow .2s}
+.pawlira-contact-input::placeholder{color:#777}
+.pawlira-contact-input:focus{outline:none;border-color:#242222;box-shadow:0 0 0 2px rgba(36,34,34,.13)}
+.pawlira-contact-form textarea.pawlira-contact-input{min-height:164px;resize:vertical}
+.pawlira-contact-form select.pawlira-contact-input{appearance:auto;cursor:pointer}
+.pawlira-contact-honeypot{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip-path:inset(50%)!important;white-space:nowrap}
+.pawlira-contact-form-submit{display:flex;flex-direction:column;align-items:flex-start;gap:14px}
+.pawlira-contact-form-submit button{min-height:51px;padding:12px 32px;font-size:16px;font-weight:600}
+.pawlira-contact-form-submit button:disabled{opacity:.55;cursor:wait}
+.pawlira-contact-form-submit p{font-size:13px;line-height:1.55;color:#646464;margin:0}
+.pawlira-contact-form-submit a{text-decoration:underline;text-underline-offset:3px}
+.pawlira-contact-success,.pawlira-contact-error,.pawlira-contact-notice{font-size:15px;line-height:1.55;padding:14px 16px;margin:0;border-radius:8px;background:#fff}
+.pawlira-contact-success{color:#205a34;border:1px solid #a5d1af}
+.pawlira-contact-error{color:#8e251d;border:1px solid #dfaaa4}
+.pawlira-contact-notice{color:#242222;border:1px solid #d5d5d5}
+.pawlira-contact-more{border-top:1px solid var(--pawlira-neutral-line,#e5e5e5)}
+.pawlira-about-page .pawlira-about-overview .pawlira-about-black-head{margin-bottom:clamp(28px,3vw,42px)}
+.pawlira-about-page .pawlira-about-overview .pawlira-about-black-head h2{margin:0}
+.pawlira-about-page .pawlira-about-principles{background:var(--pawlira-paper,#faf8f3)}
+.pawlira-about-principles h2{margin:0 0 clamp(32px,4vw,56px)}
+.pawlira-about-principle-rows{display:flex;flex-direction:column;border-top:1px solid #dcd9d2}
+.pawlira-about-principle-row{display:grid;grid-template-columns:50px minmax(190px,.8fr) minmax(0,1.4fr);align-items:start;gap:clamp(18px,3vw,48px);padding:clamp(24px,3vw,38px) 0;border-bottom:1px solid #dcd9d2}
+.pawlira-about-principle-number{font-size:15px;color:#807d77;font-weight:500}
+.pawlira-about-principle-row h3{font-size:clamp(23px,2.2vw,34px);font-weight:500;line-height:1.15;letter-spacing:-.04em;color:#242222;margin:0}
+.pawlira-about-principle-row p{font-size:clamp(16px,1.35vw,19px);line-height:1.65;max-width:52ch;color:#484541;margin:0}
+.pawlira-about-process{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.pawlira-about-process article{padding:clamp(24px,3vw,36px);border:1px solid #e1e1e1;border-radius:16px;background:#fff;min-height:235px}
+.pawlira-about-process-index{display:flex;align-items:center;justify-content:space-between;margin-bottom:30px;color:#52504d}
+.pawlira-about-process-index span{font-size:14px}
+.pawlira-about-process article h3{font-size:clamp(21px,2vw,28px);font-weight:600;line-height:1.2;letter-spacing:-.03em;margin:0 0 14px}
+.pawlira-about-process article p{font-size:16px;line-height:1.65;color:#525252;margin:0}
+.pawlira-about-final{background:var(--pawlira-paper,#faf8f3)}
+@media(max-width:900px){.pawlira-contact-layout{grid-template-columns:1fr}.pawlira-contact-introduction>p{max-width:70ch}.pawlira-about-principle-row{grid-template-columns:38px minmax(140px,.75fr) minmax(0,1.4fr);gap:20px}}
+@media(max-width:767px){.pawlira-customer-support-page .pawlira-content-hero,.pawlira-about-page .pawlira-content-hero,.pawlira-customer-faq-page .pawlira-content-hero{min-height:190px;padding-block:38px}.pawlira-contact-form-fields{grid-template-columns:1fr;gap:17px}.pawlira-contact-layout{gap:28px}.pawlira-contact-introduction>.pawlira-large-heading{margin-bottom:14px}.pawlira-contact-form{padding:20px 16px;gap:18px}.pawlira-about-principle-row{grid-template-columns:32px minmax(0,1fr);gap:8px 14px}.pawlira-about-principle-row p{grid-column:2}.pawlira-about-process{grid-template-columns:1fr}.pawlira-about-process article{min-height:0}.pawlira-about-process-index{margin-bottom:18px}}
+@media(prefers-reduced-motion:reduce){.pawlira-contact-input{transition:none}}
