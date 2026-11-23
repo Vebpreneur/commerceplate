@@ -5,20 +5,20 @@ import {SiKlarna,SiVisa,SiMastercard,SiPaypal,SiShopify} from "react-icons/si";
 export type PolicyKind="privacyPolicy"|"termsOfService"|"refundPolicy"|"shippingPolicy";
 type Section={title:string;html:string};
 function cleanText(html:string){
- return html.replace(/<script\\b[^>]*>[\\s\\S]*?<\\/script>/gi,"").replace(/<style\\b[^>]*>[\\s\\S]*?<\\/style>/gi,"")
+ return html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,"").replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi,"")
   .replace(/<[^>]+>/g," ").replace(/&nbsp;|&#160;|&#xA0;/gi," ").replace(/&amp;/gi,"&")
-  .replace(/&(?:#\d+|#x[\da-f]+);/gi," ").replace(/\\s+/g," ").trim();
+  .replace(/&(?:#\d+|#x[\da-f]+);/gi," ").replace(/\s+/g," ").trim();
 }
 function hasVisibleContent(html:string){
- return cleanText(html).length>0||/<(?:img|video|table|iframe)\\b/i.test(html);
+ return cleanText(html).length>0||/<(?:img|video|table|iframe)\b/i.test(html);
 }
 function sectionsFromShopify(body:string):Section[]{
  // Shopify policy HTML may begin with empty paragraphs, whitespace, or a cover heading.
  // Split at h2 headings, keeping h3 subsections inside their parent instead of
  // turning every small subheading into another numbered section.
- const h2=[...body.matchAll(/<h2\\b[^>]*>([\\s\\S]*?)<\\/h2\\s*>/gi)];
+ const h2=[...body.matchAll(/<h2\b[^>]*>([\s\S]*?)<\/h2\s*>/gi)];
  const headingLevel=h2.some(match=>cleanText(match[1]))?2:3;
- const headingPattern=headingLevel===2?/<h2\\b[^>]*>([\\s\\S]*?)<\\/h2\\s*>/gi:/<h3\\b[^>]*>([\\s\\S]*?)<\\/h3\\s*>/gi;
+ const headingPattern=headingLevel===2?/<h2\b[^>]*>([\s\S]*?)<\/h2\s*>/gi:/<h3\b[^>]*>([\s\S]*?)<\/h3\s*>/gi;
  const headings=[...body.matchAll(headingPattern)];
  if(!headings.length)return hasVisibleContent(body)?[{title:"Villkor och information",html:body}]:[];
  const sections:Section[]=[];
