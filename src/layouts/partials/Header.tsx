@@ -14,7 +14,7 @@ import {modelName} from "@/lib/utils/modelName";
 const categoryHref=(handle:string)=>"/products?c="+encodeURIComponent(handle);
 const productHref=(handle:string)=>"/products/"+encodeURIComponent(handle);
 const aboutLinks=[{title:"Om Pawlira",href:"/about"}];
-const discoverLinks=[{title:"Guider",href:"/guider"},{title:"Köpguide",href:"/kopguide"},{title:"Jämför modeller",href:"/compare"},{title:"Så fungerar det",href:"/sa-fungerar-det"}];
+const discoverLinks=[{title:"Guider",href:"/guider"},{title:"Köpguide",href:"/kopguide"},{title:"Jämför modeller",href:"/compare"}];
 const customerLinks=[{title:"Kontakta oss",href:"/contact"},{title:"Vanliga frågor",href:"/faq"},{title:"Leverans",href:"/shipping-policy"},{title:"Retur och ångerrätt",href:"/refund-policy"}];
 const support=[...aboutLinks,...discoverLinks,...customerLinks];
 function MenuImage({image,size=56}:{image?:{url:string;altText?:string}|null;size?:number}){
