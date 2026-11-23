@@ -3,7 +3,7 @@ import type {NavigationCategory} from "@/lib/shopify/navigation";
 import Link from "next/link";
 import {LuArrowUpRight as FiArrowUpRight} from "react-icons/lu";
 const information=[{title:"Leverans",url:"/shipping-policy"},{title:"Retur och ångerrätt",url:"/refund-policy"},{title:"Köpvillkor",url:"/terms-services"},{title:"Integritetspolicy",url:"/privacy-policy"}];
-const discover=[{title:"Guider",url:"/guider"},{title:"Köpguide",url:"/kopguide"},{title:"Jämför modeller",url:"/compare"},{title:"Så fungerar det",url:"/sa-fungerar-det"}];
+const discover=[{title:"Guider",url:"/guider"},{title:"Köpguide",url:"/kopguide"},{title:"Jämför modeller",url:"/compare"}];
 function FooterLinks({title,items}:{title:string;items:{title:string;url:string}[]}){
  return <div><h3>{title}</h3><ul>{items.map(item=><li key={item.url}><Link href={item.url}>{item.title}<FiArrowUpRight size={16} strokeWidth={1.5}/></Link></li>)}</ul></div>;
 }
