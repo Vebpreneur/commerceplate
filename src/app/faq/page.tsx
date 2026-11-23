@@ -9,9 +9,7 @@ export const metadata={title:"Vanliga frågor | Pawlira",description:"Svar om Pa
 
 export default function FrequentlyAskedQuestions(){
  return <div className="pawlira-customer-faq-page">
-  <PawliraPageHero title="Vanliga frågor" description="Hitta svar om produkter, beställningar, leveranser och returer.">
-   <Link href="/contact" className="pawlira-text-link mt-6">Behöver du personlig hjälp? Kontakta oss <FiArrowUpRight size={18} strokeWidth={1.5}/></Link>
-  </PawliraPageHero>
+  <PawliraPageHero title="Vanliga frågor"/>
   <Suspense fallback={<section className="container pawlira-catalog-faq"><div className="pawlira-catalog-faq-list">Laddar frågor…</div></section>}><FaqSection/></Suspense>
   <GettingStarted/>
   <section className="container pawlira-home-section"><div className="pawlira-about-manifesto"><div><p className="pawlira-eyebrow">Fler frågor?</p><h2 className="pawlira-large-heading">Vi hjälper dig vidare</h2><p className="pawlira-section-description">För personlig hjälp med en produkt eller beställning, besök vår kundservicesida.</p></div><div className="flex items-center"><Link href="/contact" className="btn btn-primary rounded-full">Kontakta oss <FiArrowUpRight size={18} strokeWidth={1.5}/></Link></div></div></section>
