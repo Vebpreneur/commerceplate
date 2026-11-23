@@ -5,19 +5,39 @@ import {SiKlarna,SiVisa,SiMastercard,SiPaypal,SiShopify} from "react-icons/si";
 export type PolicyKind="privacyPolicy"|"termsOfService"|"refundPolicy"|"shippingPolicy";
 type Section={title:string;html:string};
 function cleanText(html:string){
- return html.replace(/<[^>]+>/g," ").replace(/&nbsp;/gi," ").replace(/&amp;/gi,"&").replace(/\s+/g," ").trim();
+ return html.replace(/<script\\b[^>]*>[\\s\\S]*?<\\/script>/gi,"").replace(/<style\\b[^>]*>[\\s\\S]*?<\\/style>/gi,"")
+  .replace(/<[^>]+>/g," ").replace(/&nbsp;|&#160;|&#xA0;/gi," ").replace(/&amp;/gi,"&")
+  .replace(/&(?:#\d+|#x[\da-f]+);/gi," ").replace(/\\s+/g," ").trim();
+}
+function hasVisibleContent(html:string){
+ return cleanText(html).length>0||/<(?:img|video|table|iframe)\\b/i.test(html);
 }
 function sectionsFromShopify(body:string):Section[]{
- const matcher=/<h([23])\b[^>]*>([\s\S]*?)<\/h\1>/gi;
- const headings=[...body.matchAll(matcher)];
- if(!headings.length)return [{title:"Fullständig information",html:body}];
+ // Shopify policy HTML may begin with empty paragraphs, whitespace, or a cover heading.
+ // Split at h2 headings, keeping h3 subsections inside their parent instead of
+ // turning every small subheading into another numbered section.
+ const h2=[...body.matchAll(/<h2\\b[^>]*>([\\s\\S]*?)<\\/h2\\s*>/gi)];
+ const headingLevel=h2.some(match=>cleanText(match[1]))?2:3;
+ const headingPattern=headingLevel===2?/<h2\\b[^>]*>([\\s\\S]*?)<\\/h2\\s*>/gi:/<h3\\b[^>]*>([\\s\\S]*?)<\\/h3\\s*>/gi;
+ const headings=[...body.matchAll(headingPattern)];
+ if(!headings.length)return hasVisibleContent(body)?[{title:"Villkor och information",html:body}]:[];
  const sections:Section[]=[];
- const introduction=body.slice(0,headings[0].index).trim();
- if(introduction)sections.push({title:"Inledning",html:introduction});
+ const introduction=body.slice(0,headings[0].index||0);
+ if(hasVisibleContent(introduction))sections.push({title:"Inledning",html:introduction});
  headings.forEach((match,i)=>{
-  const from=(match.index||0)+match[0].length;
-  const to=i+1<headings.length?(headings[i+1].index||body.length):body.length;
-  sections.push({title:cleanText(match[2]),html:body.slice(from,to)});
+  const start=(match.index||0)+match[0].length;
+  const end=i+1<headings.length?headings[i+1].index||body.length:body.length;
+  const title=cleanText(match[1]);
+  const content=body.slice(start,end);
+  if(!title){
+   if(sections.length&&hasVisibleContent(content))sections[sections.length-1].html+=content;
+   return;
+  }
+  if(!hasVisibleContent(content)){
+   // Empty Shopify headings do not create phantom numbered chapters.
+   return;
+  }
+  sections.push({title,html:content});
  });
  return sections;
 }
