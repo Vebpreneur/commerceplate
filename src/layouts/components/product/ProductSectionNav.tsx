@@ -1,7 +1,7 @@
 "use client";
 import {useEffect,useState,useRef,useMemo,type MouseEvent} from "react";
 type Item={id:string;label:string};
-export default function ProductSectionNav({title,hasSpecs,hasFaq,hasRelated}:{title:string;hasSpecs:boolean;hasFaq:boolean;hasRelated:boolean}){
+export default function ProductSectionNav({title,hasFaq,hasRelated}:{title:string;hasFaq:boolean;hasRelated:boolean}){
  const items=useMemo<Item[]>(()=>[
   {id:"pdp-oversikt",label:"Detaljer"},
   {id:"produktinformation",label:"Specifikationer"},
