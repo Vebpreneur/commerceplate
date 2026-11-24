@@ -157,7 +157,7 @@ function ProductFeatureStage({product,family,fields}:{product:Product;family:Pro
    <div className="pawlira-pdp-benefits-copy">
     <h2 id="pawlira-pdp-benefits-heading">{family==="litter"?"Enklare rutiner för dig och din katt.":family==="feeder"?"Måltider på kattens villkor.":family==="water"?"En bättre vattenrutin.":"Genomtänkt för vardagen."}</h2>
     <div className="pawlira-pdp-benefits-list">{details.map(({Icon,title,description,actual})=><article key={title} className="pawlira-pdp-benefit-row">
-      <span className="pawlira-pdp-benefit-icon"><Icon size={23} strokeWidth={1.65} aria-hidden="true"/></span>
+      <span className="pawlira-pdp-benefit-icon"><Icon size={22} strokeWidth={2.2} aria-hidden="true"/></span>
       <div><h3>{title}</h3><p>{actual||description}</p></div>
     </article>)}</div>
    </div>
@@ -177,10 +177,16 @@ function ProductShowcase({product,family,hasRelated}:{product:Product;family:Pro
     <div className="pawlira-pdp-category-hero-content">
      <h2 id="pawlira-pdp-category-heading">{info.heading}</h2>
      <p>{info.introduction}</p>
-     <a href="#produktinformation" className="pawlira-pdp-category-cta">Se produktdetaljer <span aria-hidden="true">→</span></a>
     </div>
    </section>
   </div>
+ </>;
+}
+
+function ProductEditorialChapter({product,family}:{product:Product;family:ProductFamily}){
+ const info=familyInfo[family];
+ const {lifestyle:image}=productEditorialImages(product);
+ return <>
   <section id="pdp-livsstil" className="container pawlira-pdp-editorial-chapter">
    <div className="pawlira-pdp-editorial-photo">
     {image?.url&&<Image src={image.url} alt={image.altText||product.title} fill sizes="(max-width:767px) 100vw, 50vw" className="object-contain"/>}
@@ -206,6 +212,7 @@ export default function ProductStory({product,fields,descriptionHtml,family="oth
  return <>
   <ProductShowcase product={product} family={family} hasRelated={hasRelated}/>
   <ProductFeatureStage product={product} family={family} fields={fields}/>
+  <ProductEditorialChapter product={product} family={family}/>
   <div className="pawlira-band pawlira-band-warm"><DimensionsGuide fields={fields}/></div>
   <section id="produktinformation" className="container pawlira-catalog-width pawlira-catalog-faq pawlira-pdp-spec-section scroll-mt-32">
    <div className="pawlira-pdp-spec-intro"><h2>Produktdetaljer</h2><p>Tekniska uppgifter, kompatibilitet och användning för den aktuella modellen.</p></div>

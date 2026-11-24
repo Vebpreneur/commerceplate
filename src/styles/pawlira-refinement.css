@@ -262,7 +262,7 @@ body .pawlira-home-content .pawlira-clean-category .pawlira-home-category-photo{
 .pawlira-catalog-hero{background:var(--pawlira-paper);border-color:var(--pawlira-neutral-line)}
 .pawlira-category-tabs a:not([aria-current=page]){background:var(--pawlira-paper);border-color:var(--pawlira-neutral-line)}
 .pawlira-catalog-sidebar{background:var(--pawlira-paper);border-color:var(--pawlira-neutral-line)}
-.pawlira-product-purchase-section{background:#fff}
+.pawlira-product-purchase-section{background:var(--pawlira-paper,#faf8f3)}
 .pawlira-pdp-grid .pawlira-gallery-frame{background:white;border-color:var(--pawlira-neutral-line)}
 .pawlira-pdp-grid .pawlira-gallery-stage{background:white}
 .pawlira-pdp-grid .pawlira-gallery-thumbs button{border-color:var(--pawlira-neutral-line)}
