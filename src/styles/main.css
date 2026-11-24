@@ -12,6 +12,7 @@
 @import "./pawlira-system.css";
 @import "./pawlira-typography.css";
 @import "./pawlira-refinement.css";
+@import "./pawlira-product-stage.css";
 @import "./pawlira-legal.css";
 
 @layer base {
