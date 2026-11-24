@@ -1,11 +1,39 @@
 "use client";
 import {useEffect,useState,useRef,useMemo} from "react";
 type Item={id:string;label:string};
-export default function ProductSectionNav({hasDetails,hasSpecs,hasGallery,hasFaq,hasRelated}:{hasDetails:boolean;hasSpecs:boolean;hasGallery:boolean;hasFaq:boolean;hasRelated:boolean}){
- const items=useMemo<Item[]>(()=>[{id:"kop",label:"Produktval"},...(hasDetails?[{id:"produktinformation",label:"Produktdetaljer"},...(hasSpecs?[{id:"specifikationer",label:"Specifikationer"}]:[])]:[]),...(hasGallery?[{id:"produktbilder",label:"Bilder"}]:[]),...(hasFaq?[{id:"kundinformation",label:"Frågor & svar"}]:[]),...(hasRelated?[{id:"relaterade",label:"Relaterade produkter"}]:[])],[hasDetails,hasSpecs,hasGallery,hasFaq,hasRelated]);
- const [active,setActive]=useState("kop"),[top,setTop]=useState(0);
+export default function ProductSectionNav({title,hasSpecs,hasFaq,hasRelated}:{title:string;hasSpecs:boolean;hasFaq:boolean;hasRelated:boolean}){
+ const items=useMemo<Item[]>(()=>[
+  {id:"pdp-oversikt",label:"Detaljer"},
+  {id:"produktinformation",label:"Specifikationer"},
+  ...(hasFaq?[{id:"kundinformation",label:"Vanliga frågor"}]:[]),
+  ...(hasRelated?[{id:"relaterade",label:"Relaterat"}]:[])
+ ],[hasFaq,hasRelated]);
+ const [active,setActive]=useState("pdp-oversikt");
  const nav=useRef<HTMLElement>(null);
- useEffect(()=>{const header=document.querySelector<HTMLElement>("header.pawlira-polished-header");const measure=()=>{const sticky=header&&["sticky","fixed"].includes(getComputedStyle(header).position);setTop(sticky?header.getBoundingClientRect().height:0)};measure();const ro=new ResizeObserver(measure);if(header)ro.observe(header);window.addEventListener("resize",measure);return()=>{ro.disconnect();window.removeEventListener("resize",measure)}},[]);
- useEffect(()=>{const ids=items.map(item=>item.id);let pending=0;const update=()=>{cancelAnimationFrame(pending);pending=requestAnimationFrame(()=>{let current="kop";const offset=top+(document.querySelector<HTMLElement>(".pawlira-sticky-buy")?.offsetHeight||0)+45;for(const id of ids){const el=document.getElementById(id);if(el&&el.getBoundingClientRect().top<=offset)current=id;}setActive(current)})};update();window.addEventListener("scroll",update,{passive:true});return()=>{cancelAnimationFrame(pending);window.removeEventListener("scroll",update)}},[top,items]);
- return <nav ref={nav} aria-label="Produktnavigation" className="pawlira-product-sticky-nav" style={{top}}><div className="container pawlira-product-sticky-inner">{items.map(item=><a key={item.id} href={"#"+item.id} aria-current={active===item.id?"location":undefined} onClick={e=>{const target=document.getElementById(item.id);if(!target)return;e.preventDefault();const bar=document.querySelector<HTMLElement>(".pawlira-sticky-buy");const offset=top+(bar?.offsetHeight||0)+12;window.scrollTo({top:window.scrollY+target.getBoundingClientRect().top-offset,behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});history.replaceState(null,"","#"+item.id);setActive(item.id)}}>{item.label}</a>)}</div></nav>;
+ useEffect(()=>{
+  const ids=items.map(item=>item.id);
+  let frame=0;
+  const onScroll=()=>{cancelAnimationFrame(frame);frame=requestAnimationFrame(()=>{
+   let current="pdp-oversikt";
+   for(const id of ids){const target=document.getElementById(id);if(target&&target.getBoundingClientRect().top<160)current=id;}
+   setActive(current);
+  })};
+  onScroll();window.addEventListener("scroll",onScroll,{passive:true});
+  return()=>{cancelAnimationFrame(frame);window.removeEventListener("scroll",onScroll)};
+ },[items]);
+ function jump(e:React.MouseEvent<HTMLAnchorElement>,id:string){
+  const target=document.getElementById(id);if(!target)return;
+  e.preventDefault();
+  const header=document.querySelector<HTMLElement>("header.pawlira-polished-header");
+  const offset=(header?.getBoundingClientRect().height||0)+(nav.current?.getBoundingClientRect().height||0)+16;
+  window.scrollTo({top:window.scrollY+target.getBoundingClientRect().top-offset,behavior:window.matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth"});
+  history.replaceState(null,"","#"+id);setActive(id);
+ }
+ return <nav ref={nav} aria-label="Produktnavigation" className="pawlira-product-sticky-nav pawlira-pdp-experience-nav">
+  <div className="pawlira-pdp-nav-inner">
+   <div className="pawlira-pdp-nav-title" title={title}><strong>{title}</strong></div>
+   <div className="pawlira-pdp-nav-links">{items.map(item=><a key={item.id} href={"#"+item.id} onClick={e=>jump(e,item.id)} aria-current={active===item.id?"location":undefined}>{item.label}</a>)}</div>
+   <a className="pawlira-pdp-nav-buy" href="#kop" onClick={e=>jump(e,"kop")}>Handla nu</a>
+  </div>
+ </nav>;
 }
