@@ -692,3 +692,14 @@ body main .pawlira-pdp-showcase-copy h2{font-size:clamp(36px,4.5vw,72px)!importa
 @media(max-width:900px){.pawlira-contact-layout{grid-template-columns:1fr}.pawlira-contact-introduction>p{max-width:70ch}.pawlira-about-principle-row{grid-template-columns:38px minmax(140px,.75fr) minmax(0,1.4fr);gap:20px}}
 @media(max-width:767px){.pawlira-customer-support-page .pawlira-content-hero,.pawlira-about-page .pawlira-content-hero,.pawlira-customer-faq-page .pawlira-content-hero{min-height:190px;padding-block:38px}.pawlira-contact-form-fields{grid-template-columns:1fr;gap:17px}.pawlira-contact-layout{gap:28px}.pawlira-contact-introduction>.pawlira-large-heading{margin-bottom:14px}.pawlira-contact-form{padding:20px 16px;gap:18px}.pawlira-about-principle-row{grid-template-columns:32px minmax(0,1fr);gap:8px 14px}.pawlira-about-principle-row p{grid-column:2}.pawlira-about-process{grid-template-columns:1fr}.pawlira-about-process article{min-height:0}.pawlira-about-process-index{margin-bottom:18px}}
 @media(prefers-reduced-motion:reduce){.pawlira-contact-input{transition:none}}
+
+/* Buying guide: content-first model-selection advice, using the established Pawlira scale. */
+.pawlira-buying-advice{margin-top:clamp(64px,7vw,110px);padding-bottom:clamp(20px,4vw,60px)}
+.pawlira-buying-advice-rows{border-top:1px solid var(--pawlira-neutral-line,#e5e5e5)}
+.pawlira-buying-advice-rows article{display:grid;grid-template-columns:42px minmax(180px,.85fr) minmax(0,1.45fr);gap:clamp(16px,3vw,44px);align-items:start;padding:clamp(25px,3vw,38px) 0;border-bottom:1px solid var(--pawlira-neutral-line,#e5e5e5)}
+.pawlira-buying-advice-number{color:#8a857c;font-size:14px;font-variant-numeric:tabular-nums}
+.pawlira-buying-advice-rows h3{font-size:clamp(21px,2vw,29px);font-weight:500;line-height:1.2;letter-spacing:-.035em;margin:0;color:#242222}
+.pawlira-buying-advice-rows p{font-size:clamp(16px,1.35vw,18px);line-height:1.7;color:#52504d;margin:0;max-width:60ch}
+.pawlira-buying-advice-actions{display:flex;align-items:center;gap:28px;flex-wrap:wrap;margin-top:30px}
+.pawlira-guide-checklist-heading{font-size:clamp(21px,2vw,28px);font-weight:500;line-height:1.2;letter-spacing:-.03em;color:inherit;margin:0 0 18px}
+@media(max-width:767px){.pawlira-buying-advice{margin-top:54px}.pawlira-buying-advice-rows article{grid-template-columns:30px minmax(0,1fr);gap:8px 12px;padding:24px 0}.pawlira-buying-advice-rows p{grid-column:2}.pawlira-buying-advice-actions{gap:17px}}
