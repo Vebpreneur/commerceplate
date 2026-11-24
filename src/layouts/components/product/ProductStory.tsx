@@ -119,11 +119,11 @@ function ProductShowcase({product,family}:{product:Product;family:ProductFamily}
  return <div className="pawlira-pdp-showcase">
   <section className="pawlira-pdp-showcase-band" aria-labelledby="pawlira-showcase-title">
    <div className="container pawlira-pdp-showcase-inner">
-    <div className="pawlira-pdp-showcase-copy"><p className="pawlira-eyebrow">{info.label}</p><h2 id="pawlira-showcase-title">{info.heading}</h2><p>{info.introduction}</p><Link href="#produktinformation" className="pawlira-pdp-showcase-link">Upptäck produktdetaljerna <span aria-hidden="true">↗</span></Link></div>
+    <div className="pawlira-pdp-showcase-copy"><h2 id="pawlira-showcase-title">{info.heading}</h2><p>{info.introduction}</p><Link href="#produktinformation" className="pawlira-pdp-showcase-link">Upptäck produktdetaljerna <span aria-hidden="true">↗</span></Link></div>
     <div className="pawlira-pdp-showcase-image"><Image src={lead.url} alt={lead.altText||product.title} fill sizes="(max-width: 767px) 100vw, 50vw" className="object-contain"/></div>
    </div>
   </section>
-  {secondary&&<section className="container pawlira-pdp-showcase-chapter"><div className="pawlira-pdp-showcase-image"><Image src={secondary.url} alt={secondary.altText||product.title} fill sizes="(max-width: 767px) 100vw, 50vw" className="object-contain"/></div><div className="pawlira-pdp-showcase-copy"><p className="pawlira-eyebrow">För din vardag</p><h2>{info.chapter}</h2><p>{info.chapterText}</p></div></section>}
+  {secondary&&<section className="container pawlira-pdp-showcase-chapter"><div className="pawlira-pdp-showcase-image"><Image src={secondary.url} alt={secondary.altText||product.title} fill sizes="(max-width: 767px) 100vw, 50vw" className="object-contain"/></div><div className="pawlira-pdp-showcase-copy"><h2>{info.chapter}</h2><p>{info.chapterText}</p></div></section>}
  </div>;
 }
 
