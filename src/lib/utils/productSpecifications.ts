@@ -1,11 +1,22 @@
 import type {ProductField} from "./productFields";
 export type Specification={label:string;value:string};
-export function specifications(fields:ProductField[]):Specification[]{
- const pairs=fields.filter(f=>["spec","details","features"].includes(f.key)).flatMap(f=>f.value.split(/\r?\n/)).map(line=>{
-  const match=line.match(/^\s*[-•]?\s*([^:：]{1,80})\s*[:：]\s*(.+)$/);
-  return match?{label:match[1].trim(),value:match[2].trim()}:null;
- }).filter((v):v is Specification=>!!v);
- return pairs.filter((v,i)=>v.value.length>0&&pairs.findIndex(p=>p.label.toLowerCase()===v.label.toLowerCase())===i);
+const technicalNames=/^(?:mått|produktmått|dimensioner|dimensions|bredd|höjd|djup|längd|vikt|nettovikt|kapacitet|volym|avfallsbehållare|avfallsbehållarens kapacitet|foderkapacitet|vattenkapacitet|rekommenderad kattvikt|kattvikt|ingång|öppning|ljudnivå|effekt|strömförsörjning|spänning|anslutning|wi-?fi|sensorer|filtertyp|material|power|height|width|depth|weight|capacity|voltage|noise level|sensors|material|size|pet weight|cat weight|entryway|footprint)$/i;
+function namedPair(line:string):Specification|null{
+ const match=line.match(/^\s*[-•]?\s*([^:：]{1,80})\s*[:：]\s*(.+)$/);
+ if(!match)return null;
+ const label=match[1].replace(/<[^>]+>/g,"").trim(),value=match[2].replace(/<[^>]+>/g,"").trim();
+ return label&&value&&!/^https?:/i.test(value)?{label,value}:null;
+}
+export function specifications(fields:ProductField[],descriptionHtml=""):Specification[]{
+ const meta=fields.filter(f=>["spec","details","features"].includes(f.key)).flatMap(f=>f.value.split(/\r?\n/)).map(namedPair).filter((v):v is Specification=>!!v);
+ // Some Shopify descriptions carry real technical facts in explicit label:value lists.
+ // Do not infer missing values from promotional prose.
+ const lines=descriptionHtml.replace(/<(?:br|\/li|\/p|\/div|\/tr|\/h[1-6])\b[^>]*>/gi,"\n")
+  .replace(/<[^>]*>/g," ").replace(/&nbsp;/gi," ").replace(/&amp;/gi,"&")
+  .split(/\r?\n/).map(x=>x.replace(/\s+/g," ").trim()).filter(Boolean);
+ const fromDescription=lines.map(namedPair).filter((v):v is Specification=>!!v&&technicalNames.test(v.label));
+ const all=[...meta,...fromDescription];
+ return all.filter((v,i)=>v.value.length>0&&all.findIndex(p=>p.label.toLocaleLowerCase("sv-SE")===v.label.toLocaleLowerCase("sv-SE"))===i);
 }
 export function findSpecification(specs:Specification[],pattern:RegExp){
  return specs.find(s=>pattern.test(s.label))?.value;

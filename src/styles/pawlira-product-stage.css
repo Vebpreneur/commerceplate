@@ -62,3 +62,44 @@ body:has(.pawlira-pdp-feature-top) .pawlira-sticky-buy{display:none!important}
 
 /* The opening buy area shares the warm neutral background used throughout Pawlira. */
 body main .pawlira-product-purchase-section{background:var(--pawlira-paper,#faf8f3)!important}
+
+/* Larger Pawlira feature presentation: DM Sans inherited from existing design system. */
+.pawlira-pdp-benefits-inner{grid-template-columns:minmax(0,1.02fr) minmax(0,1.08fr);column-gap:clamp(38px,5.1vw,92px);padding-block:clamp(65px,6.3vw,98px)}
+body main .pawlira-pdp-benefits-copy h2{font-family:var(--pawlira-font,inherit)!important;font-size:clamp(40px,3.5vw,53px)!important;font-weight:500!important;line-height:1.08!important;letter-spacing:-.045em!important;max-width:16ch;margin-bottom:clamp(32px,3.4vw,52px)}
+.pawlira-pdp-benefits-list{gap:clamp(21px,2.3vw,34px)}
+.pawlira-pdp-benefit-row{grid-template-columns:58px minmax(0,1fr);gap:17px;align-items:start}
+.pawlira-pdp-benefit-icon{width:56px;height:56px;border-radius:12px;display:grid;place-items:center;background:#fff;color:#161412}
+body main .pawlira-pdp-benefit-row h3{font-family:var(--pawlira-font,inherit)!important;font-size:clamp(19px,1.5vw,22px)!important;font-weight:700!important;line-height:1.24!important;letter-spacing:-.025em!important;margin:0 0 5px}
+.pawlira-pdp-benefit-row p{font-size:var(--pawlira-copy,16px);line-height:1.5;max-width:48ch}
+.pawlira-pdp-benefits-media{min-height:clamp(460px,43vw,650px)}
+/* Specifications and details belong to one calm surface. No FAQ CSS overrides. */
+.pawlira-pdp-details-area{background:#fff;padding-block:clamp(65px,7vw,108px)}
+.pawlira-pdp-details-area>.container{max-width:var(--pawlira-content,1360px)}
+.pawlira-pdp-details-heading{text-align:center;margin-bottom:clamp(28px,3.5vw,50px)}
+body main .pawlira-pdp-details-heading h2{font-family:var(--pawlira-font,inherit);font-size:clamp(32px,3.4vw,50px)!important;font-weight:500!important;line-height:1.14!important;letter-spacing:-.04em!important;text-align:center!important;margin:0 0 12px!important}
+.pawlira-pdp-details-heading p{font-size:var(--pawlira-copy,16px);color:var(--pawlira-muted,#525252);margin:0}
+.pawlira-pdp-spec-card{display:grid;grid-template-columns:minmax(0,.72fr) minmax(0,1.28fr);background:var(--pawlira-paper,#faf8f3);border-radius:16px;overflow:hidden;min-height:clamp(340px,32vw,500px)}
+.pawlira-pdp-spec-values{padding:clamp(28px,3.2vw,50px);min-width:0;align-self:center}
+.pawlira-pdp-spec-table{margin:0}
+.pawlira-pdp-spec-table>div{display:grid;grid-template-columns:minmax(0,1fr) minmax(100px,1fr);column-gap:12px;border-bottom:1px solid #d8d3c9;padding:12px 0;font-size:16px;line-height:1.5}
+.pawlira-pdp-spec-table>div:last-child{border-bottom:0}
+.pawlira-pdp-spec-table dt{color:#292623;font-weight:500}
+.pawlira-pdp-spec-table dd{margin:0;color:#242222;overflow-wrap:anywhere;text-align:right}
+.pawlira-pdp-spec-empty{font-size:16px;line-height:1.7;color:#58534e;margin:0;max-width:34ch}
+.pawlira-pdp-spec-visual{position:relative;min-width:0;min-height:clamp(340px,32vw,500px);background:var(--pawlira-paper,#faf8f3)}
+.pawlira-pdp-spec-visual img{object-fit:contain;padding:clamp(20px,4vw,60px)}
+.pawlira-pdp-detail-content{display:grid;grid-template-columns:minmax(0,.75fr) minmax(0,1.25fr);gap:clamp(38px,5vw,80px);padding-top:clamp(62px,6vw,90px);align-items:start}
+body main .pawlira-pdp-detail-content .pawlira-pdp-spec-intro h2{font-family:var(--pawlira-font,inherit)!important;font-size:var(--pawlira-h2,38px)!important;font-weight:500!important;line-height:1.14!important;letter-spacing:-.035em!important;margin:0 0 20px!important;text-align:left!important}
+.pawlira-pdp-detail-content .pawlira-pdp-spec-intro p{font-size:var(--pawlira-copy,16px);line-height:1.65;max-width:35ch}
+.pawlira-pdp-detail-content .pawlira-product-detail-accordions{width:100%;min-width:0;max-width:none;margin:0;border-top:1px solid #d8d3c9}
+.pawlira-pdp-detail-content .pawlira-accordion{background:transparent;border:0;border-bottom:1px solid #d8d3c9;border-radius:0;box-shadow:none;padding:0;margin:0}
+.pawlira-pdp-detail-content .pawlira-accordion .accordion-header{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;padding:18px 0;font-family:var(--pawlira-font,inherit);font-size:clamp(17px,1.45vw,21px)!important;font-weight:500!important;letter-spacing:-.02em!important;line-height:1.3!important;text-align:left;background:transparent;border:0;color:#211f1e}
+.pawlira-pdp-detail-content .pawlira-accordion .accordion-header:hover{opacity:.8}
+.pawlira-pdp-detail-content .pawlira-accordion .accordion-inner{width:100%;max-width:none;min-width:0;padding:0;color:#494642;font-family:var(--pawlira-font,inherit);font-size:16px;line-height:1.65;letter-spacing:0}
+.pawlira-pdp-detail-content .pawlira-accordion .accordion-inner>div{padding:0 0 22px}
+.pawlira-pdp-detail-content .pawlira-detail-paragraphs,.pawlira-pdp-detail-content .pawlira-accordion .accordion-inner p{font-size:16px!important;line-height:1.65!important;letter-spacing:0!important;color:#494642!important;overflow-wrap:anywhere;margin:0}
+.pawlira-pdp-detail-content .pawlira-detail-values>div{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;padding:10px 0;border-bottom:1px solid #eee9e2}
+.pawlira-pdp-detail-content .pawlira-detail-values dt{font-weight:600}
+.pawlira-pdp-detail-content .pawlira-detail-values dd{margin:0;overflow-wrap:anywhere}
+@media(max-width:900px){.pawlira-pdp-benefits-inner{grid-template-columns:1fr;gap:32px}.pawlira-pdp-benefit-row{grid-template-columns:56px minmax(0,1fr)}.pawlira-pdp-details-area{padding-block:66px}.pawlira-pdp-detail-content{grid-template-columns:1fr;gap:24px}.pawlira-pdp-spec-card{grid-template-columns:1fr 1.1fr}}
+@media(max-width:767px){body main .pawlira-pdp-benefits-copy h2{font-size:var(--pawlira-h2,28px)!important;margin-bottom:28px}.pawlira-pdp-benefits-list{gap:24px}.pawlira-pdp-benefit-icon{width:54px;height:54px}.pawlira-pdp-benefit-row{grid-template-columns:54px minmax(0,1fr);gap:14px}.pawlira-pdp-spec-card{grid-template-columns:1fr}.pawlira-pdp-spec-visual{min-height:280px;grid-row:1}.pawlira-pdp-spec-values{padding:20px 24px 30px}.pawlira-pdp-spec-table>div{font-size:15px}.pawlira-pdp-details-heading{margin-bottom:25px}.pawlira-pdp-detail-content{padding-top:52px}.pawlira-pdp-detail-content .pawlira-accordion .accordion-header{font-size:18px!important}}

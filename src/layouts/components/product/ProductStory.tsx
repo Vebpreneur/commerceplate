@@ -5,7 +5,6 @@ import type {Product} from "@/lib/shopify/types";
 import type {ProductField} from "@/lib/utils/productFields";
 import Accordion from "@/shortcodes/Accordion";
 import FieldDetails from "./FieldDetails";
-import DimensionsGuide from "./DimensionsGuide";
 import ProductSectionNav from "./ProductSectionNav";
 import {LuShieldCheck,LuWandSparkles,LuPackageOpen,LuRuler,LuSmartphone,LuDroplets,LuUtensils,LuClipboardCheck} from "react-icons/lu";
 import {specifications,findSpecification} from "@/lib/utils/productSpecifications";
@@ -151,13 +150,13 @@ function productEditorialImages(product:Product){
 function ProductFeatureStage({product,family,fields}:{product:Product;family:ProductFamily;fields:ProductField[]}){
  const found=specifications(fields);
  const details=featureCatalog[family].map(item=>({...item,actual:findSpecification(found,item.match)}));
- const {large}=productEditorialImages(product);
+ const large=product.featuredImage?.url?product.featuredImage:productEditorialImages(product).large;
  return <section id="pdp-fordelar" className="pawlira-pdp-benefits" aria-labelledby="pawlira-pdp-benefits-heading">
   <div className="container pawlira-pdp-benefits-inner">
    <div className="pawlira-pdp-benefits-copy">
     <h2 id="pawlira-pdp-benefits-heading">{family==="litter"?"Enklare rutiner för dig och din katt.":family==="feeder"?"Måltider på kattens villkor.":family==="water"?"En bättre vattenrutin.":"Genomtänkt för vardagen."}</h2>
     <div className="pawlira-pdp-benefits-list">{details.map(({Icon,title,description,actual})=><article key={title} className="pawlira-pdp-benefit-row">
-      <span className="pawlira-pdp-benefit-icon"><Icon size={22} strokeWidth={2.2} aria-hidden="true"/></span>
+      <span className="pawlira-pdp-benefit-icon"><Icon size={29} strokeWidth={2.6} aria-hidden="true"/></span>
       <div><h3>{title}</h3><p>{actual||description}</p></div>
     </article>)}</div>
    </div>
@@ -199,9 +198,8 @@ function ProductEditorialChapter({product,family}:{product:Product;family:Produc
 export default function ProductStory({product,fields,descriptionHtml,family="other",hasRelated=false}:{product:Product;fields:ProductField[];descriptionHtml:string;family?:ProductFamily;hasRelated?:boolean}){
  const byKey=(key:string)=>fields.filter(field=>field.key===key);
  const descriptionSpecs=separateTechnicalItems(descriptionHtml);
- const specs=byKey("spec");
  const accordionGroups=[
-  {title:"Tekniska specifikationer",key:"spec",fallback:""},
+  ...(specifications(fields,descriptionHtml).length===0?[{title:"Tekniska specifikationer",key:"spec",fallback:""}]:[]),
   {title:"Funktioner och egenskaper",key:"features",fallback:""},
   {title:"Produktinformation",key:"details",fallback:!byKey("details").length?product.description?.trim()||"":""},
   {title:"Vad ingår i förpackningen?",key:"included",fallback:""},
@@ -213,15 +211,27 @@ export default function ProductStory({product,fields,descriptionHtml,family="oth
   <ProductShowcase product={product} family={family} hasRelated={hasRelated}/>
   <ProductFeatureStage product={product} family={family} fields={fields}/>
   <ProductEditorialChapter product={product} family={family}/>
-  <div className="pawlira-band pawlira-band-warm"><DimensionsGuide fields={fields}/></div>
-  <section id="produktinformation" className="container pawlira-catalog-width pawlira-catalog-faq pawlira-pdp-spec-section scroll-mt-32">
-   <div className="pawlira-pdp-spec-intro"><h2>Produktdetaljer</h2><p>Tekniska uppgifter, kompatibilitet och användning för den aktuella modellen.</p></div>
-   <div className="pawlira-catalog-faq-list pawlira-product-detail-accordions">
+  <section id="produktinformation" className="pawlira-pdp-details-area scroll-mt-32" aria-labelledby="pawlira-pdp-details-title">
+   <div className="container">
+    <div className="pawlira-pdp-details-heading"><h2 id="pawlira-pdp-details-title">Tekniska specifikationer</h2><p>Uppgifter för den aktuella modellen.</p></div>
+    <div className="pawlira-pdp-spec-card">
+     <div className="pawlira-pdp-spec-values">
+      {specifications(fields,descriptionHtml).length>0?
+       <dl className="pawlira-pdp-spec-table">{specifications(fields,descriptionHtml).map((item,index)=><div key={item.label+index}><dt>{item.label}</dt><dd>{item.value}</dd></div>)}</dl>
+       :<p className="pawlira-pdp-spec-empty">Produktspecifika mått och tekniska värden visas här när de finns angivna i produktinformationen.</p>}
+     </div>
+     <div className="pawlira-pdp-spec-visual">{product.featuredImage?.url&&<Image src={product.featuredImage.url} alt={product.featuredImage.altText||product.title} fill sizes="(max-width: 767px) 90vw, 55vw" className="object-contain"/>}</div>
+    </div>
+    <div className="pawlira-pdp-detail-content">
+     <div className="pawlira-pdp-spec-intro"><h2>Produktdetaljer</h2><p>Information om användning, kompatibilitet och säkerhet för den här produkten.</p></div>
+     <div className="pawlira-product-detail-accordions">
     {accordionGroups.map(group=>{
      const matched=byKey(group.key);
      const content=group.key==="spec"&&!matched.length?descriptionSpecs:"";
      return <div id={group.key==="spec"?"specifikationer":undefined} key={group.key}><Accordion title={group.title}>{matched.length?<div className="space-y-4">{matched.map((field,index)=><div key={field.key+field.title+index}><FieldDetails value={field.value}/></div>)}</div>:content?<div className="content" dangerouslySetInnerHTML={{__html:content}}/>:<p>{group.fallback}</p>}</Accordion></div>;
     })}
+     </div>
+    </div>
    </div>
   </section>
   <ProductFaq family={family} fields={fields}/>
