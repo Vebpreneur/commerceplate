@@ -15,7 +15,7 @@ export default function DimensionsGuide({fields}:{fields:ProductField[]}){
  const icon=(s:string)=>/adapter|ström|power/i.test(s)?LuPlug:/filter|påse|påsar|bag/i.test(s)?LuFilter:/guide|manual|instruktion/i.test(s)?LuBookOpen:LuPackage;
  if(!items.some(i=>i.value)&&!included.length)return null;
  return <section className="container pawlira-home-section"><FadeInSection>
- <div className="pawlira-section-heading"><div><p className="pawlira-eyebrow">Produktinformation</p><h2>Mått och kapacitet</h2><p className="pawlira-section-description">Kontrollera modellens mått och användningsgränser innan du beställer.</p></div><Link href="/contact#kontakt" className="pawlira-text-link">Fråga om produkten</Link></div>
+ <div className="pawlira-section-heading"><div><h2>Mått och kapacitet</h2><p className="pawlira-section-description">Kontrollera modellens mått och användningsgränser innan du beställer.</p></div><Link href="/contact#kontakt" className="pawlira-text-link">Fråga om produkten</Link></div>
  {items.length>0&&<div className="pawlira-dimension-grid">{items.map(({title,Icon,value})=><article key={title}><Icon size={24} strokeWidth={1.5}/><h3>{title}</h3><p>{value}</p></article>)}</div>}
  {included.length>0&&<div className="pawlira-included"><h2>Vad ingår i förpackningen</h2><div className="pawlira-included-grid">{included.map((s,i)=>{const Icon=icon(s);return <article key={i}><Icon size={24} strokeWidth={1.5}/><p>{s}</p></article>})}</div></div>}
  </FadeInSection></section>;
