@@ -1,6 +1,6 @@
 /* Pawlira product category stage – scoped to PDP, reuses the existing store fonts and type scale. */
-.pawlira-pdp-feature-top{background:#272322;padding:0 clamp(5px,.6vw,11px) clamp(5px,.6vw,11px);overflow:clip}
-.pawlira-pdp-feature-top .pawlira-product-sticky-nav{position:relative!important;top:auto!important;z-index:2;background:#272322;color:#fff;border-radius:clamp(22px,2.5vw,42px) clamp(22px,2.5vw,42px) 0 0;box-shadow:none;border:0}
+.pawlira-pdp-feature-top{background:var(--pawlira-ink,#0a0a0a);padding:0 clamp(5px,.6vw,11px) clamp(5px,.6vw,11px);overflow:clip}
+.pawlira-pdp-feature-top .pawlira-product-sticky-nav{position:relative!important;top:auto!important;z-index:2;background:var(--pawlira-ink,#0a0a0a);color:#fff;border-radius:clamp(22px,2.5vw,42px) clamp(22px,2.5vw,42px) 0 0;box-shadow:none;border:0}
 .pawlira-pdp-nav-inner{display:grid;grid-template-columns:minmax(155px,1.1fr) minmax(0,2fr) auto;align-items:center;gap:clamp(16px,2vw,40px);max-width:var(--pawlira-content,1360px);margin-inline:auto;min-height:clamp(66px,5vw,94px);padding:9px clamp(18px,2.5vw,40px);box-sizing:border-box}
 .pawlira-pdp-nav-title{min-width:0;font-size:clamp(14px,1.05vw,18px);line-height:1.26;font-weight:500;letter-spacing:-.025em;color:#fff}
 .pawlira-pdp-nav-title strong{font-weight:500;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
@@ -11,7 +11,7 @@
 .pawlira-pdp-nav-links a:hover{color:#fff!important}
 .pawlira-pdp-nav-buy{display:inline-flex;justify-content:center;align-items:center;min-height:38px;min-width:115px;padding:7px 20px;border-radius:999px;background:#fff;color:#201b19!important;text-decoration:none!important;font-family:var(--pawlira-font,inherit);font-size:var(--pawlira-type-ui,14px);font-weight:600;white-space:nowrap}
 .pawlira-pdp-nav-buy:hover{background:#ede8e1}
-.pawlira-pdp-category-hero{position:relative;isolation:isolate;display:flex;align-items:center;min-height:clamp(480px,39vw,690px);border-radius:clamp(20px,2.2vw,38px) clamp(20px,2.2vw,38px) 0 0;overflow:hidden;background:#301806;color:#fff;scroll-margin-top:100px}
+.pawlira-pdp-category-hero{position:relative;isolation:isolate;display:flex;align-items:center;min-height:clamp(480px,39vw,690px);border-radius:clamp(20px,2.2vw,38px) clamp(20px,2.2vw,38px) 0 0;overflow:hidden;background:var(--pawlira-ink,#0a0a0a);color:#fff;scroll-margin-top:100px}
 .pawlira-pdp-category-hero:before{content:"";position:absolute;z-index:-1;inset:0;background:linear-gradient(90deg,rgba(23,12,8,.88) 0%,rgba(23,12,8,.64) 38%,rgba(23,12,8,.1) 82%),radial-gradient(circle at 75% 50%,#a45f1b 0%,#4c2510 64%,#201109 100%)}
 .pawlira-pdp-category-hero-litter{background-image:linear-gradient(90deg,rgba(22,12,8,.86),rgba(22,12,8,.42) 47%,rgba(22,12,8,.06) 83%),url('/images/pawlira-home-brand-banner.png');background-position:center;background-size:cover;background-repeat:no-repeat}
 .pawlira-pdp-category-hero-litter:before{display:none}
@@ -40,3 +40,18 @@ body main .pawlira-pdp-spec-intro h2{font-size:var(--pawlira-h2,clamp(30px,3vw,4
 .pawlira-product-faq{padding-top:clamp(55px,6vw,100px)!important;padding-bottom:clamp(60px,8vw,120px)!important;border-top:1px solid var(--pawlira-neutral-line,#e5e5e5)}
 body main .pawlira-product-faq h2{margin-bottom:clamp(28px,3vw,48px)}
 @media(max-width:767px){.pawlira-pdp-spec-section{grid-template-columns:1fr;gap:22px;padding-top:56px!important;padding-bottom:72px!important}.pawlira-pdp-spec-intro p{font-size:16px}.pawlira-product-faq{padding-top:58px!important;padding-bottom:66px!important}}
+
+/* Whisker-inspired spacious benefit composition, Pawlira brand system only. */
+.pawlira-pdp-benefits{background:var(--pawlira-paper,#f7f2e9);overflow:hidden}
+.pawlira-pdp-benefits-inner{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(0,1fr);align-items:center;gap:clamp(48px,6.2vw,110px);min-height:clamp(640px,54vw,860px);padding-block:clamp(90px,9vw,150px)}
+.pawlira-pdp-benefits-copy{max-width:660px}
+body main .pawlira-pdp-benefits-copy h2{font-family:var(--pawlira-font,inherit);font-size:clamp(37px,3.8vw,64px)!important;line-height:1.09!important;font-weight:500!important;letter-spacing:-.04em!important;color:var(--pawlira-ink,#0a0a0a);margin:0 0 clamp(36px,4.2vw,64px);max-width:12ch;text-align:left}
+.pawlira-pdp-benefits-list{display:flex;flex-direction:column;gap:clamp(23px,2.8vw,42px)}
+.pawlira-pdp-benefit-row{display:grid;grid-template-columns:56px minmax(0,1fr);align-items:start;gap:clamp(16px,1.6vw,25px)}
+.pawlira-pdp-benefit-icon{display:grid;place-items:center;width:54px;height:54px;background:#fff;border-radius:13px;color:var(--pawlira-ink,#0a0a0a)}
+body main .pawlira-pdp-benefit-row h3{font-family:var(--pawlira-font,inherit);font-size:clamp(17px,1.3vw,21px);font-weight:600;line-height:1.28;letter-spacing:-.025em;margin:0 0 5px;color:var(--pawlira-ink,#0a0a0a)}
+.pawlira-pdp-benefit-row p{font-size:var(--pawlira-copy,16px);line-height:1.62;margin:0;max-width:51ch;color:var(--pawlira-muted,#525252)}
+.pawlira-pdp-benefits-media{position:relative;min-height:clamp(450px,46vw,720px);width:100%;isolation:isolate}
+.pawlira-pdp-benefits-media img{object-fit:contain;filter:drop-shadow(0 18px 28px rgba(0,0,0,.09))}
+@media(max-width:900px){.pawlira-pdp-benefits-inner{gap:32px;grid-template-columns:1fr;min-height:0;padding-block:clamp(56px,7vw,100px)}.pawlira-pdp-benefits-media{min-height:clamp(330px,58vw,520px);grid-row:2}.pawlira-pdp-benefits-copy{max-width:none}.pawlira-pdp-benefits-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}}
+@media(max-width:767px){.pawlira-pdp-benefits-inner{padding-block:60px;gap:24px}.pawlira-pdp-benefits-list{grid-template-columns:1fr;gap:24px}.pawlira-pdp-benefit-row{grid-template-columns:46px minmax(0,1fr);gap:14px}.pawlira-pdp-benefit-icon{width:46px;height:46px;border-radius:10px}body main .pawlira-pdp-benefits-copy h2{font-size:clamp(34px,9vw,45px)!important;margin-bottom:32px}.pawlira-pdp-benefits-media{min-height:340px}}

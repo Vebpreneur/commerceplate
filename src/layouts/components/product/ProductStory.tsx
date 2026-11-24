@@ -7,6 +7,8 @@ import Accordion from "@/shortcodes/Accordion";
 import FieldDetails from "./FieldDetails";
 import DimensionsGuide from "./DimensionsGuide";
 import ProductSectionNav from "./ProductSectionNav";
+import {LuShieldCheck,LuWandSparkles,LuPackageOpen,LuRuler,LuSmartphone,LuDroplets,LuUtensils,LuClipboardCheck} from "react-icons/lu";
+import {specifications,findSpecification} from "@/lib/utils/productSpecifications";
 
 export type ProductFamily="litter"|"feeder"|"water"|"other";
 type EditorialRow={title:string;paragraphs:ReactNode[]};
@@ -111,9 +113,62 @@ function ProductFaq({family,fields}:{family:ProductFamily;fields:ProductField[]}
  </div></section>;
 }
 
+
+type Feature={title:string;description:string;match:RegExp;Icon:typeof LuShieldCheck};
+const featureCatalog:Record<ProductFamily,Feature[]>={
+ litter:[
+  {title:"Automatisk rengöring",description:"Läs hur just den här modellens rengöringscykel fungerar och hur avfallet tas om hand.",match:/^(rengöringsfunktion|rengöringssystem|rengöringscykel|cleaning system|cleaning cycle)$/i,Icon:LuWandSparkles},
+  {title:"Sensorer och säkerhet",description:"Se modellens sensorer, användningsgränser och instruktioner för trygg introduktion.",match:/^(sensorer|säkerhetssensorer|säkerhetsfunktioner|viktsensorer|sensors|safety sensors)$/i,Icon:LuShieldCheck},
+  {title:"Storlek och passform",description:"Jämför öppning, innermått och rekommenderad kattvikt med din katts behov.",match:/^(rekommenderad kattvikt|kattvikt|ingångshöjd|öppning|ingång|cat weight)$/i,Icon:LuRuler},
+  {title:"Avfallsbehållare och skötsel",description:"Undersök behållarens kapacitet och vilka delar som behöver rengöras.",match:/^(avfallsbehållare|avfallsbehållarens kapacitet|kapacitet avfallsbehållare|waste capacity)$/i,Icon:LuPackageOpen},
+  {title:"App och anslutning",description:"Läs modellens uppgifter om eventuell appstyrning, Wi-Fi och tillgängliga funktioner.",match:/^(uppkoppling|anslutning|wifi|wi-fi|app|appstyrning|connectivity)$/i,Icon:LuSmartphone}
+ ],
+ feeder:[
+  {title:"Måltider och scheman",description:"Se hur portioner och tider ställs in på den aktuella automaten.",match:/^(måltider|schemaläggning|antal måltider|feeding schedule|portions)$/i,Icon:LuUtensils},
+  {title:"Foderkapacitet",description:"Jämför behållarvolym och vilken typ av foder modellen stöder.",match:/^(foderkapacitet|kapacitet|behållarvolym|capacity)$/i,Icon:LuPackageOpen},
+  {title:"Ström och anslutning",description:"Kontrollera vilka anslutnings- och strömförsörjningsalternativ som gäller för modellen.",match:/^(strömförsörjning|batteri|uppkoppling|anslutning|power supply)$/i,Icon:LuSmartphone},
+  {title:"Rengöring och skötsel",description:"Läs vilka delar som kan tas loss och hur de rengörs.",match:/^(rengöring|underhåll|maintenance|cleaning)$/i,Icon:LuWandSparkles}
+ ],
+ water:[
+  {title:"Kapacitet",description:"Jämför hur mycket vatten fontänen rymmer och hur den passar i hemmet.",match:/^(vattenkapacitet|kapacitet|volym|water capacity)$/i,Icon:LuDroplets},
+  {title:"Filter och underhåll",description:"Kontrollera vilken filtertyp som används och hur den byts.",match:/^(filtertyp|filter|filtrering|filtration)$/i,Icon:LuClipboardCheck},
+  {title:"Pump och drift",description:"Se information om pump, vattenflöde och eventuell ljudnivå.",match:/^(pump|vattenflöde|ljudnivå|noise level|water flow)$/i,Icon:LuWandSparkles},
+  {title:"Säker användning",description:"Följ modellens uppgifter om vattennivå, placering och rengöring.",match:/^(säkerhetsfunktioner|safety|strömförsörjning|power supply)$/i,Icon:LuShieldCheck}
+ ],
+ other:[
+  {title:"Funktioner",description:"Jämför funktionerna i den aktuella produktens beskrivning.",match:/^(funktioner|features)$/i,Icon:LuWandSparkles},
+  {title:"Storlek och kapacitet",description:"Kontrollera modellens mått och kapacitet.",match:/^(mått|dimensioner|kapacitet|dimensions|capacity)$/i,Icon:LuRuler},
+  {title:"Användning och skötsel",description:"Läs produktens anvisningar för vardaglig användning och underhåll.",match:/^(underhåll|rengöring|maintenance|cleaning)$/i,Icon:LuClipboardCheck}
+ ]
+};
+function productEditorialImages(product:Product){
+ const unique=Array.from(new Map(product.images.filter(i=>!!i.url).map(i=>[i.url.split("?")[0],i])).values());
+ const match=(pattern:RegExp)=>unique.find(i=>pattern.test(i.altText||""));
+ const large=match(/(detalj|feature|funktion|front|framsida|produkt)/i)||unique.find(i=>i.url!==product.featuredImage?.url)||product.featuredImage||unique[0];
+ const lifestyle=match(/(lifestyle|vardagsrum|interiör|hemma|in home|room)/i)||unique.find(i=>i.url!==large?.url&&i.url!==product.featuredImage?.url)||large;
+ return {large,lifestyle};
+}
+function ProductFeatureStage({product,family,fields}:{product:Product;family:ProductFamily;fields:ProductField[]}){
+ const found=specifications(fields);
+ const details=featureCatalog[family].map(item=>({...item,actual:findSpecification(found,item.match)}));
+ const {large}=productEditorialImages(product);
+ return <section id="pdp-fordelar" className="pawlira-pdp-benefits" aria-labelledby="pawlira-pdp-benefits-heading">
+  <div className="container pawlira-pdp-benefits-inner">
+   <div className="pawlira-pdp-benefits-copy">
+    <h2 id="pawlira-pdp-benefits-heading">{family==="litter"?"Enklare rutiner för dig och din katt.":family==="feeder"?"Måltider på kattens villkor.":family==="water"?"En bättre vattenrutin.":"Genomtänkt för vardagen."}</h2>
+    <div className="pawlira-pdp-benefits-list">{details.map(({Icon,title,description,actual})=><article key={title} className="pawlira-pdp-benefit-row">
+      <span className="pawlira-pdp-benefit-icon"><Icon size={23} strokeWidth={1.65} aria-hidden="true"/></span>
+      <div><h3>{title}</h3><p>{actual||description}</p></div>
+    </article>)}</div>
+   </div>
+   {large?.url&&<div className="pawlira-pdp-benefits-media"><Image src={large.url} alt={large.altText||product.title} fill sizes="(max-width: 767px) 90vw, 46vw" className="object-contain"/></div>}
+  </div>
+ </section>;
+}
+
 function ProductShowcase({product,family,hasRelated}:{product:Product;family:ProductFamily;hasRelated:boolean}){
  const info=familyInfo[family];
- const image=product.images.find(item=>item.url&&item.url!==product.featuredImage?.url)||product.featuredImage;
+ const {lifestyle:image}=productEditorialImages(product);
  return <>
   <div className="pawlira-pdp-feature-top">
    <ProductSectionNav title={product.title} hasFaq={true} hasRelated={hasRelated}/>
@@ -126,7 +181,7 @@ function ProductShowcase({product,family,hasRelated}:{product:Product;family:Pro
     </div>
    </section>
   </div>
-  <section id="pdp-fordelar" className="container pawlira-pdp-editorial-chapter">
+  <section id="pdp-livsstil" className="container pawlira-pdp-editorial-chapter">
    <div className="pawlira-pdp-editorial-photo">
     {image?.url&&<Image src={image.url} alt={image.altText||product.title} fill sizes="(max-width:767px) 100vw, 50vw" className="object-contain"/>}
    </div>
@@ -150,6 +205,7 @@ export default function ProductStory({product,fields,descriptionHtml,family="oth
  ].filter(group=>byKey(group.key).length>0||(group.key==="spec"&&!!descriptionSpecs)||!!group.fallback);
  return <>
   <ProductShowcase product={product} family={family} hasRelated={hasRelated}/>
+  <ProductFeatureStage product={product} family={family} fields={fields}/>
   <div className="pawlira-band pawlira-band-warm"><DimensionsGuide fields={fields}/></div>
   <section id="produktinformation" className="container pawlira-catalog-width pawlira-catalog-faq pawlira-pdp-spec-section scroll-mt-32">
    <div className="pawlira-pdp-spec-intro"><h2>Produktdetaljer</h2><p>Tekniska uppgifter, kompatibilitet och användning för den aktuella modellen.</p></div>

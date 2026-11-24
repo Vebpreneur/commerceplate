@@ -4,6 +4,7 @@ type Item={id:string;label:string};
 export default function ProductSectionNav({title,hasFaq,hasRelated}:{title:string;hasFaq:boolean;hasRelated:boolean}){
  const items=useMemo<Item[]>(()=>[
   {id:"pdp-oversikt",label:"Detaljer"},
+  {id:"pdp-fordelar",label:"Funktioner"},
   {id:"produktinformation",label:"Specifikationer"},
   ...(hasFaq?[{id:"kundinformation",label:"Vanliga frågor"}]:[]),
   ...(hasRelated?[{id:"relaterade",label:"Relaterat"}]:[])
