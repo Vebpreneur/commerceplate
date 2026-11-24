@@ -6,6 +6,7 @@ import type {ProductField} from "@/lib/utils/productFields";
 import Accordion from "@/shortcodes/Accordion";
 import FieldDetails from "./FieldDetails";
 import DimensionsGuide from "./DimensionsGuide";
+import ProductSectionNav from "./ProductSectionNav";
 
 export type ProductFamily="litter"|"feeder"|"water"|"other";
 type EditorialRow={title:string;paragraphs:ReactNode[]};
@@ -112,24 +113,29 @@ function ProductFaq({family,fields}:{family:ProductFamily;fields:ProductField[]}
 
 function ProductShowcase({product,family}:{product:Product;family:ProductFamily}){
  const info=familyInfo[family];
- const photos=Array.from(new Map(product.images.filter(image=>image.url).map(image=>[image.url.split("?")[0],image])).values());
- if(photos.length<2)return null;
- const lead=photos[1]||photos[0];
- const secondary=photos.length>3?photos[3]:photos[2]||photos[0];
- return <div className="pawlira-pdp-showcase">
-  <section className="pawlira-pdp-showcase-band" aria-labelledby="pawlira-showcase-title">
-   <div className="container pawlira-pdp-showcase-inner">
-    <div className="pawlira-pdp-showcase-copy"><h2 id="pawlira-showcase-title">{info.heading}</h2><p>{info.introduction}</p><Link href="#produktinformation" className="pawlira-pdp-showcase-link">Upptäck produktdetaljerna <span aria-hidden="true">↗</span></Link></div>
-    <div className="pawlira-pdp-showcase-image"><Image src={lead.url} alt={lead.altText||product.title} fill sizes="(max-width: 767px) 100vw, 50vw" className="object-contain"/></div>
+ const image=product.images.find(item=>item.url&&item.url!==product.featuredImage?.url)||product.featuredImage;
+ return <>
+  <div className="pawlira-pdp-feature-top">
+   <ProductSectionNav title={product.title} hasSpecs={true} hasFaq={true} hasRelated={true}/>
+   <section id="pdp-oversikt" className={"pawlira-pdp-category-hero pawlira-pdp-category-hero-"+family} aria-labelledby="pawlira-pdp-category-heading">
+    {family!=="litter"&&image?.url&&<div className="pawlira-pdp-category-product"><Image src={image.url} alt={image.altText||product.title} fill sizes="(max-width:767px) 85vw, 50vw" className="object-contain"/></div>}
+    <div className="pawlira-pdp-category-hero-content">
+     <h2 id="pawlira-pdp-category-heading">{info.heading}</h2>
+     <p>{info.introduction}</p>
+     <a href="#produktinformation" className="pawlira-pdp-category-cta">Se produktdetaljer <span aria-hidden="true">→</span></a>
+    </div>
+   </section>
+  </div>
+  <section id="pdp-fordelar" className="container pawlira-pdp-editorial-chapter">
+   <div className="pawlira-pdp-editorial-photo">
+    {image?.url&&<Image src={image.url} alt={image.altText||product.title} fill sizes="(max-width:767px) 100vw, 50vw" className="object-contain"/>}
    </div>
+   <div className="pawlira-pdp-editorial-copy"><h2>{info.chapter}</h2><p>{info.chapterText}</p></div>
   </section>
-  {secondary&&<section className="container pawlira-pdp-showcase-chapter"><div className="pawlira-pdp-showcase-image"><Image src={secondary.url} alt={secondary.altText||product.title} fill sizes="(max-width: 767px) 100vw, 50vw" className="object-contain"/></div><div className="pawlira-pdp-showcase-copy"><h2>{info.chapter}</h2><p>{info.chapterText}</p></div></section>}
- </div>;
+ </>;
 }
 
 export default function ProductStory({product,fields,descriptionHtml,family="other"}:{product:Product;fields:ProductField[];descriptionHtml:string;family?:ProductFamily}){
- const {main,gallery}=productStoryImages(product);
- const visibleImages=[...(main?[main]:[]),...gallery];
  const byKey=(key:string)=>fields.filter(field=>field.key===key);
  const descriptionSpecs=separateTechnicalItems(descriptionHtml);
  const specs=byKey("spec");
@@ -145,7 +151,6 @@ export default function ProductStory({product,fields,descriptionHtml,family="oth
  return <>
   <ProductShowcase product={product} family={family}/>
   <div className="pawlira-band pawlira-band-warm"><DimensionsGuide fields={fields}/></div>
-  {visibleImages.length>0&&<section id="produktbilder" className="container pawlira-home-section scroll-mt-32"><div className="pawlira-section-heading"><div><h2>Produktbilder</h2></div></div><div className="pawlira-story-gallery">{visibleImages.map((image,index)=><div className={"pawlira-story-gallery-image "+(index===0&&visibleImages.length%2===1?"pawlira-story-gallery-wide":"")} key={image.url}><Image src={image.url} alt={image.altText||product.title} fill sizes="(max-width: 767px) 90vw, 50vw" className="object-contain"/></div>)}</div></section>}
   <section id="produktinformation" className="container pawlira-catalog-width pawlira-catalog-faq scroll-mt-32">
    <h2>Produktdetaljer</h2>
    <div className="pawlira-catalog-faq-list pawlira-product-detail-accordions">
