@@ -1,5 +1,5 @@
 "use client";
-import {useEffect,useState,useRef,useMemo} from "react";
+import {useEffect,useState,useRef,useMemo,type MouseEvent} from "react";
 type Item={id:string;label:string};
 export default function ProductSectionNav({title,hasSpecs,hasFaq,hasRelated}:{title:string;hasSpecs:boolean;hasFaq:boolean;hasRelated:boolean}){
  const items=useMemo<Item[]>(()=>[
@@ -21,7 +21,7 @@ export default function ProductSectionNav({title,hasSpecs,hasFaq,hasRelated}:{ti
   onScroll();window.addEventListener("scroll",onScroll,{passive:true});
   return()=>{cancelAnimationFrame(frame);window.removeEventListener("scroll",onScroll)};
  },[items]);
- function jump(e:React.MouseEvent<HTMLAnchorElement>,id:string){
+ function jump(e:MouseEvent<HTMLAnchorElement>,id:string){
   const target=document.getElementById(id);if(!target)return;
   e.preventDefault();
   const header=document.querySelector<HTMLElement>("header.pawlira-polished-header");
