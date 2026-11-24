@@ -111,12 +111,12 @@ function ProductFaq({family,fields}:{family:ProductFamily;fields:ProductField[]}
  </div></section>;
 }
 
-function ProductShowcase({product,family}:{product:Product;family:ProductFamily}){
+function ProductShowcase({product,family,hasRelated}:{product:Product;family:ProductFamily;hasRelated:boolean}){
  const info=familyInfo[family];
  const image=product.images.find(item=>item.url&&item.url!==product.featuredImage?.url)||product.featuredImage;
  return <>
   <div className="pawlira-pdp-feature-top">
-   <ProductSectionNav title={product.title} hasSpecs={true} hasFaq={true} hasRelated={true}/>
+   <ProductSectionNav title={product.title} hasFaq={true} hasRelated={hasRelated}/>
    <section id="pdp-oversikt" className={"pawlira-pdp-category-hero pawlira-pdp-category-hero-"+family} aria-labelledby="pawlira-pdp-category-heading">
     {family!=="litter"&&image?.url&&<div className="pawlira-pdp-category-product"><Image src={image.url} alt={image.altText||product.title} fill sizes="(max-width:767px) 85vw, 50vw" className="object-contain"/></div>}
     <div className="pawlira-pdp-category-hero-content">
@@ -135,7 +135,7 @@ function ProductShowcase({product,family}:{product:Product;family:ProductFamily}
  </>;
 }
 
-export default function ProductStory({product,fields,descriptionHtml,family="other"}:{product:Product;fields:ProductField[];descriptionHtml:string;family?:ProductFamily}){
+export default function ProductStory({product,fields,descriptionHtml,family="other",hasRelated=false}:{product:Product;fields:ProductField[];descriptionHtml:string;family?:ProductFamily;hasRelated?:boolean}){
  const byKey=(key:string)=>fields.filter(field=>field.key===key);
  const descriptionSpecs=separateTechnicalItems(descriptionHtml);
  const specs=byKey("spec");
@@ -149,7 +149,7 @@ export default function ProductStory({product,fields,descriptionHtml,family="oth
   {title:"Säkerhetsinformation",key:"safety",fallback:familyInfo[family].safety}
  ].filter(group=>byKey(group.key).length>0||(group.key==="spec"&&!!descriptionSpecs)||!!group.fallback);
  return <>
-  <ProductShowcase product={product} family={family}/>
+  <ProductShowcase product={product} family={family} hasRelated={hasRelated}/>
   <div className="pawlira-band pawlira-band-warm"><DimensionsGuide fields={fields}/></div>
   <section id="produktinformation" className="container pawlira-catalog-width pawlira-catalog-faq scroll-mt-32">
    <h2>Produktdetaljer</h2>
