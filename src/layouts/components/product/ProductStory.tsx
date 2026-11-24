@@ -151,8 +151,8 @@ export default function ProductStory({product,fields,descriptionHtml,family="oth
  return <>
   <ProductShowcase product={product} family={family} hasRelated={hasRelated}/>
   <div className="pawlira-band pawlira-band-warm"><DimensionsGuide fields={fields}/></div>
-  <section id="produktinformation" className="container pawlira-catalog-width pawlira-catalog-faq scroll-mt-32">
-   <h2>Produktdetaljer</h2>
+  <section id="produktinformation" className="container pawlira-catalog-width pawlira-catalog-faq pawlira-pdp-spec-section scroll-mt-32">
+   <div className="pawlira-pdp-spec-intro"><h2>Produktdetaljer</h2><p>Tekniska uppgifter, kompatibilitet och användning för den aktuella modellen.</p></div>
    <div className="pawlira-catalog-faq-list pawlira-product-detail-accordions">
     {accordionGroups.map(group=>{
      const matched=byKey(group.key);
