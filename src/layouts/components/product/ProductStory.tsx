@@ -172,7 +172,7 @@ function ProductShowcase({product,family,hasRelated}:{product:Product;family:Pro
   <div className="pawlira-pdp-feature-top">
    <ProductSectionNav title={product.title} hasFaq={true} hasRelated={hasRelated}/>
    <section id="pdp-oversikt" className={"pawlira-pdp-category-hero pawlira-pdp-category-hero-"+family} aria-labelledby="pawlira-pdp-category-heading">
-    {family!=="litter"&&image?.url&&<div className="pawlira-pdp-category-product"><Image src={image.url} alt={image.altText||product.title} fill sizes="(max-width:767px) 85vw, 50vw" className="object-contain"/></div>}
+    {family!=="litter"&&family!=="feeder"&&image?.url&&<div className="pawlira-pdp-category-product"><Image src={image.url} alt={image.altText||product.title} fill sizes="(max-width:767px) 85vw, 50vw" className="object-contain"/></div>}
     <div className="pawlira-pdp-category-hero-content">
      <h2 id="pawlira-pdp-category-heading">{info.heading}</h2>
      <p>{info.introduction}</p>
@@ -185,12 +185,13 @@ function ProductShowcase({product,family,hasRelated}:{product:Product;family:Pro
 function ProductEditorialChapter({product,family}:{product:Product;family:ProductFamily}){
  const info=familyInfo[family];
  const {lifestyle:image}=productEditorialImages(product);
+ const checklist=family==="litter"?["Välj en öppning och storlek som passar katten.","Använd kattsand som är kompatibel med modellen.","Introducera automatisk rengöring enligt modellens instruktioner."]:family==="feeder"?["Anpassa portionsstorleken efter kattens behov.","Kontrollera att fodrets storlek passar automaten.","Rengör skål och foderbehållare regelbundet."]:family==="water"?["Placera fontänen på en lugn och stabil plats.","Byt vatten och rengör pumpen regelbundet.","Använd filter som passar den aktuella modellen."]:["Välj en modell som passar kattens behov.","Följ produktens användningsanvisningar.","Planera regelbunden rengöring och skötsel."];
  return <>
   <section id="pdp-livsstil" className="container pawlira-pdp-editorial-chapter">
    <div className="pawlira-pdp-editorial-photo">
     {image?.url&&<Image src={image.url} alt={image.altText||product.title} fill sizes="(max-width:767px) 100vw, 50vw" className="object-contain"/>}
    </div>
-   <div className="pawlira-pdp-editorial-copy"><h2>{info.chapter}</h2><p>{info.chapterText}</p></div>
+   <div className="pawlira-pdp-editorial-copy"><h2>{info.chapter}</h2><p>{info.chapterText}</p><ul className="pawlira-pdp-editorial-checks">{checklist.map(item=><li key={item}><span aria-hidden="true">✓</span><span>{item}</span></li>)}</ul></div>
   </section>
  </>;
 }
@@ -198,6 +199,8 @@ function ProductEditorialChapter({product,family}:{product:Product;family:Produc
 export default function ProductStory({product,fields,descriptionHtml,family="other",hasRelated=false}:{product:Product;fields:ProductField[];descriptionHtml:string;family?:ProductFamily;hasRelated?:boolean}){
  const byKey=(key:string)=>fields.filter(field=>field.key===key);
  const descriptionSpecs=separateTechnicalItems(descriptionHtml);
+ const technical=specifications(fields,descriptionHtml);
+ const dimensionImage=product.images.find(image=>/\b(dimensions?|measurements?|mått|dimensioner|storleksmått)\b/i.test((image.altText||"")+" "+image.url))||product.featuredImage;
  const accordionGroups=[
   ...(specifications(fields,descriptionHtml).length===0?[{title:"Tekniska specifikationer",key:"spec",fallback:""}]:[]),
   {title:"Funktioner och egenskaper",key:"features",fallback:""},
@@ -213,17 +216,15 @@ export default function ProductStory({product,fields,descriptionHtml,family="oth
   <ProductEditorialChapter product={product} family={family}/>
   <section id="produktinformation" className="pawlira-pdp-details-area scroll-mt-32" aria-labelledby="pawlira-pdp-details-title">
    <div className="container">
-    <div className="pawlira-pdp-details-heading"><h2 id="pawlira-pdp-details-title">Tekniska specifikationer</h2><p>Uppgifter för den aktuella modellen.</p></div>
-    <div className="pawlira-pdp-spec-card">
+    <div className="pawlira-pdp-details-heading"><h2 id="pawlira-pdp-details-title">{technical.length?"Tekniska specifikationer":"Produktdetaljer"}</h2></div>
+    {technical.length>0&&<div className="pawlira-pdp-spec-card">
      <div className="pawlira-pdp-spec-values">
-      {specifications(fields,descriptionHtml).length>0?
-       <dl className="pawlira-pdp-spec-table">{specifications(fields,descriptionHtml).map((item,index)=><div key={item.label+index}><dt>{item.label}</dt><dd>{item.value}</dd></div>)}</dl>
-       :<p className="pawlira-pdp-spec-empty">Produktspecifika mått och tekniska värden visas här när de finns angivna i produktinformationen.</p>}
+      <dl className="pawlira-pdp-spec-table">{technical.map((item,index)=><div key={item.label+index}><dt>{item.label}</dt><dd>{item.value}</dd></div>)}</dl>
      </div>
-     <div className="pawlira-pdp-spec-visual">{product.featuredImage?.url&&<Image src={product.featuredImage.url} alt={product.featuredImage.altText||product.title} fill sizes="(max-width: 767px) 90vw, 55vw" className="object-contain"/>}</div>
-    </div>
-    <div className="pawlira-pdp-detail-content">
-     <div className="pawlira-pdp-spec-intro"><h2>Produktdetaljer</h2><p>Information om användning, kompatibilitet och säkerhet för den här produkten.</p></div>
+     <div className="pawlira-pdp-spec-visual">{dimensionImage?.url&&<Image src={dimensionImage.url} alt={dimensionImage.altText||product.title} fill sizes="(max-width: 767px) 90vw, 55vw" className="object-contain"/>}</div>
+    </div>}
+    <div className={"pawlira-pdp-detail-content"+(!technical.length?" pawlira-pdp-detail-only":"")}>
+     <div className="pawlira-pdp-spec-intro">{technical.length>0&&<h2>Produktdetaljer</h2>}<p>Information om användning, kompatibilitet och säkerhet för den här produkten.</p></div>
      <div className="pawlira-product-detail-accordions">
     {accordionGroups.map(group=>{
      const matched=byKey(group.key);
