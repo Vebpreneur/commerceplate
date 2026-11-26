@@ -137,6 +137,7 @@ export type ProductOption = {
 };
 
 export type ProductVariant = {
+  variantRole?: { value: string } | null;
   id: string;
   title: string;
   availableForSale: boolean;
