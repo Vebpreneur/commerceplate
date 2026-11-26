@@ -1,6 +1,6 @@
 "use client";
 
-import PurchaseAssurance from "./PurchaseAssurance";
+
 import { ProductOption, ProductVariant } from "@/lib/shopify/types";
 import { createUrl } from "@/lib/utils";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -21,7 +21,7 @@ export function VariantSelector({options, variants, images}: {options:ProductOpt
  const money = (m:{amount:string;currencyCode:string})=>new Intl.NumberFormat("sv-SE",{style:"currency",currency:m.currencyCode}).format(Number(m.amount));
  const labels:Record<string,string> = {color:"Färg",colour:"Färg",size:"Storlek",material:"Material",style:"Utförande"};
  return <div>
-   {active && <div aria-live="polite" className="mb-6"><div className="flex flex-wrap items-baseline gap-3"><span className="text-3xl font-semibold">{money(active.price)}</span></div><p className="mt-2 text-sm flex items-center gap-2"><span aria-hidden="true" className={`rounded-full w-2 h-2 ${active.availableForSale?"bg-black":"bg-neutral-400"}`}/>{active.availableForSale?"Tillgänglig att beställa":"Slut i lager"}</p><PurchaseAssurance/></div>}
+   {active && <div aria-live="polite" className="mb-6"><div className="flex flex-wrap items-baseline gap-3"><span className="text-[30px] font-semibold tracking-tight">{money(active.price)}</span></div>{!active.availableForSale&&<p className="mt-2 text-sm font-medium text-neutral-700">Slut i lager</p>}</div>}
    {customerOptions(options).filter(o=>o.values.length>1).map(option=>{
      const key=option.name.toLowerCase();
      const value=active?.selectedOptions.find(o=>o.name.toLowerCase()===key)?.value;
