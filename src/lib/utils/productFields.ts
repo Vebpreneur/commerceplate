@@ -2,7 +2,7 @@ import type {Product} from "@/lib/shopify/types";
 import {customerText} from "./customerProduct";
 export type ProductField={title:string;value:string;key:string};
 const labels:Record<string,{title:string;key:string}>={
- specifications:{title:"Tekniska specifikationer",key:"spec"},spec:{title:"Tekniska specifikationer",key:"spec"},technical_specifications:{title:"Tekniska specifikationer",key:"spec"},specifikationer:{title:"Tekniska specifikationer",key:"spec"},technical_details:{title:"Tekniska specifikationer",key:"spec"},dimensions:{title:"Tekniska specifikationer",key:"spec"},measurements:{title:"Tekniska specifikationer",key:"spec"},
+ specifications:{title:"Tekniska specifikationer",key:"spec"},spec:{title:"Tekniska specifikationer",key:"spec"},technical_specifications:{title:"Tekniska specifikationer",key:"spec_json"},specifikationer:{title:"Tekniska specifikationer",key:"spec"},technical_details:{title:"Tekniska specifikationer",key:"spec"},dimensions:{title:"Tekniska specifikationer",key:"spec"},measurements:{title:"Tekniska specifikationer",key:"spec"},
  details:{title:"Produktdetaljer",key:"details"},detaljer:{title:"Produktdetaljer",key:"details"},product_details:{title:"Produktdetaljer",key:"details"},
  included:{title:"Vad ingår?",key:"included"},ingar:{title:"Vad ingår?",key:"included"},what_is_included:{title:"Vad ingår?",key:"included"},package_contents:{title:"Vad ingår?",key:"included"},features:{title:"Funktioner och egenskaper",key:"features"},faq:{title:"Vanliga frågor",key:"faq"},
  compatibility:{title:"Kompatibilitet",key:"compatibility"},kompatibilitet:{title:"Kompatibilitet",key:"compatibility"},
@@ -17,6 +17,7 @@ function flatten(node:RichNode):string{
 export function productFields(product:Product):ProductField[]{
  const values=(product.metafields||[]).flatMap(field=>{
   if(!field?.value||field.type.includes("reference")||!labels[field.key])return [];
+  if(field.key==="technical_specifications"){try{const rows=JSON.parse(field.value);if(!Array.isArray(rows))return [];return [{title:"Tekniska specifikationer",key:"spec_json",value:JSON.stringify(rows)}]}catch{return []}}
   let value=field.value;
   try{if(field.type==="rich_text_field")value=flatten(JSON.parse(value));else if(field.type.startsWith("list.")){const items=JSON.parse(value);if(!Array.isArray(items))return [];value=items.filter(item=>typeof item==="string"||typeof item==="number"||typeof item==="boolean").join("\n")}}
   catch{return []}
