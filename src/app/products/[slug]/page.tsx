@@ -70,8 +70,8 @@ const ShowProductSingle = async ({ params,searchParams }: { params: { slug: stri
   const [recommended,accessories,navigation]=await Promise.all([getProductRecommendations(id).catch(()=>[]),compatibleAccessories([product.handle],product.priceRange.minVariantPrice.currencyCode),getStoreNavigation()]);
   const guideCategory=navigation.find(c=>c.products.some(p=>p.handle===product.handle));
   const guideHref=guideCategory?"/kopguide?c="+encodeURIComponent(guideCategory.handle):"/kopguide";
-  const categoryText=[guideCategory?.title,guideCategory?.handle,...(product.collections?.nodes||[]).map((c:{title?:string})=>c.title),product.title].filter(Boolean).join(" ").toLocaleLowerCase("sv-SE");
-  const family:ProductFamily=/kattlå|kattla|litter|toalett/.test(categoryText)?"litter":/foder|feed|matningsautomat/.test(categoryText)?"feeder":/vatten|fontän|fountain/.test(categoryText)?"water":"other";
+  const familyFrom=(text:string):ProductFamily=>/kattlå|kattla|litter|toalett/i.test(text)?"litter":/foder|feed|matningsautomat/i.test(text)?"feeder":/vatten|fontän|fountain/i.test(text)?"water":"other";
+  const family:ProductFamily=[product.productType||"",product.title,guideCategory?.title||""].map(familyFrom).find(f=>f!=="other")||"other";
   const guideHandle=family==="litter"?"kattlador":family==="feeder"?"foderautomater":family==="water"?"vattenfontaner":null;
   const guide=guideHandle?await shopifyFetch<{data:{metaobject:{fields:{key:string;value:string}[]}|null};variables:{handle:string}}>({query:`query CategoryGuide($handle:String!){metaobject(handle:{type:"pawlira_category_guide",handle:$handle}){fields{key value}}}`,variables:{handle:guideHandle}}).then(r=>r.body.data.metaobject).catch(()=>null):null;
   const guideLabel=family==="litter"?"Passar den min katt?":family==="feeder"?"Utfodringsguide":family==="water"?"Dricksguide":"Produktguide";
