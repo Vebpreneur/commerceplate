@@ -4,6 +4,7 @@ import ProductGallery from "@/components/product/ProductGallery";
 import { VariantSelector } from "@/components/product/VariantSelector";
 import { getProduct, getProductRecommendations, shopifyFetch } from "@/lib/shopify";
 import PurchaseContent from "@/components/product/PurchaseContent";
+import {selectedProductVariant} from "@/lib/utils/productSelection";
 import LatestProducts from "@/partials/FeaturedProducts";
 import Link from "next/link";
 import {productFields} from "@/lib/utils/productFields";
@@ -33,18 +34,18 @@ export const generateMetadata = async (props: {
   };
 };
 
-const ProductSingle = async (props: { params: Promise<{ slug: string }> }) => {
+const ProductSingle = async (props: { params: Promise<{ slug: string }>; searchParams: Promise<Record<string,string|string[]|undefined>> }) => {
   const params = await props.params;
   return (
     <Suspense fallback={<LoadingProductGallery />}>
-      <ShowProductSingle params={params} />
+      <ShowProductSingle params={params} searchParams={await props.searchParams} />
     </Suspense>
   );
 };
 
 export default ProductSingle;
 
-const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
+const ShowProductSingle = async ({ params,searchParams }: { params: { slug: string };searchParams:Record<string,string|string[]|undefined> }) => {
   const product = await loadProduct(params.slug);
 
   if (!product) return notFound();
@@ -56,6 +57,14 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
     variants,
   } = product;
 
+  const selection=new URLSearchParams();for(const [key,value] of Object.entries(searchParams||{})){if(typeof value==="string")selection.set(key,value);}
+  const active=selectedProductVariant(variants,selection);
+  const variantName=customerOptions(active?.selectedOptions||[]).map(o=>o.value).join(" ");
+  const accessoryOnly=/ONLY 18 Rolls|8 Extra Filters Pack/i.test(variantName);
+  const bags=/ONLY 18 Rolls/i.test(variantName);
+  const model=title.split(" ")[1];
+  const variantMessage=accessoryOnly?(bags?"Vald variant: 18 rullar avfallspåsar. Ingen kattlåda ingår.":"Vald variant: åtta utbytesfilter. Ingen vattenfontän ingår."):model==="MILORA"?(/button/i.test(variantName)?"Vald variant: knappstyrning, utan appstyrning.":"Vald variant: Wi-Fi-styrning."):model==="TRIVIA"?(/video/i.test(variantName)?"Vald variant: video och kamera.":/wifi/i.test(variantName)?"Vald variant: Wi-Fi-styrning, utan kamera.":"Vald variant: Basic med knappstyrning, utan kamera.")+(/stainless/i.test(variantName)?" Rostfri skål.":""):model==="TEMIRA"?(/stainless/i.test(variantName)?"Vald variant: rostfri skål.":"Vald variant: plastskål."):model==="RENORA"&&/stainless/i.test(variantName)?"Vald variant: rostfri skål.":null;
+  const accessoryCopy=accessoryOnly?JSON.stringify({heading:bags?"Reservpåsar till ÉLUNA":"Reservfilter till AQUORA",description:variantMessage,benefits:bags?["18 rullar avfallspåsar","Avsedda för ÉLUNA","Ingen kattlåda ingår"]:["Åtta utbytesfilter","Avsedda för AQUORA","Ingen fontän ingår"],overview:bags?"Ett separat paket med avfallspåsar för den som redan har ÉLUNA.":"Ett separat filterpaket för den som redan har AQUORA."}):undefined;
   const description=customerText(product.description);
   const descriptionHtml=customerHtml(product.descriptionHtml);
   const [recommended,accessories,navigation]=await Promise.all([getProductRecommendations(id).catch(()=>[]),compatibleAccessories([product.handle],product.priceRange.minVariantPrice.currencyCode),getStoreNavigation()]);
@@ -112,14 +121,15 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
                 </Suspense>
               </div>
 
-              <PurchaseContent raw={read("cta_content")} fallback={read("short_description")||description} guideFields={guide?.fields||[]} guideLabel={family==="litter"?"Passar den min katt?":family==="feeder"?"Utfodringsguide":"Dricksguide"} compatibility={read("compatibility")} safety={read("safety_information")}/>
+              {variantMessage&&<p role="status" className="text-sm font-medium mb-4">{variantMessage}</p>}
+              <PurchaseContent raw={accessoryCopy||read("cta_content")} fallback={read("short_description")||description} guideFields={accessoryOnly?[]:guide?.fields||[]} guideLabel={family==="litter"?"Passar den min katt?":family==="feeder"?"Utfodringsguide":"Dricksguide"} compatibility={read("compatibility")} safety={read("safety_information")}/>
               <div className="pawlira-purchase-facts">{[{Icon:FiPackage,title:"Leverans",href:"/shipping-policy"},{Icon:FiRefreshCcw,title:"Retur",href:"/refund-policy"},{Icon:FiHelpCircle,title:"Kundservice",href:"/contact"}].map(({Icon,title,href})=><Link href={href} key={href}><Icon size={20} strokeWidth={1.5}/><span>{title}</span><LuChevronRight size={18} strokeWidth={1.5}/></Link>)}</div></div>
             </div>
           </div>
         </div>
       </section>
 
-      <ProductStory product={{...product,description,descriptionHtml}} descriptionHtml={descriptionHtml} fields={fields} family={family} hasRelated={relatedProducts.length>0}/>
+      {accessoryOnly?<section className="container pawlira-pdp-details-area py-12"><h2 className="text-2xl font-semibold mb-4">Detta ingår</h2><p>{variantMessage}</p><p className="mt-2">Tillbehöret är avsett för {bags?"ÉLUNA":"AQUORA"}.</p></section>:<ProductStory product={{...product,description,descriptionHtml}} descriptionHtml={descriptionHtml} fields={fields} family={family} hasRelated={relatedProducts.length>0}/>}
       <section className="container pawlira-home-section pawlira-pdp-guide-section"><div className="pawlira-pdp-guide-card"><div className="pawlira-pdp-guide-icon"><LuBookOpen size={30} strokeWidth={1.5} aria-hidden="true"/></div><div className="pawlira-pdp-guide-copy"><h2>Hitta rätt produkt för din katt</h2><p>Vår köpguide hjälper dig att jämföra egenskaper, mått och funktioner utifrån din katts behov.</p></div><Link href={guideHref} className="btn btn-primary">Öppna köpguiden <FiArrowUpRight size={18} strokeWidth={1.5}/></Link></div></section>
       {/* Recommended Products section  */}
       {relatedProducts?.length > 0 && <section id="relaterade" className="container pawlira-home-section scroll-mt-48">
