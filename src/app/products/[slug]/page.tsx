@@ -112,7 +112,7 @@ const ShowProductSingle = async ({ params,searchParams }: { params: { slug: stri
 
               <div className="my-6"><Suspense><VariantSelector options={options} variants={variants} images={images} mode="price" /></Suspense></div>
 
-              <PurchaseContent raw={accessoryCopy||read("cta_content")} fallback={read("short_description")||description} guideFields={guideFields} guideLabel={accessoryOnly?"Tillbehörsguide":family==="litter"?"Kattguide":guideLabel} compatibility={accessoryOnly?undefined:read("compatibility")} safety={accessoryOnly?undefined:read("safety_information")}/>
+              <PurchaseContent raw={accessoryCopy||read("cta_content")} fallback={read("short_description")||description} guideFields={guideFields} guideLabel={accessoryOnly?"Tillbehörsguide":family==="litter"?"Kattguide":guideLabel} compatibility={accessoryOnly?undefined:read("compatibility")} safety={accessoryOnly?undefined:read("safety_information")} guideImage={accessoryOnly?undefined:(images.find(i=>/livsstil|lifestyle|i hemmet|vid matplats|med katt/i.test(i.altText||""))?.url||active?.image?.url||product.featuredImage?.url)} guideImageAlt={title}/>
               <div className="rounded-2xl border border-neutral-300 bg-white p-5 sm:p-6 mt-6">
               <Suspense><VariantSelector options={options} variants={variants} images={images} mode="options" /></Suspense>
               <div className="flex gap-4 mt-4 mb-4 min-w-0">
