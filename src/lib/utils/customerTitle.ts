@@ -1,2 +1,2 @@
-// Display-only title; keep Shopify product title unchanged.
-export function customerTitle(title:string){return title.trim().replace(/^pawlira\s*(?:[–—-]\s*)?/i,"").trim()||title}
+/** Shopify is the canonical source of customer-facing product titles. */
+export function customerTitle(title:string):string{return title;}
