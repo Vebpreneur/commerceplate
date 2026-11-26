@@ -108,7 +108,7 @@ const ShowProductSingle = async ({ params,searchParams }: { params: { slug: stri
 
             {/* left side contents  */}
             <div className="min-w-0 lg:col-span-5"><div className="pawlira-purchase-panel lg:sticky lg:top-28">
-              <h1 className="pawlira-h1 mb-5" style={{fontSize:"clamp(2rem, 3.1vw, 2.85rem)",lineHeight:1.13,letterSpacing:"-0.035em"}}>{title.replace(/^Pawlira\s+/i,"")}</h1>
+              <h1 className="pawlira-h1 mb-5" style={{fontSize:"clamp(2rem, 3.1vw, 2.85rem)",lineHeight:1.13,letterSpacing:"-0.035em"}}>{title}</h1>
 
               <div className="my-6"><Suspense><VariantSelector options={options} variants={variants} images={images} mode="price" /></Suspense></div>
 
