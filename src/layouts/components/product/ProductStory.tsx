@@ -9,6 +9,8 @@ import ProductSectionNav from "./ProductSectionNav";
 import {LuShieldCheck,LuWandSparkles,LuPackageOpen,LuRuler,LuSmartphone,LuDroplets,LuUtensils,LuClipboardCheck} from "react-icons/lu";
 import {specifications,findSpecification} from "@/lib/utils/productSpecifications";
 
+function contentField<T>(product:Product,key:string):T|undefined{try{const raw=product.metafields?.find(f=>f?.namespace==="custom"&&f.key===key)?.value;return raw?JSON.parse(raw) as T:undefined}catch{return undefined}}
+type Ownership={key:string;heading:string;type:string;text?:string;note?:string;steps?:string[];rows?:{label:string;value:string}[]};
 export type ProductFamily="litter"|"feeder"|"water"|"other";
 type EditorialRow={title:string;paragraphs:ReactNode[]};
 const familyInfo={
@@ -104,11 +106,12 @@ const familyQuestions:Record<ProductFamily,{title:string;answer:string}[]>={
  ]
 };
 
-function ProductFaq({family,fields}:{family:ProductFamily;fields:ProductField[]}){
+function ProductFaq({family,fields,product}:{family:ProductFamily;fields:ProductField[];product:Product}){
  const submitted=fields.filter(field=>field.key==="faq");
+ const individual=contentField<{question:string;answer:string}[]>(product,"product_faq");
  return <section id="kundinformation" className="container pawlira-catalog-width pawlira-catalog-faq pawlira-product-faq scroll-mt-32" aria-labelledby="pawlira-product-faq-title"><h2 id="pawlira-product-faq-title">Vanliga frågor</h2><div className="pawlira-catalog-faq-list">
-  {submitted.map((field,index)=><Accordion key={"custom-"+index} title={field.title==="Vanliga frågor"?"Frågor och svar för modellen":field.title}><FieldDetails value={field.value}/></Accordion>)}
-  {familyQuestions[family].map(item=><Accordion key={item.title} title={item.title}><p>{item.answer}</p></Accordion>)}
+  {!individual?.length&&submitted.map((field,index)=><Accordion key={"custom-"+index} title={field.title==="Vanliga frågor"?"Frågor och svar för modellen":field.title}><FieldDetails value={field.value}/></Accordion>)}
+  {(individual?.length?individual.filter(q=>q.question&&q.answer).map(q=>({title:q.question,answer:q.answer})):familyQuestions[family]).map(item=><Accordion key={item.title} title={item.title}><p>{item.answer}</p></Accordion>)}
  </div></section>;
 }
 
@@ -149,7 +152,9 @@ function productEditorialImages(product:Product){
 }
 function ProductFeatureStage({product,family,fields}:{product:Product;family:ProductFamily;fields:ProductField[]}){
  const found=specifications(fields);
- const details=featureCatalog[family].map(item=>({...item,actual:findSpecification(found,item.match)}));
+ const overview=contentField<Record<string,string|null>>(product,"feature_overview");
+ const keys=family==="litter"?["cleaning","safety","dimensions","maintenance","connectivity"]:family==="feeder"?["feeding","capacity","connectivity","maintenance"]:family==="water"?["capacity","filtration","water","maintenance"]:[];
+ const details=featureCatalog[family].map((item,i)=>({...item,actual:overview?overview[keys[i]]:findSpecification(found,item.match)})).filter(item=>!overview||!!item.actual);
  const large=product.featuredImage?.url?product.featuredImage:productEditorialImages(product).large;
  return <section id="pdp-fordelar" className="pawlira-pdp-benefits" aria-labelledby="pawlira-pdp-benefits-heading">
   <div className="container pawlira-pdp-benefits-inner">
@@ -185,13 +190,14 @@ function ProductShowcase({product,family,hasRelated}:{product:Product;family:Pro
 function ProductEditorialChapter({product,family}:{product:Product;family:ProductFamily}){
  const info=familyInfo[family];
  const {lifestyle:image}=productEditorialImages(product);
- const checklist=family==="litter"?["Välj en öppning och storlek som passar katten.","Använd kattsand som är kompatibel med modellen.","Introducera automatisk rengöring enligt modellens instruktioner."]:family==="feeder"?["Anpassa portionsstorleken efter kattens behov.","Kontrollera att fodrets storlek passar automaten.","Rengör skål och foderbehållare regelbundet."]:family==="water"?["Placera fontänen på en lugn och stabil plats.","Byt vatten och rengör pumpen regelbundet.","Använd filter som passar den aktuella modellen."]:["Välj en modell som passar kattens behov.","Följ produktens användningsanvisningar.","Planera regelbunden rengöring och skötsel."];
+ const highlight=contentField<{heading:string;description:string;highlights:string[]}>(product,"product_highlight");
+ const checklist=highlight?.highlights?.length?highlight.highlights:family==="litter"?["Välj en öppning och storlek som passar katten.","Använd kattsand som är kompatibel med modellen.","Introducera automatisk rengöring enligt modellens instruktioner."]:family==="feeder"?["Anpassa portionsstorleken efter kattens behov.","Kontrollera att fodrets storlek passar automaten.","Rengör skål och foderbehållare regelbundet."]:family==="water"?["Placera fontänen på en lugn och stabil plats.","Byt vatten och rengör pumpen regelbundet.","Använd filter som passar den aktuella modellen."]:["Välj en modell som passar kattens behov.","Följ produktens användningsanvisningar.","Planera regelbunden rengöring och skötsel."];
  return <>
   <section id="pdp-livsstil" className="container pawlira-pdp-editorial-chapter">
    <div className="pawlira-pdp-editorial-photo">
     {image?.url&&<Image src={image.url} alt={image.altText||product.title} fill sizes="(max-width:767px) 100vw, 50vw" className="object-contain"/>}
    </div>
-   <div className="pawlira-pdp-editorial-copy"><h2>{info.chapter}</h2><p>{info.chapterText}</p><ul className="pawlira-pdp-editorial-checks">{checklist.map(item=><li key={item}><span aria-hidden="true">✓</span><span>{item}</span></li>)}</ul></div>
+   <div className="pawlira-pdp-editorial-copy"><h2>{highlight?.heading||info.chapter}</h2><p>{highlight?.description||info.chapterText}</p><ul className="pawlira-pdp-editorial-checks">{checklist.map(item=><li key={item}><span aria-hidden="true">✓</span><span>{item}</span></li>)}</ul></div>
   </section>
  </>;
 }
@@ -201,6 +207,7 @@ export default function ProductStory({product,fields,descriptionHtml,family="oth
  const descriptionSpecs=separateTechnicalItems(descriptionHtml);
  const technical=specifications(fields,descriptionHtml);
  const dimensionImage=product.images.find(image=>/\b(dimensions?|measurements?|mått|dimensioner|storleksmått)\b/i.test((image.altText||"")+" "+image.url))||product.featuredImage;
+ const ownership=contentField<Ownership[]>(product,"ownership_details");
  const accordionGroups=[
   ...(specifications(fields,descriptionHtml).length===0?[{title:"Tekniska specifikationer",key:"spec",fallback:""}]:[]),
   {title:"Funktioner och egenskaper",key:"features",fallback:""},
@@ -226,7 +233,7 @@ export default function ProductStory({product,fields,descriptionHtml,family="oth
     <div className={"pawlira-pdp-detail-content"+(!technical.length?" pawlira-pdp-detail-only":"")}>
      <div className="pawlira-pdp-spec-intro">{technical.length>0&&<h2>Produktdetaljer</h2>}<p>Information om användning, kompatibilitet och säkerhet för den här produkten.</p></div>
      <div className="pawlira-product-detail-accordions">
-    {accordionGroups.map(group=>{
+    {ownership?.length?ownership.map(group=><div key={group.key}><Accordion title={group.heading}>{group.type==="rows"&&group.rows?.length?<><dl className="pawlira-pdp-spec-table">{group.rows.map((row,i)=><div key={i}><dt>{row.label}</dt><dd>{row.value}</dd></div>)}</dl>{group.note&&<p>{group.note}</p>}</>:group.type==="steps"&&group.steps?.length?<ol className="divide-y divide-stone-200">{group.steps.map((step,i)=><li className="py-2" key={i}>{i+1}. {step}</li>)}</ol>:<p>{group.text}</p>}</Accordion></div>):accordionGroups.map(group=>{
      const matched=byKey(group.key);
      const content=group.key==="spec"&&!matched.length?descriptionSpecs:"";
      return <div id={group.key==="spec"?"specifikationer":undefined} key={group.key}><Accordion title={group.title}>{matched.length?<div className="space-y-4">{matched.map((field,index)=><div key={field.key+field.title+index}><FieldDetails value={field.value}/></div>)}</div>:content?<div className="content" dangerouslySetInnerHTML={{__html:content}}/>:<p>{group.fallback}</p>}</Accordion></div>;
@@ -235,7 +242,7 @@ export default function ProductStory({product,fields,descriptionHtml,family="oth
     </div>
    </div>
   </section>
-  <ProductFaq family={family} fields={fields}/>
+  <ProductFaq family={family} fields={fields} product={product}/>
   <ProductDetailsEditorial family={family}/>
  </>;
 }
