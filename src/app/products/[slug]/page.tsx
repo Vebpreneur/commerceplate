@@ -4,7 +4,7 @@ import ProductGallery from "@/components/product/ProductGallery";
 import { VariantSelector } from "@/components/product/VariantSelector";
 import { getProduct, getProductRecommendations, shopifyFetch } from "@/lib/shopify";
 import PurchaseContent from "@/components/product/PurchaseContent";
-import {selectedProductVariant} from "@/lib/utils/productSelection";
+import {selectedProductVariant,productVariantRole} from "@/lib/utils/productSelection";
 import LatestProducts from "@/partials/FeaturedProducts";
 import Link from "next/link";
 import {productFields} from "@/lib/utils/productFields";
@@ -59,11 +59,11 @@ const ShowProductSingle = async ({ params,searchParams }: { params: { slug: stri
 
   const selection=new URLSearchParams();for(const [key,value] of Object.entries(searchParams||{})){if(typeof value==="string")selection.set(key,value);}
   const active=selectedProductVariant(variants,selection);
-  const variantName=customerOptions(active?.selectedOptions||[]).map(o=>o.value).join(" ");
-  const accessoryOnly=/ONLY 18 Rolls|8 Extra Filters Pack/i.test(variantName);
-  const bags=/ONLY 18 Rolls/i.test(variantName);
-  const model=title.split(" ")[1];
-  const variantMessage=accessoryOnly?(bags?"Vald variant: 18 rullar avfallspåsar. Ingen kattlåda ingår.":"Vald variant: åtta utbytesfilter. Ingen vattenfontän ingår."):model==="MILORA"?(/button/i.test(variantName)?"Vald variant: knappstyrning, utan appstyrning.":"Vald variant: Wi-Fi-styrning."):model==="TRIVIA"?(/video/i.test(variantName)?"Vald variant: video och kamera.":/wifi/i.test(variantName)?"Vald variant: Wi-Fi-styrning, utan kamera.":"Vald variant: Basic med knappstyrning, utan kamera.")+(/stainless/i.test(variantName)?" Rostfri skål.":""):model==="TEMIRA"?(/stainless/i.test(variantName)?"Vald variant: rostfri skål.":"Vald variant: plastskål."):model==="RENORA"&&/stainless/i.test(variantName)?"Vald variant: rostfri skål.":null;
+  const role=productVariantRole(active);
+  const accessoryOnly=role==="bags"||role==="filters";
+  const bags=role==="bags";
+  const baseRole=role.replace(/_stainless$/,"");
+  const variantMessage=accessoryOnly?(bags?"Vald variant: 18 rullar avfallspåsar. Ingen kattlåda ingår.":"Vald variant: åtta utbytesfilter. Ingen vattenfontän ingår."):baseRole==="button"?"Vald variant: knappstyrning, utan appstyrning.":baseRole==="basic"?"Vald variant: Basic med knappstyrning, utan kamera.":baseRole==="video"?"Vald variant: video och kamera.":baseRole==="wifi"?"Vald variant: Wi-Fi-styrning.":role==="plastic_bowl"?"Vald variant: plastskål.":role==="stainless_bowl"?"Vald variant: rostfri skål.":null;
   const accessoryCopy=accessoryOnly?JSON.stringify({heading:bags?"Reservpåsar till ÉLUNA":"Reservfilter till AQUORA",description:variantMessage,benefits:bags?["18 rullar avfallspåsar","Avsedda för ÉLUNA","Ingen kattlåda ingår"]:["Åtta utbytesfilter","Avsedda för AQUORA","Ingen fontän ingår"],overview:bags?"Ett separat paket med avfallspåsar för den som redan har ÉLUNA.":"Ett separat filterpaket för den som redan har AQUORA."}):undefined;
   const description=customerText(product.description);
   const descriptionHtml=customerHtml(product.descriptionHtml);
