@@ -30,8 +30,8 @@ function GalleryView({images,title}:{images:ImageItem[];title:string}){
 .pawlira-portrait-gallery .pawlira-gallery-thumbs{display:flex!important;position:relative!important;inset:auto!important;gap:10px;overflow-x:auto!important;overflow-y:hidden!important;max-width:100%;width:100%!important;padding:0!important;min-width:0;}
 .pawlira-portrait-gallery .pawlira-gallery-thumbs>button{position:relative!important;flex:0 0 76px!important;aspect-ratio:5/6!important;width:76px!important;height:auto!important;min-height:0!important;border-radius:10px;overflow:hidden;background:white;}
 @media(min-width:1024px){
-.pawlira-portrait-gallery:has(.pawlira-gallery-thumbs){grid-template-columns:minmax(72px,15%) minmax(0,1fr);align-items:stretch;gap:20px;}
-.pawlira-portrait-gallery .pawlira-gallery-stage{grid-column:2;grid-row:1;align-self:start;}
+.pawlira-portrait-gallery:has(.pawlira-gallery-thumbs){grid-template-columns:minmax(72px,16%) minmax(0,1fr);align-items:stretch;gap:22px;}
+.pawlira-portrait-gallery .pawlira-gallery-stage{grid-column:2;grid-row:1;align-self:start;aspect-ratio:3/4!important;}
 .pawlira-portrait-gallery:not(:has(.pawlira-gallery-thumbs)) .pawlira-gallery-stage{grid-column:1;}
 .pawlira-portrait-gallery .pawlira-gallery-thumbs{grid-column:1;grid-row:1;flex-direction:column!important;overflow-x:hidden!important;overflow-y:auto!important;min-height:0!important;height:0!important;min-height:100%!important;scrollbar-width:thin;}
 .pawlira-portrait-gallery .pawlira-gallery-thumbs>button{flex:0 0 auto!important;width:100%!important;aspect-ratio:5/6!important;}
