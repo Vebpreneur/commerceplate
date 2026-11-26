@@ -4,6 +4,7 @@ import ProductGallery from "@/components/product/ProductGallery";
 import { VariantSelector } from "@/components/product/VariantSelector";
 import { getProduct, getProductRecommendations, shopifyFetch } from "@/lib/shopify";
 import PurchaseContent from "@/components/product/PurchaseContent";
+import PurchaseAssurance from "@/components/product/PurchaseAssurance";
 import {selectedProductVariant,productVariantRole} from "@/lib/utils/productSelection";
 import LatestProducts from "@/partials/FeaturedProducts";
 import Link from "next/link";
@@ -107,16 +108,18 @@ const ShowProductSingle = async ({ params,searchParams }: { params: { slug: stri
 
             {/* left side contents  */}
             <div className="min-w-0 lg:col-span-5"><div className="pawlira-purchase-panel lg:sticky lg:top-28">
-              <h1 className="pawlira-h1 mb-5">{title}</h1>
+              <h1 className="pawlira-h1 mb-5" style={{fontSize:"clamp(2rem, 3.1vw, 2.85rem)",lineHeight:1.13,letterSpacing:"-0.035em"}}>{title}</h1>
 
               <div className="my-6"><Suspense><VariantSelector options={options} variants={variants} images={images} /></Suspense></div>
 
+              {variantMessage&&<p role="status" className="text-sm font-medium mb-4">{variantMessage}</p>}
+              <PurchaseContent raw={accessoryCopy||read("cta_content")} fallback={read("short_description")||description} guideFields={guideFields} guideLabel={accessoryOnly?"Tillbehörsguide":family==="litter"?"Kattguide":guideLabel} compatibility={accessoryOnly?undefined:read("compatibility")} safety={accessoryOnly?undefined:read("safety_information")}/>
               <div className="flex gap-4 mt-6 mb-6 min-w-0">
                 <Suspense>
                   <AddToCart
                     variants={product?.variants}
                     availableForSale={product?.availableForSale}
-                    stylesClass={"btn btn-primary pawlira-purchase-cta w-full rounded-full py-4"}
+                    stylesClass={"btn btn-primary pawlira-purchase-cta w-full rounded-full py-5 text-base font-semibold"}
                     handle={null}
                     defaultVariantId={defaultVariantId}
                     productInfo={{title,handle:product.handle,image:product.featuredImage?.url}}
@@ -125,8 +128,7 @@ const ShowProductSingle = async ({ params,searchParams }: { params: { slug: stri
                 </Suspense>
               </div>
 
-              {variantMessage&&<p role="status" className="text-sm font-medium mb-4">{variantMessage}</p>}
-              <PurchaseContent raw={accessoryCopy||read("cta_content")} fallback={read("short_description")||description} guideFields={guideFields} guideLabel={accessoryOnly?"Tillbehörsguide":guideLabel} compatibility={accessoryOnly?undefined:read("compatibility")} safety={accessoryOnly?undefined:read("safety_information")}/>
+              <PurchaseAssurance/>
               <div className="pawlira-purchase-facts">{[{Icon:FiPackage,title:"Leverans",href:"/shipping-policy"},{Icon:FiRefreshCcw,title:"Retur",href:"/refund-policy"},{Icon:FiHelpCircle,title:"Kundservice",href:"/contact"}].map(({Icon,title,href})=><Link href={href} key={href}><Icon size={20} strokeWidth={1.5}/><span>{title}</span><LuChevronRight size={18} strokeWidth={1.5}/></Link>)}</div></div>
             </div>
           </div>
