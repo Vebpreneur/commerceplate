@@ -179,6 +179,7 @@ export type ShopifyCollection = {
 };
 
 export type ShopifyProduct = {
+  productType?: string;
   metafields?: Array<{namespace:string;key:string;type:string;value:string} | null>;
   id: string;
   handle: string;
