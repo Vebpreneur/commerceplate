@@ -74,6 +74,10 @@ const ShowProductSingle = async ({ params,searchParams }: { params: { slug: stri
   const family:ProductFamily=/kattlå|kattla|litter|toalett/.test(categoryText)?"litter":/foder|feed|matningsautomat/.test(categoryText)?"feeder":/vatten|fontän|fountain/.test(categoryText)?"water":"other";
   const guideHandle=family==="litter"?"kattlador":family==="feeder"?"foderautomater":family==="water"?"vattenfontaner":null;
   const guide=guideHandle?await shopifyFetch<{data:{metaobject:{fields:{key:string;value:string}[]}|null};variables:{handle:string}}>({query:`query CategoryGuide($handle:String!){metaobject(handle:{type:"pawlira_category_guide",handle:$handle}){fields{key value}}}`,variables:{handle:guideHandle}}).then(r=>r.body.data.metaobject).catch(()=>null):null;
+  const guideLabel=family==="litter"?"Passar den min katt?":family==="feeder"?"Utfodringsguide":family==="water"?"Dricksguide":"Produktguide";
+  const accessoryGuide=[{key:"title",value:bags?"Guide till avfallspåsar":"Guide till reservfilter"},{key:"intro",value:bags?"Detta är ett separat påspaket för ÉLUNA, inte en komplett kattlåda.":"Detta är ett separat filterpaket för AQUORA, inte en komplett vattenfontän."},{key:"sections",value:JSON.stringify([{heading:"Kompatibilitet",text:bags?"Avsedda för ÉLUNA.":"Avsedda för AQUORA."},{heading:"Förpackningsinnehåll",text:bags?"18 rullar avfallspåsar.":"Åtta utbytesfilter."},{heading:"Användning och byte",text:"Följ instruktionerna för den kompatibla enheten vid byte och underhåll."}])}];
+  const fallbackGuide=[{key:"title",value:guideLabel},{key:"intro",value:"Utgå från kattens behov och den aktuella modellens egenskaper."},{key:"sections",value:JSON.stringify(family==="litter"?[{heading:"Introduktion",text:"Låt katten vänja sig gradvis och behåll den tidigare kattlådan under övergången."},{heading:"Passform och säkerhet",text:"Ta hänsyn till öppning, insteg och modellens dokumenterade vikt- och åldersgränser."}]:family==="feeder"?[{heading:"Måltidsrutiner",text:"Anpassa portioner och fodertyp efter kattens behov. Testa matningen under uppsikt."}]:[{heading:"Daglig användning",text:"Följ modellens anvisningar för placering, användning och skötsel."}])}];
+  const guideFields=accessoryOnly?accessoryGuide:guide?.fields?.some(f=>f.key==="title"&&f.value)?guide.fields:fallbackGuide;
   const read=(key:string)=>product.metafields?.find(f=>f?.namespace==="custom"&&f.key===key)?.value;
   const relatedProducts=Array.from(new Map(recommended.filter(p=>p.id!==id&&p.availableForSale).map(p=>[p.id,p])).values()).slice(0,3);
   const fields=productFields(product);
@@ -122,7 +126,7 @@ const ShowProductSingle = async ({ params,searchParams }: { params: { slug: stri
               </div>
 
               {variantMessage&&<p role="status" className="text-sm font-medium mb-4">{variantMessage}</p>}
-              <PurchaseContent raw={accessoryCopy||read("cta_content")} fallback={read("short_description")||description} guideFields={accessoryOnly?[]:guide?.fields||[]} guideLabel={family==="litter"?"Passar den min katt?":family==="feeder"?"Utfodringsguide":"Dricksguide"} compatibility={read("compatibility")} safety={read("safety_information")}/>
+              <PurchaseContent raw={accessoryCopy||read("cta_content")} fallback={read("short_description")||description} guideFields={guideFields} guideLabel={accessoryOnly?"Tillbehörsguide":guideLabel} compatibility={accessoryOnly?undefined:read("compatibility")} safety={accessoryOnly?undefined:read("safety_information")}/>
               <div className="pawlira-purchase-facts">{[{Icon:FiPackage,title:"Leverans",href:"/shipping-policy"},{Icon:FiRefreshCcw,title:"Retur",href:"/refund-policy"},{Icon:FiHelpCircle,title:"Kundservice",href:"/contact"}].map(({Icon,title,href})=><Link href={href} key={href}><Icon size={20} strokeWidth={1.5}/><span>{title}</span><LuChevronRight size={18} strokeWidth={1.5}/></Link>)}</div></div>
             </div>
           </div>
