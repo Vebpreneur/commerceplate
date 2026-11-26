@@ -2,7 +2,8 @@ import { AddToCart } from "@/components/cart/AddToCart";
 import LoadingProductGallery from "@/components/loadings/skeleton/SkeletonProductGallery";
 import ProductGallery from "@/components/product/ProductGallery";
 import { VariantSelector } from "@/components/product/VariantSelector";
-import { getProduct, getProductRecommendations } from "@/lib/shopify";
+import { getProduct, getProductRecommendations, shopifyFetch } from "@/lib/shopify";
+import PurchaseContent from "@/components/product/PurchaseContent";
 import LatestProducts from "@/partials/FeaturedProducts";
 import Link from "next/link";
 import {productFields} from "@/lib/utils/productFields";
@@ -62,6 +63,9 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
   const guideHref=guideCategory?"/kopguide?c="+encodeURIComponent(guideCategory.handle):"/kopguide";
   const categoryText=[guideCategory?.title,guideCategory?.handle,...(product.collections?.nodes||[]).map((c:{title?:string})=>c.title),product.title].filter(Boolean).join(" ").toLocaleLowerCase("sv-SE");
   const family:ProductFamily=/kattlå|kattla|litter|toalett/.test(categoryText)?"litter":/foder|feed|matningsautomat/.test(categoryText)?"feeder":/vatten|fontän|fountain/.test(categoryText)?"water":"other";
+  const guideHandle=family==="litter"?"kattlador":family==="feeder"?"foderautomater":family==="water"?"vattenfontaner":null;
+  const guide=guideHandle?await shopifyFetch<{data:{metaobject:{fields:{key:string;value:string}[]}|null};variables:{handle:string}}>({query:`query CategoryGuide($handle:String!){metaobject(handle:{type:"pawlira_category_guide",handle:$handle}){fields{key value}}}`,variables:{handle:guideHandle}}).then(r=>r.body.data.metaobject).catch(()=>null):null;
+  const read=(key:string)=>product.metafields?.find(f=>f?.namespace==="custom"&&f.key===key)?.value;
   const relatedProducts=Array.from(new Map(recommended.filter(p=>p.id!==id&&p.availableForSale).map(p=>[p.id,p])).values()).slice(0,3);
   const fields=productFields(product);
   const galleryImages=Array.from(new Map([...(product.featuredImage?.url?[product.featuredImage]:[]),...images].filter(i=>i.url).map(i=>[i.url.split("?")[0],i])).values());
@@ -108,7 +112,7 @@ const ShowProductSingle = async ({ params }: { params: { slug: string } }) => {
                 </Suspense>
               </div>
 
-              {descriptionHtml&&<div className="content pawlira-product-description text-sm leading-relaxed text-text-light mb-6" dangerouslySetInnerHTML={{__html:descriptionHtml}}/>}
+              <PurchaseContent raw={read("cta_content")} fallback={read("short_description")||description} guideFields={guide?.fields||[]} guideLabel={family==="litter"?"Passar den min katt?":family==="feeder"?"Utfodringsguide":"Dricksguide"} compatibility={read("compatibility")} safety={read("safety_information")}/>
               <div className="pawlira-purchase-facts">{[{Icon:FiPackage,title:"Leverans",href:"/shipping-policy"},{Icon:FiRefreshCcw,title:"Retur",href:"/refund-policy"},{Icon:FiHelpCircle,title:"Kundservice",href:"/contact"}].map(({Icon,title,href})=><Link href={href} key={href}><Icon size={20} strokeWidth={1.5}/><span>{title}</span><LuChevronRight size={18} strokeWidth={1.5}/></Link>)}</div></div>
             </div>
           </div>
