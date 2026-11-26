@@ -154,7 +154,7 @@ function ProductFeatureStage({product,family,fields}:{product:Product;family:Pro
  const found=specifications(fields);
  const overview=contentField<Record<string,string|null>>(product,"feature_overview");
  const keys=family==="litter"?["cleaning","safety","dimensions","maintenance","connectivity"]:family==="feeder"?["feeding","capacity","connectivity","maintenance"]:family==="water"?["capacity","filtration","water","maintenance"]:[];
- const details=featureCatalog[family].map((item,i)=>({...item,actual:overview?overview[keys[i]]:findSpecification(found,item.match)})).filter(item=>!overview||!!item.actual);
+ const details=featureCatalog[family].map((item,i)=>({...item,actual:overview?.[keys[i]]||findSpecification(found,item.match)}));
  const large=product.featuredImage?.url?product.featuredImage:productEditorialImages(product).large;
  return <section id="pdp-fordelar" className="pawlira-pdp-benefits" aria-labelledby="pawlira-pdp-benefits-heading">
   <div className="container pawlira-pdp-benefits-inner">
@@ -207,7 +207,9 @@ export default function ProductStory({product,fields,descriptionHtml,family="oth
  const descriptionSpecs=separateTechnicalItems(descriptionHtml);
  const technical=specifications(fields,descriptionHtml);
  const dimensionImage=product.images.find(image=>/\b(dimensions?|measurements?|mått|dimensioner|storleksmått)\b/i.test((image.altText||"")+" "+image.url))||product.featuredImage;
- const ownership=contentField<Ownership[]>(product,"ownership_details");
+ const stored=contentField<Ownership[]>(product,"ownership_details");
+ const common=[{key:"setup",heading:"Installation och första användning",text:familyInfo[family].use},{key:"compatibility",heading:family==="feeder"?"Foder och kompatibilitet":family==="water"?"Placering och kompatibilitet":"Passform och kompatibilitet",text:"Modellspecifika kompatibilitetsuppgifter är inte angivna."},{key:"app",heading:family==="feeder"?"Styrning och måltidsplanering":family==="water"?"Vattensystem och filtrering":"Styrning och smarta funktioner",text:"Ytterligare modellspecifika funktionsuppgifter är inte angivna."},{key:"care",heading:"Användning och underhåll",text:familyInfo[family].use},{key:"included",heading:"Detta ingår",text:"Fullständigt förpackningsinnehåll är inte angivet."},{key:"safety",heading:"Säkerhetsinformation",text:familyInfo[family].safety}];
+ const ownership:Ownership[]|undefined=Array.isArray(stored)&&stored.length?common.map(row=>{const found=stored.find(s=>s.key===row.key);return found?{...found,heading:row.heading}:{...row,type:"text"};}):undefined;
  const accordionGroups=[
   ...(specifications(fields,descriptionHtml).length===0?[{title:"Tekniska specifikationer",key:"spec",fallback:""}]:[]),
   {title:"Funktioner och egenskaper",key:"features",fallback:""},
