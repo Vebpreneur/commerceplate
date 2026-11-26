@@ -8,7 +8,9 @@ function namedPair(line:string):Specification|null{
  return label&&value&&!/^https?:/i.test(value)?{label,value}:null;
 }
 export function specifications(fields:ProductField[],descriptionHtml=""):Specification[]{
- const meta=fields.filter(f=>["spec","details","features"].includes(f.key)).flatMap(f=>f.value.split(/\r?\n/)).map(namedPair).filter((v):v is Specification=>!!v);
+ const canonical=fields.filter(f=>f.key==="spec_json").flatMap(f=>{try{const rows=JSON.parse(f.value);return Array.isArray(rows)?rows.filter((v):v is Specification=>!!v&&typeof v.label==="string"&&typeof v.value==="string"&&!!v.label.trim()&&!!v.value.trim()):[]}catch{return []}});
+ if(canonical.length)return canonical.filter((v,i)=>canonical.findIndex(p=>p.label.trim().toLocaleLowerCase("sv-SE")===v.label.trim().toLocaleLowerCase("sv-SE"))===i);
+ const meta=fields.filter(f=>f.key==="spec"&&!/^\s*[\[{]/.test(f.value)).flatMap(f=>f.value.split(/\r?\n/)).map(namedPair).filter((v):v is Specification=>!!v);
  // Some Shopify descriptions carry real technical facts in explicit label:value lists.
  // Do not infer missing values from promotional prose.
  const lines=descriptionHtml.replace(/<(?:br|\/li|\/p|\/div|\/tr|\/h[1-6])\b[^>]*>/gi,"\n")
