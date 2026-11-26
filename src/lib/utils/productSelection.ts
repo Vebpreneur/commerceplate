@@ -8,5 +8,5 @@ export function selectedProductVariant(variants:ProductVariant[],params:{entries
  // Use the same selection for gallery, price, cart, and server-rendered content.
  const isConsumable=(v:ProductVariant)=>customerOptions(v.selectedOptions).some(o=>/^(?:ONLY 18 Rolls|8 Extra Filters Pack)$/i.test(o.value.trim()));
  const available=matches.filter(v=>v.availableForSale);
- return available.find(v=>!isConsumable(v))||available[0]||matches.find(v=>!isConsumable(v))||matches[0];
+ return available.find(v=>!isConsumable(v))||matches.find(v=>!isConsumable(v))||available[0]||matches[0];
 }
