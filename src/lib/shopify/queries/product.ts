@@ -32,7 +32,16 @@ export const getProductQuery = /* GraphQL */ `
         {namespace:"custom",key:"what_is_included"},
         {namespace:"custom",key:"package_contents"},
         {namespace:"custom",key:"care_instructions"},
-        {namespace:"custom",key:"faq"}
+        {namespace:"custom",key:"faq"},
+        {namespace:"custom",key:"cta_content"},
+        {namespace:"custom",key:"feature_overview"},
+        {namespace:"custom",key:"product_highlight"},
+        {namespace:"custom",key:"ownership_details"},
+        {namespace:"custom",key:"product_faq"},
+        {namespace:"custom",key:"short_description"},
+        {namespace:"custom",key:"what_s_included"},
+        {namespace:"custom",key:"app_features"},
+        {namespace:"custom",key:"setup_instructions"}
       ]) { namespace key type value }
     }
   }
