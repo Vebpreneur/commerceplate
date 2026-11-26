@@ -105,7 +105,7 @@ body main .pawlira-pdp-detail-content .pawlira-pdp-spec-intro h2{font-family:var
 @media(max-width:767px){body main .pawlira-pdp-benefits-copy h2{font-size:var(--pawlira-h2,28px)!important;margin-bottom:28px}.pawlira-pdp-benefits-list{gap:24px}.pawlira-pdp-benefit-icon{width:54px;height:54px}.pawlira-pdp-benefit-row{grid-template-columns:54px minmax(0,1fr);gap:14px}.pawlira-pdp-spec-card{grid-template-columns:1fr}.pawlira-pdp-spec-visual{min-height:280px;grid-row:1}.pawlira-pdp-spec-values{padding:20px 24px 30px}.pawlira-pdp-spec-table>div{font-size:15px}.pawlira-pdp-details-heading{margin-bottom:25px}.pawlira-pdp-detail-content{padding-top:52px}.pawlira-pdp-detail-content .pawlira-accordion .accordion-header{font-size:18px!important}}
 
 /* Category banner: feeder art uses the same full-bleed rounded frame as litter. */
-.pawlira-pdp-category-hero-feeder{background-image:url('/images/Smart%20foderautomat%20f%C3%B6r%20katter(1).png');background-position:center;background-size:cover;background-repeat:no-repeat}
+.pawlira-pdp-category-hero-feeder{background-image:url('/images/Pawlira-foderautomater-kategori-banner-produktsida.png');background-position:center;background-size:cover;background-repeat:no-repeat}
 .pawlira-pdp-category-hero-feeder:before{display:none}
 .pawlira-pdp-category-hero-feeder .pawlira-pdp-category-hero-content{visibility:hidden}
 .pawlira-pdp-editorial-checks{list-style:none;padding:0;margin:24px 0 0;display:grid;gap:16px}
