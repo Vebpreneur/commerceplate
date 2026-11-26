@@ -36,6 +36,7 @@ const productFragment = /* GraphQL */ `
           id
           title
           availableForSale
+          variantRole: metafield(namespace: "custom", key: "variant_role") { value }
           selectedOptions {
             name
             value
