@@ -84,7 +84,7 @@ const ShowProductSingle = async ({ params,searchParams }: { params: { slug: stri
   const fields=productFields(product);
   const galleryImages=Array.from(new Map([...(product.featuredImage?.url?[product.featuredImage]:[]),...images].filter(i=>i.url).map(i=>[i.url.split("?")[0],i])).values());
 
-  const defaultVariantId = variants.length > 0 ? variants[0].id : undefined;
+  const defaultVariantId = active?.id || variants[0]?.id;
   const url=new URL("/products/"+encodeURIComponent(product.handle),config.site.base_url).toString();
   const offers=customerVariants(variants).filter(v=>Number.isFinite(Number(v.price.amount))&&Number(v.price.amount)>=0).map(v=>{
     const target=new URL(url);customerOptions(v.selectedOptions).forEach(o=>{if(o.value!=="Default Title")target.searchParams.set(o.name.toLowerCase(),o.value);});
@@ -112,7 +112,6 @@ const ShowProductSingle = async ({ params,searchParams }: { params: { slug: stri
 
               <div className="my-6"><Suspense><VariantSelector options={options} variants={variants} images={images} mode="price" /></Suspense></div>
 
-              {variantMessage&&<p role="status" className="text-sm font-medium mb-4">{variantMessage}</p>}
               <PurchaseContent raw={accessoryCopy||read("cta_content")} fallback={read("short_description")||description} guideFields={guideFields} guideLabel={accessoryOnly?"Tillbehörsguide":family==="litter"?"Kattguide":guideLabel} compatibility={accessoryOnly?undefined:read("compatibility")} safety={accessoryOnly?undefined:read("safety_information")}/>
               <div className="rounded-2xl border border-neutral-300 bg-white p-5 sm:p-6 mt-6">
               <Suspense><VariantSelector options={options} variants={variants} images={images} mode="options" /></Suspense>
